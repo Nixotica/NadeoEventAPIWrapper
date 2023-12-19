@@ -1,0 +1,9 @@
+pytest
+requests
+urllib3<2
+
+
+pre-commit
+
+
+black

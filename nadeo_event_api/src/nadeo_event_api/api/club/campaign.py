@@ -1,9 +1,9 @@
 from __future__ import annotations
-from api.authenticate import UbiTokenManager
+from ..authenticate import UbiTokenManager
 import requests
-from constants import CLUB_CAMPAIGN_URL_FMT
+from ...constants import CLUB_CAMPAIGN_URL_FMT
 
-from api.structure.maps import PlaylistMap
+from ..structure.maps import PlaylistMap
 
 
 class Campaign:

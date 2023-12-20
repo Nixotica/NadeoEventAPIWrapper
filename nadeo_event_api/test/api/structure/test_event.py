@@ -1,24 +1,22 @@
 from datetime import datetime, timedelta
-from math import exp
+import os
 import pytest
 import unittest
 import json
 from ..utils_for_test import are_json_structures_equal
-from src.constants import CLUB_AUTO_EVENTS_STAGING
-from src.api.structure.round.qualifier import Qualifier, QualifierConfig
-from src.api.structure.maps import Map
-from src.api.structure.enums import LeaderboardType, ScriptType
-from src.api.structure.round.match_spot import SeedMatchSpot
-from src.api.structure.round.match import Match
-from src.api.structure.round.round import Round, RoundConfig
-from src.api.structure.event import Event
+from src.nadeo_event_api.constants import CLUB_AUTO_EVENTS_STAGING
+from src.nadeo_event_api.api.structure.round.qualifier import Qualifier, QualifierConfig
+from src.nadeo_event_api.api.structure.maps import Map
+from src.nadeo_event_api.api.structure.enums import LeaderboardType, ScriptType
+from src.nadeo_event_api.api.structure.round.match_spot import SeedMatchSpot
+from src.nadeo_event_api.api.structure.round.match import Match
+from src.nadeo_event_api.api.structure.round.round import Round, RoundConfig
+from src.nadeo_event_api.api.structure.event import Event
 
 
 class TestEvent(unittest.TestCase):
     def test_basic_event_as_jsonable_dict(self):
-        with open(
-            "test/api/structure/resources/basic_event.json"
-        ) as f:
+        with open("test/api/structure/resources/basic_event.json") as f:
             expected: dict = json.load(f)
         actual = Event(
             name="my_event",

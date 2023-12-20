@@ -1,6 +1,6 @@
 from typing import List
 
-from api.structure.round.match_spot import MatchSpot
+from .match_spot import MatchSpot
 
 
 class Match:

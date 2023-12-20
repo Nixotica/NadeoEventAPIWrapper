@@ -1,7 +1,7 @@
 import pytest
-from src.constants import CLUB_AUTO_EVENTS_STAGING
-from src.api.club.campaign import Campaign
-from src.api.structure.maps import PlaylistMap
+from src.nadeo_event_api.constants import CLUB_AUTO_EVENTS_STAGING
+from src.nadeo_event_api.api.club.campaign import Campaign
+from src.nadeo_event_api.api.structure.maps import PlaylistMap
 import unittest
 
 

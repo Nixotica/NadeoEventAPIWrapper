@@ -1,7 +1,15 @@
 import datetime
 from datetime import datetime, timedelta
-from re import Match
+import json
+import os
+from pathlib import Path
+import sys
 from typing import Dict, List
+
+# NOTE we do this for now since the api package is still WIP, will separate this into a different
+# repo which consumes that package eventually
+event_api_pkg = os.path.join(Path(__file__).resolve().parent.parent, "nadeo_event_api/src/")
+sys.path.append(str(event_api_pkg))
 
 from nadeo_event_api.api.structure.event import Event
 from nadeo_event_api.api.club.campaign import Campaign
@@ -11,6 +19,7 @@ from nadeo_event_api.api.structure.round.match_spot import SeedMatchSpot
 from nadeo_event_api.api.structure.round.round import Round, RoundConfig
 from nadeo_event_api.api.structure.settings import PluginSettings, ScriptSettings
 from nadeo_event_api.constants import CLUB_AUTO_EVENTS_STAGING
+from nadeo_event_api.api.structure.round.match import Match
 
 
 def get_player_combinations(players: List[str]) -> List[List[Dict[int, str]]]:
@@ -85,7 +94,7 @@ def get_round(
     
 
 ### NOTE fill these out as appropriate each time the script is run! You shouldn't need to modify anything else! ###
-event_name = "Test Solo League Event"
+event_name = "TestSoloLeague"
 club_id = CLUB_AUTO_EVENTS_STAGING
 campaign_id = 57253 # "Test Solo League"
 
@@ -114,10 +123,10 @@ players = [
 
 now = datetime.utcnow()
 step_1_start = now + timedelta(minutes=5)
-step_2_start = now + timedelta(minutes=10)
-step_3_start = now + timedelta(minutes=15)
-step_4_start = now + timedelta(minutes=20)
-step_5_start = now + timedelta(minutes=25)
+step_2_start = now + timedelta(hours=10)
+step_3_start = now + timedelta(hours=15)
+step_4_start = now + timedelta(hours=20)
+step_5_start = now + timedelta(hours=25)
 ### NOTE END ###
 
 # Get the map pool
@@ -139,8 +148,13 @@ event = Event(
     club_id = club_id,
     rounds=[round_1, round_2, round_3, round_4, round_5],
 )
+
 event.post()
 
 # Add the players to the event
-for player_idx in len(players):
+for player_idx in range(len(players)):
     event.add_participant(players[player_idx], player_idx + 1)
+
+if event._registered_id:
+    print(f"Your event is viewable at https://admin.trackmania.nadeo.club/competition/{event._registered_id}")
+    

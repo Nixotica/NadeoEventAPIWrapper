@@ -1,18 +1,17 @@
 from datetime import datetime
 from typing import List
 import requests
-from api.enums import NadeoService
-from api.structure.round.spot_structure import SpotStructure
-from constants import (
+from .round.spot_structure import SpotStructure
+from ...constants import (
     ADD_PARTICIPANT_URL_FMT,
     CREATE_COMP_URL,
     DELETE_COMP_URL_FMT,
     NADEO_DATE_FMT,
 )
 
-from api.authenticate import UbiTokenManager
+from ..authenticate import UbiTokenManager
 
-from api.structure.round.round import Round
+from .round.round import Round
 
 
 class Event:

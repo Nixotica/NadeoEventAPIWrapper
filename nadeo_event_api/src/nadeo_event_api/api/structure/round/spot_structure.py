@@ -1,5 +1,5 @@
 from typing import List
-from api.structure.round.round import Round
+from .round import Round
 
 
 class SpotStructure:

@@ -1,15 +1,15 @@
 from datetime import datetime
 from typing import List
-from constants import NADEO_DATE_FMT
-from api.structure.round.match import Match
-from api.structure.round.qualifier import Qualifier
-from api.structure.enums import (
+from ....constants import NADEO_DATE_FMT
+from .match import Match
+from .qualifier import Qualifier
+from ..enums import (
     LeaderboardType,
     PluginType,
     ScriptType,
 )
-from api.structure.maps import Map
-from api.structure.settings import PluginSettings, ScriptSettings
+from ..maps import Map
+from ..settings import PluginSettings, ScriptSettings
 
 
 class RoundConfig:

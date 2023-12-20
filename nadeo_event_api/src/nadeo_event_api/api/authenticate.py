@@ -1,9 +1,9 @@
 import os
 import requests
-from environment import UBI_AUTH
-from api.enums import NadeoService
+from ..environment import UBI_AUTH
+from .enums import NadeoService
 
-from constants import NADEO_AUTH_URL, UBI_SESSION_URL
+from ..constants import NADEO_AUTH_URL, UBI_SESSION_URL
 
 
 class UbiTokenManager:
@@ -29,7 +29,7 @@ class UbiTokenManager:
             "Content-Type": "application/json",
             "Ubi-AppId": "86263886-327a-4328-ac69-527f0d20a237",
             "Authorization": auth,
-            "User-Agent": "https://github.com/Nixotica/AutoEvents",
+            "User-Agent": "https://github.com/Nixotica/NadeoEventAPIWrapper",
         }
         result = requests.post(UBI_SESSION_URL, headers=headers).json()
 

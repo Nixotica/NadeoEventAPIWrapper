@@ -1,13 +1,13 @@
 from datetime import datetime
 from typing import List
-from constants import NADEO_DATE_FMT
-from api.structure.maps import Map
-from api.structure.settings import (
+from ....constants import NADEO_DATE_FMT
+from ...structure.maps import Map
+from ...structure.settings import (
     PluginSettings,
     QualifierPluginSettings,
     QualifierScriptSettings,
 )
-from api.structure.enums import (
+from ...structure.enums import (
     LeaderboardType,
     PluginType,
     ScriptType,

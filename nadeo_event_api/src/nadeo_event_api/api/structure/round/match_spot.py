@@ -1,6 +1,6 @@
 from abc import ABC
 
-from api.structure.enums import SpotType
+from ..enums import SpotType
 
 
 class MatchSpot(ABC):

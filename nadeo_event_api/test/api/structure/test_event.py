@@ -1,17 +1,17 @@
 from datetime import datetime, timedelta
-from utils_for_test import are_json_structures_equal
-from nadeo_event_api.constants import CLUB_AUTO_EVENTS_STAGING
+from math import exp
 import pytest
 import unittest
 import json
-from nadeo_event_api.api.structure.round.qualifier import Qualifier, QualifierConfig
-from nadeo_event_api.api.structure.maps import Map
-from nadeo_event_api.api.structure.enums import LeaderboardType, ScriptType
-from nadeo_event_api.api.structure.round.match_spot import SeedMatchSpot
-from nadeo_event_api.api.structure.round.match import Match
-from nadeo_event_api.api.structure.round.round import Round, RoundConfig
-
-from nadeo_event_api.api.structure.event import Event
+from ..utils_for_test import are_json_structures_equal
+from src.constants import CLUB_AUTO_EVENTS_STAGING
+from src.api.structure.round.qualifier import Qualifier, QualifierConfig
+from src.api.structure.maps import Map
+from src.api.structure.enums import LeaderboardType, ScriptType
+from src.api.structure.round.match_spot import SeedMatchSpot
+from src.api.structure.round.match import Match
+from src.api.structure.round.round import Round, RoundConfig
+from src.api.structure.event import Event
 
 
 class TestEvent(unittest.TestCase):
@@ -65,6 +65,9 @@ class TestEvent(unittest.TestCase):
                 ),
             ],
         )._as_jsonable_dict()
+
+        print("expected", json.dumps(expected))
+        print("actual", json.dumps(actual))
 
         self.assertTrue(are_json_structures_equal(expected, actual))
 

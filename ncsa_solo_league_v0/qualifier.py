@@ -1,6 +1,12 @@
 import datetime
 from datetime import datetime, timedelta
 from typing import List
+
+# NOTE we do this for now since the api package is still WIP, will separate this into a different
+# repo which consumes that package eventually
+event_api_pkg = os.path.join(Path(__file__).resolve().parent.parent, "nadeo_event_api/src/")
+sys.path.append(str(event_api_pkg))
+
 from api.club.campaign import Campaign
 from api.structure.maps import Map
 from api.structure.round.qualifier import Qualifier

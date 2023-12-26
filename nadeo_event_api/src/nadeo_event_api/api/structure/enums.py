@@ -22,7 +22,9 @@ class ScriptType(Enum):
     TIME_ATTACK = "TrackMania/TM_TimeAttack_Online.Script.txt"
     CUP_CLASSIC = "TrackMania/Legacy/TM_CupClassic_Online.Script.txt"
     CUP_LONG = "TrackMania/Legacy/TM_CupLong_Online.Script.txt"
+    """ First player to win X maps wins the match. """
     CUP_SHORT = "TrackMania/Legacy/TM_CupShort_Online.Script.txt"
+    """ First player to win the map wins the match. """
 
     # TODO support more script types
 

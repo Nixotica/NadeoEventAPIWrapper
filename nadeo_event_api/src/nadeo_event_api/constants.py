@@ -12,7 +12,9 @@ CLUB_CAMPAIGN_URL_FMT = (
 
 DELETE_COMP_URL_FMT = "https://meet.trackmania.nadeo.club/api/competitions/{0}/delete"
 
-ADD_PARTICIPANT_URL_FMT = "https://meet.trackmania.nadeo.club/api/competitions/{0}/register"
+ADD_PARTICIPANT_URL_FMT = (
+    "https://meet.trackmania.nadeo.club/api/competitions/{0}/register"
+)
 
 NADEO_DATE_FMT = "%Y-%m-%dT%H:%M:%S.000Z"
 

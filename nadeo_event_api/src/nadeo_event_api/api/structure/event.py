@@ -50,6 +50,9 @@ class Event:
         if "exception" in response:
             print("Failed to post event: ", response)
         self._registered_id = response["competition"]["id"]
+        print(
+            f"Your event is viewable at https://admin.trackmania.nadeo.club/competition/{self._registered_id}"
+        )
 
     def delete(self) -> None:
         """
@@ -76,7 +79,7 @@ class Event:
         requests.post(
             url=ADD_PARTICIPANT_URL_FMT.format(self._registered_id),
             headers={"Authorization": "nadeo_v1 t=" + token},
-            json={"participant": player_uuid, "seed": seed}
+            json={"participant": player_uuid, "seed": seed},
         )
 
     @staticmethod
@@ -151,6 +154,8 @@ class Event:
             return False
 
         # TODO check that all rounds, qualifiers, matches, etc are formed correctly (+ maps are real)
+
+        # TODO check that matches requiring outcomes from previous rounds have ends before this match starts
 
         # TODO check that club id belongs to authorized user
 

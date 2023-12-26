@@ -9,16 +9,17 @@ class PluginSettings:
         auto_start_delay: int = 600,
         pick_ban_start_auto: bool = False,
         pick_ban_order: str = "",
+        use_auto_ready: bool = True,
     ):
         self._auto_start_mode = auto_start_mode
         self._auto_start_delay = auto_start_delay
         self._pick_ban_start_auto = pick_ban_start_auto
         self._pick_ban_order = pick_ban_order
+        self._use_auto_ready = use_auto_ready
 
         # TODO make these configurable once I know what they mean
         self._ad_image_urls = ""
         self._enable_ready_manager = True
-        self._use_auto_ready = True
         self._ready_start_ratio = 1
         self._message_timer = ""
 
@@ -62,7 +63,6 @@ class ScriptSettings:
         number_of_winners: int = 3,
         warmup_number: int = 1,
         warmup_duration: int = 120,
-
         match_points_limit: int = 2,
         cup_points_limit: int = 2,
         ko_checkpoint_number: int = 0,

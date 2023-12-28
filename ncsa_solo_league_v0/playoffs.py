@@ -157,8 +157,6 @@ event = Event(
     club_id=club_id,
     rounds=[quarter_1, quarter_2, quarter_3, quarter_4, semi_1, semi_2, grand],
 )
-with open("failed.json", "w") as f:
-    json.dump(event._as_jsonable_dict(), f)
 event.post()
 
 # Add the players to the event

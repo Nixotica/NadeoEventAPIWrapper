@@ -19,8 +19,10 @@ class ScriptType(Enum):
     """
 
     CUP = "TrackMania/TM_Cup_Online.Script.txt"
+    ROUNDS = "TrackMania/TM_Rounds_Online.Script.txt"
     TIME_ATTACK = "TrackMania/TM_TimeAttack_Online.Script.txt"
     CUP_CLASSIC = "TrackMania/Legacy/TM_CupClassic_Online.Script.txt"
+    """ Same as cup mode but with the comp UI. """
     CUP_LONG = "TrackMania/Legacy/TM_CupLong_Online.Script.txt"
     """ First player to win X maps wins the match. """
     CUP_SHORT = "TrackMania/Legacy/TM_CupShort_Online.Script.txt"

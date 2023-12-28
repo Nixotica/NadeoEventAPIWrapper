@@ -24,7 +24,7 @@ class QualificationMatchSpot(MatchSpot):
     def as_jsonable_dict(self) -> dict:
         spot = {}
         spot["spotType"] = self._spot_type.value
-        spot["round_position"] = self._round_position
+        spot["roundPosition"] = self._round_position
         spot["rank"] = self._rank
         return spot
 

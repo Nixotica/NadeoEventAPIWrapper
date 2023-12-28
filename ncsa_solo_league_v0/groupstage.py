@@ -18,7 +18,10 @@ from nadeo_event_api.api.structure.enums import LeaderboardType, ScriptType
 from nadeo_event_api.api.structure.maps import Map
 from nadeo_event_api.api.structure.round.match_spot import SeedMatchSpot
 from nadeo_event_api.api.structure.round.round import Round, RoundConfig
-from nadeo_event_api.api.structure.settings import PluginSettings, ScriptSettings
+from nadeo_event_api.api.structure.settings.script_settings import (
+    CupSpecialScriptSettings,
+)
+from nadeo_event_api.api.structure.settings.plugin_settings import ClassicPluginSettings
 from nadeo_event_api.constants import CLUB_AUTO_EVENTS_STAGING
 from nadeo_event_api.api.structure.round.match import Match
 
@@ -84,13 +87,13 @@ def get_round(
             map_pool=map_pool,
             script=ScriptType.CUP_LONG,
             max_players=4,
-            script_settings=ScriptSettings(
+            script_settings=CupSpecialScriptSettings(
                 points_repartition="1,0,0,0",
                 ko_checkpoint_number=0,
                 number_of_winners=3,
                 warmup_duration=60,
             ),
-            plugin_settings=PluginSettings(
+            plugin_settings=ClassicPluginSettings(
                 pick_ban_start_auto=True,
                 pick_ban_order="b:0,p:0,p:1,p:2,p:3,b:3,p:0,p:1,p:2",
             ),

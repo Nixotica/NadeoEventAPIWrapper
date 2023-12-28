@@ -7,60 +7,29 @@
   "rounds": [
     {
       "name": "round_1",
-      "position": 0,
       "startDate": "2023-11-03T21:05:00.000Z",
       "endDate": "2023-11-03T21:15:00.000Z",
       "nbMatches": 1,
-      "qualifier": {
-        "name": "qualifier_1",
-        "startDate": "2023-11-03T20:55:00.000Z",
-        "endDate": "2023-11-03T21:05:00.000Z",
-        "config": {
-          "name": "qualifier_1",
-          "maps": [
-            "quali_map"
-          ],
-          "script": "TrackMania/TM_TimeAttack_Online.Script.txt",
-          "plugin": "",
-          "pluginSettings": {
-            "S_AdImageUrls": "",
-            "S_MessageTimer": ""
-          },
-          "maxPlayers": 64,
-          "maxSpectators": 64,
-          "scriptSettings": {
-            "S_TimeLimit": 300,
-            "S_WarmUpNb": 1,
-            "S_WarmUpDuration": 15,
-            "S_ForceLapsNb": 0
-          }
-        },
-        "leaderboardType": "SUM",
-        "position": 0,
-        "id": null,
-        "isQualification": true
-      },
       "leaderboardType": "BRACKET",
       "config": {
-        "name": "round_1",
         "maps": [
-            "round_map"
+          "round_map"
         ],
         "script": "TrackMania/TM_Cup_Online.Script.txt",
+        "maxPlayers": 32,
+        "maxSpectators": 32,
         "plugin": "",
         "pluginSettings": {
           "S_AdImageUrls": "",
+          "S_MessageTimer": "",
           "S_AutoStartMode": "delay",
           "S_AutoStartDelay": 600,
           "S_PickBanStartAuto": false,
           "S_PickBanOrder": "",
           "S_EnableReadyManager": true,
           "S_UseAutoReady": true,
-          "S_ReadyStartRatio": 1,
-          "S_MessageTimer": ""
+          "S_ReadyStartRatio": 1
         },
-        "maxPlayers": 32,
-        "maxSpectators": 32,
         "scriptSettings": {
           "S_PointsRepartition": "",
           "S_PointsLimit": 100,
@@ -69,9 +38,40 @@
           "S_NbOfWinners": 3,
           "S_WarmUpNb": 1,
           "S_WarmUpDuration": 120
-        }
+        },
+        "name": "round_1"
       },
-      "teamLeaderboardType": "TEAM_SCORE"
+      "qualifier": {
+        "name": "qualifier_1",
+        "startDate": "2023-11-03T20:55:00.000Z",
+        "endDate": "2023-11-03T21:05:00.000Z",
+        "leaderboardType": "SUM",
+        "position": 0,
+        "id": null,
+        "config": {
+          "maps": [
+            "quali_map"
+          ],
+          "script": "TrackMania/TM_TimeAttack_Online.Script.txt",
+          "plugin": "",
+          "maxPlayers": 64,
+          "maxSpectators": 64,
+          "pluginSettings": {
+            "S_AdImageUrls": "",
+            "S_MessageTimer": ""
+          },
+          "scriptSettings": {
+            "S_TimeLimit": 300,
+            "S_WarmUpNb": 1,
+            "S_WarmUpDuration": 15,
+            "S_ForceLapsNb": 0
+          },
+          "name": "qualifier_1"
+        },
+        "isQualification": true
+      },
+      "teamLeaderboardType": "TEAM_SCORE",
+      "position": 0
     }
   ],
   "rulesUrl": null,

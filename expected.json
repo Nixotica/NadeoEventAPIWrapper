@@ -44,7 +44,7 @@
       "config": {
         "name": "round_1",
         "maps": [
-            "round_map"
+          "round_map"
         ],
         "script": "TrackMania/TM_Cup_Online.Script.txt",
         "plugin": "",
@@ -63,6 +63,9 @@
         "maxSpectators": 32,
         "scriptSettings": {
           "S_PointsRepartition": "",
+          "S_CupPointsLimit": 2,
+          "S_KOCheckpointNb": 0,
+          "S_MatchPointsLimit": 2,
           "S_PointsLimit": 100,
           "S_FinishTimeout": -1,
           "S_RoundsPerMap": 5,

@@ -1,12 +1,13 @@
 from datetime import datetime
 from typing import List
+
+from ...structure.settings.plugin_settings import PluginSettings
+from ...structure.settings.script_settings import (
+    ScriptSettings,
+    TimeAttackScriptSettings,
+)
 from ....constants import NADEO_DATE_FMT
 from ...structure.maps import Map
-from ...structure.settings import (
-    PluginSettings,
-    QualifierPluginSettings,
-    QualifierScriptSettings,
-)
 from ...structure.enums import (
     LeaderboardType,
     PluginType,
@@ -14,6 +15,7 @@ from ...structure.enums import (
 )
 
 
+# TODO this is basically just TA qualifier, and we can move it to just a normal RoundConfig I'm pretty sure
 class QualifierConfig:
     def __init__(
         self,
@@ -22,8 +24,8 @@ class QualifierConfig:
         max_players: int = 64,
         max_spectators: int = 64,
         plugin: PluginType = PluginType.EMPTY,
-        script_settings: QualifierScriptSettings = QualifierScriptSettings(),
-        plugin_settings: PluginSettings = QualifierPluginSettings(),
+        script_settings: ScriptSettings = TimeAttackScriptSettings(),
+        plugin_settings: PluginSettings = PluginSettings(),
     ):
         self._map_pool = map_pool
         self._script = script
@@ -45,6 +47,8 @@ class QualifierConfig:
         return config
 
 
+# TODO this shares a lot with round, minus matches and qualifier
+# so find some way to consolidate that
 class Qualifier:
     def __init__(
         self,

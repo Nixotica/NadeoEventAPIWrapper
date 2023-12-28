@@ -12,6 +12,7 @@ event_api_pkg = os.path.join(
 )
 sys.path.append(str(event_api_pkg))
 
+from nadeo_event_api.api.structure.settings.script_settings import ClassicScriptSettings
 from nadeo_event_api.api.structure.round.qualifier import Qualifier, QualifierConfig
 from nadeo_event_api.api.structure.event import Event
 from nadeo_event_api.api.club.campaign import Campaign
@@ -23,18 +24,17 @@ from nadeo_event_api.api.structure.round.match_spot import (
     QualificationMatchSpot,
 )
 from nadeo_event_api.api.structure.round.round import Round, RoundConfig
-from nadeo_event_api.api.structure.settings import ScriptSettings
 from nadeo_event_api.constants import CLUB_AUTO_EVENTS_STAGING
 
 
 def get_round_config(
-        map_pool: List[Map],
+    map_pool: List[Map],
 ) -> RoundConfig:
     return RoundConfig(
         map_pool=map_pool,
         script=ScriptType.CUP_CLASSIC,
         max_players=4,
-        script_settings=ScriptSettings(
+        script_settings=ClassicScriptSettings(
             points_repartition="10,6,4,3",
             points_limit=120,
             finish_timeout=15,
@@ -59,10 +59,18 @@ def get_match_from_prev_round(
 ) -> Match:
     return Match(
         spots=[
-            MatchParticipantMatchSpot(prev_round, prev_first_seed_match, prev_first_seed_rank),
-            MatchParticipantMatchSpot(prev_round, prev_second_seed_match, prev_second_seed_rank),
-            MatchParticipantMatchSpot(prev_round, prev_third_seed_match, prev_third_seed_rank),
-            MatchParticipantMatchSpot(prev_round, prev_fourth_seed_match, prev_fourth_seed_rank),
+            MatchParticipantMatchSpot(
+                prev_round, prev_first_seed_match, prev_first_seed_rank
+            ),
+            MatchParticipantMatchSpot(
+                prev_round, prev_second_seed_match, prev_second_seed_rank
+            ),
+            MatchParticipantMatchSpot(
+                prev_round, prev_third_seed_match, prev_third_seed_rank
+            ),
+            MatchParticipantMatchSpot(
+                prev_round, prev_fourth_seed_match, prev_fourth_seed_rank
+            ),
         ]
     )
 
@@ -83,10 +91,18 @@ def get_match_with_round(
 ) -> Match:
     return Match(
         spots=[
-            MatchParticipantMatchSpot(prev_first_seed_round, prev_first_seed_match, prev_first_seed_rank),
-            MatchParticipantMatchSpot(prev_second_seed_round, prev_second_seed_match, prev_second_seed_rank),
-            MatchParticipantMatchSpot(prev_third_seed_round, prev_third_seed_match, prev_third_seed_rank),
-            MatchParticipantMatchSpot(prev_fourth_seed_round, prev_fourth_seed_match, prev_fourth_seed_rank),
+            MatchParticipantMatchSpot(
+                prev_first_seed_round, prev_first_seed_match, prev_first_seed_rank
+            ),
+            MatchParticipantMatchSpot(
+                prev_second_seed_round, prev_second_seed_match, prev_second_seed_rank
+            ),
+            MatchParticipantMatchSpot(
+                prev_third_seed_round, prev_third_seed_match, prev_third_seed_rank
+            ),
+            MatchParticipantMatchSpot(
+                prev_fourth_seed_round, prev_fourth_seed_match, prev_fourth_seed_rank
+            ),
         ]
     )
 
@@ -144,7 +160,7 @@ def get_gs_round_1(
                 map_pool=map_pool,
                 script=ScriptType.TIME_ATTACK,
             ),
-        )
+        ),
     )
 
 
@@ -283,7 +299,7 @@ def get_swiss_round_3(
 ### NOTE fill these out as appropriate each time the script is run! You shouldn't need to modify anything else! ###
 event_name = "TestPATCQuali"
 club_id = CLUB_AUTO_EVENTS_STAGING
-campaign_id = 57253 # Uses maps from a campaign
+campaign_id = 57253  # Uses maps from a campaign
 
 now = datetime.now()
 gs_r1_quali_start = now + timedelta(minutes=5)

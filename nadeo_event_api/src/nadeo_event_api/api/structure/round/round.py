@@ -9,7 +9,8 @@ from ..enums import (
     ScriptType,
 )
 from ..maps import Map
-from ..settings import PluginSettings, ScriptSettings
+from ...structure.settings.plugin_settings import ClassicPluginSettings, PluginSettings
+from ...structure.settings.script_settings import ScriptSettings, ClassicScriptSettings
 
 
 class RoundConfig:
@@ -20,8 +21,8 @@ class RoundConfig:
         max_players: int,
         max_spectators: int = 32,
         plugin: PluginType = PluginType.EMPTY,
-        script_settings: ScriptSettings = ScriptSettings(),
-        plugin_settings: PluginSettings = PluginSettings(),
+        script_settings: ScriptSettings = ClassicScriptSettings(),
+        plugin_settings: PluginSettings = ClassicPluginSettings(),
     ):
         self._map_pool = map_pool
         self._script = script

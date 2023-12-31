@@ -64,9 +64,6 @@ class TestEvent(unittest.TestCase):
             ],
         )._as_jsonable_dict()
 
-        print("expected", json.dumps(expected))
-        print("actual", json.dumps(actual))
-
         self.assertTrue(are_json_structures_equal(expected, actual))
 
     @pytest.mark.integration

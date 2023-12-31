@@ -53,9 +53,31 @@ class SpotType(Enum):
 
 class AutoStartMode(Enum):
     """
-    The atuo start mode for a round. Determines the condition for when the round starts.
+    The auto start mode for a round. Determines the condition for when the round starts.
     """
 
     DELAY = "delay"
+    """ Automatically start the match at start date + delay in seconds. """
+    DISABLED = ""
+    """ Disable auto start of match. """
+    LIGHT = "light"
+    """ The match starts automatically right away after the server starts. """
 
-    # TODO support more modes
+
+class RespawnBehavior(Enum):
+    """
+    The respawn behavior for a round. 
+    """
+
+    DEFAULT = 0
+    """ Use the default behavior of the gamemode. """
+    NORMAL = 1
+    """ Use the normal behavior like in TimeAttack. """
+    IGNORE = 2
+    """ Do nothing. """
+    GIVE_UP_FIRST_CP = 3
+    """ Give up before the first checkpoint. """
+    ALWAYS_GIVE_UP = 4
+    """ Always give up. """
+    NEVER_GIVE_UP = 5
+    """ Never give up. """

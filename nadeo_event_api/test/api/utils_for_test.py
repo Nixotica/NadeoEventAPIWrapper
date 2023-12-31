@@ -32,9 +32,4 @@ def are_json_structures_equal(json1: dict, json2: dict):
     sorted_json1 = deep_sort(json1)
     sorted_json2 = deep_sort(json2)
 
-    with open("expected.json", "w") as f:
-        json.dump(sorted_json1, f)
-    with open("actual.json", "w") as f:
-        json.dump(sorted_json2, f)
-
     return sorted_json1 == sorted_json2

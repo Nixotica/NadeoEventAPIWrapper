@@ -14,7 +14,7 @@ sys.path.append(str(event_api_pkg))
 
 from nadeo_event_api.api.structure.event import Event
 from nadeo_event_api.api.club.campaign import Campaign
-from nadeo_event_api.api.structure.enums import LeaderboardType, ScriptType
+from nadeo_event_api.api.structure.enums import AutoStartMode, LeaderboardType, ScriptType
 from nadeo_event_api.api.structure.maps import Map
 from nadeo_event_api.api.structure.round.match import Match
 from nadeo_event_api.api.structure.round.match_spot import (
@@ -63,10 +63,13 @@ def get_round(
                 number_of_winners=1,
                 warmup_duration=60,
                 match_points_limit=4,
+                cup_points_limit=4,
             ),
             plugin_settings=ClassicPluginSettings(
                 pick_ban_start_auto=True,
                 pick_ban_order="b:0,b:1,p:0,p:1,p:0,p:1,p:0,p:1,p:r",
+                auto_start_mode=AutoStartMode.DISABLED,
+                use_auto_ready=False,
             ),
         ),
     )
@@ -90,7 +93,7 @@ players = [
 ]
 
 now = datetime.utcnow()
-quarter_1_start = now + timedelta(minutes=5)
+quarter_1_start = now + timedelta(minutes=1)
 quarter_2_start = now + timedelta(hours=10)
 quarter_3_start = now + timedelta(hours=15)
 quarter_4_start = now + timedelta(hours=20)

@@ -29,10 +29,13 @@
           "maxPlayers": 64,
           "maxSpectators": 64,
           "scriptSettings": {
+            "S_ChatTime": 10,
+            "S_ForceLapsNb": -1,
+            "S_RespawnBehaviour": 0,
             "S_TimeLimit": 300,
-            "S_WarmUpNb": 1,
-            "S_WarmUpDuration": 15,
-            "S_ForceLapsNb": 0
+            "S_WarmUpDuration": 0,
+            "S_WarmUpNb": 0,
+            "S_WarmUpTimeout": -1
           }
         },
         "leaderboardType": "SUM",
@@ -62,13 +65,17 @@
         "maxPlayers": 32,
         "maxSpectators": 32,
         "scriptSettings": {
-          "S_PointsRepartition": "",
+          "S_ChatTime": 10,
+          "S_FinishTimeout": 5,
+          "S_ForceLapsNb": -1,
+          "S_NbOfWinners": 1,
           "S_PointsLimit": 100,
-          "S_FinishTimeout": -1,
+          "S_PointsRepartition": "10,6,4,3,2,1",
+          "S_RespawnBehaviour": 0,
           "S_RoundsPerMap": 5,
-          "S_NbOfWinners": 3,
-          "S_WarmUpNb": 1,
-          "S_WarmUpDuration": 120
+          "S_WarmUpDuration": 0,
+          "S_WarmUpNb": 0,
+          "S_WarmUpTimeout": -1
         }
       },
       "teamLeaderboardType": "TEAM_SCORE"

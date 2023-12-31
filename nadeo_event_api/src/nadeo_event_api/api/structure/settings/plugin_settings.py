@@ -53,3 +53,23 @@ class ClassicPluginSettings(PluginSettings):
         plugin_settings["S_UseAutoReady"] = self._use_auto_ready
         plugin_settings["S_ReadyStartRatio"] = self._ready_start_ratio
         return plugin_settings
+
+
+class QualifierPluginSettings(PluginSettings):
+    def __init__(
+        self,
+        ad_image_urls: str = "",
+        message_timer: str = "",
+        use_playlist_complete: bool = True,
+    ):
+        super().__init__(
+            ad_image_urls=ad_image_urls,
+            message_timer=message_timer,
+        )
+
+        self._use_playlist_complete = use_playlist_complete
+        
+    def as_jsonable_dict(self) -> dict:
+        plugin_settings = super().as_jsonable_dict()
+        plugin_settings["S_UsePlayListComplete"] = self._use_playlist_complete
+        return plugin_settings

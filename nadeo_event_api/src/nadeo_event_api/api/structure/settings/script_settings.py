@@ -520,6 +520,7 @@ class CupSpecialScriptSettings(ScriptSettings):
 
         :param finish_timeout: Time to finish the round in seconds after the winner. Use -1 to base on AT (5 sec + AT / 6). Default 5.
         :param number_of_winners: Number of winners in the match. Default 1. 
+        :param points_limit: Limit number of points to win. Only applies to CupClassic Default 100. 
         :param points_repartition: Point repartition from first to last. Default 10,6,4,3,2,1.
         :param rounds_per_map: Number of rounds to play on one map before going to the next. -1 or 0: unlimited. Default 5.
 
@@ -540,6 +541,7 @@ class CupSpecialScriptSettings(ScriptSettings):
 
         self._finish_timeout = finish_timeout
         self._number_of_winners = number_of_winners
+        self._points_limit = points_limit
         self._points_repartition = points_repartition
         self._rounds_per_map = rounds_per_map
 

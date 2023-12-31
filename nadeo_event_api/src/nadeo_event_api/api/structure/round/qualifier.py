@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import List
 
-from ...structure.settings.plugin_settings import PluginSettings
+from ...structure.settings.plugin_settings import PluginSettings, QualifierPluginSettings
 from ...structure.settings.script_settings import (
     ScriptSettings,
     TimeAttackScriptSettings,
@@ -15,7 +15,6 @@ from ...structure.enums import (
 )
 
 
-# TODO this is basically just TA qualifier, and we can move it to just a normal RoundConfig I'm pretty sure
 class QualifierConfig:
     def __init__(
         self,
@@ -25,7 +24,7 @@ class QualifierConfig:
         max_spectators: int = 64,
         plugin: PluginType = PluginType.EMPTY,
         script_settings: ScriptSettings = TimeAttackScriptSettings(),
-        plugin_settings: PluginSettings = PluginSettings(),
+        plugin_settings: PluginSettings = QualifierPluginSettings(),
     ):
         self._map_pool = map_pool
         self._script = script

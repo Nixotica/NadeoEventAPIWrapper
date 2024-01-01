@@ -24,7 +24,8 @@
           "plugin": "",
           "pluginSettings": {
             "S_AdImageUrls": "",
-            "S_MessageTimer": ""
+            "S_MessageTimer": "",
+            "S_UsePlayListComplete": true
           },
           "maxPlayers": 64,
           "maxSpectators": 64,

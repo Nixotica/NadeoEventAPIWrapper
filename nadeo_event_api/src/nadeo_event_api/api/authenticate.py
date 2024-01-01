@@ -22,6 +22,7 @@ class UbiTokenManager:
         and returns an access token.
 
         :param service: Audience (e.g. "NadeoClubServices", "NadeoLiveServices")
+        :param authorization: Override authorization (Basic <user:pass> base 64) if not defined in environment. 
         :return: Access token
         """
         auth = os.getenv(UBI_AUTH) if not authorization else authorization
@@ -39,8 +40,12 @@ class UbiTokenManager:
             "Authorization": f"ubi_v1 t={ticket}",
         }
         body = {"audience": service.value}
-        result = requests.post(NADEO_AUTH_URL, headers=headers, json=body).json()
-        return result["accessToken"]
+        auth = requests.post(NADEO_AUTH_URL, headers=headers, json=body).json()["accessToken"]
+        if service == NadeoService.LIVE:
+            self._nadeo_live_token = auth
+        elif service == NadeoService.CLUB:
+            self._nadeo_club_token = auth
+        return auth
 
     @property
     def nadeo_live_token(self) -> str:

@@ -152,8 +152,20 @@ class Event:
         if len(self._name) > 16:
             print("Event name is probably too long and will break.")
             return False
+        
+        for round_idx in range(len(self._rounds)):
+            if not self._rounds[round_idx].valid():
+                print(f"Round {round_idx} is invalid.")
+                return False
+            if round_idx > 0:
+                if self._rounds[round_idx - 1]._end_date >= self._rounds[round_idx]._start_date:
+                    print(f"Round {round_idx - 1} must end before the next begins.")
+                    return False
+                if self._rounds[round_idx]._qualifier is not None:
+                    print(f"Round {round_idx} has a qualifier, but is not the first.")
+                    return False
 
-        # TODO check that all rounds, qualifiers, matches, etc are formed correctly (+ maps are real)
+        # TODO check that maps are real
 
         # TODO check that matches requiring outcomes from previous rounds have ends before this match starts
 

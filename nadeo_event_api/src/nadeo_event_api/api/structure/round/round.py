@@ -84,3 +84,20 @@ class Round:
         )
         round["teamLeaderboardType"] = self._team_leaderboard_type
         return round
+
+    def valid(self) -> bool:
+        """
+        Ensures that the round is valid.
+
+        :returns: True if valid, False otherwise.
+        """
+        if self._qualifier is not None:
+            if not self._qualifier.valid():
+                print("Qualifier is invalid.")
+                return False
+        
+        if self._end_date <= self._start_date:
+            print("Round end date must be after start date.")
+            return False
+            
+        return True

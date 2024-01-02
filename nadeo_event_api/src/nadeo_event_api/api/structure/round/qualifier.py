@@ -78,3 +78,16 @@ class Qualifier:
         qualifier["config"]["name"] = self._name
         qualifier["isQualification"] = True
         return qualifier
+
+    def valid(self) -> bool:
+        """
+        Ensures that qualifier is valid.
+
+        :returns: True if valid, False otherwise.
+        """
+        
+        if self._end_date <= self._start_date:
+            print("Qualifier end date must be after start date.")
+            return False
+        
+        return True

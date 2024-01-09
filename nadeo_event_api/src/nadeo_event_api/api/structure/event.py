@@ -1,9 +1,12 @@
 from datetime import datetime
 from typing import List
 import requests
+
+from nadeo_event_api.api.structure.enums import ParticipantType
 from .round.spot_structure import SpotStructure
 from ...constants import (
     ADD_PARTICIPANT_URL_FMT,
+    ADD_TEAM_URL_FMT,
     CREATE_COMP_URL,
     DELETE_COMP_URL_FMT,
     NADEO_DATE_FMT,
@@ -23,6 +26,7 @@ class Event:
         description: str = None,
         registration_start_date: datetime = None,
         registration_end_date: datetime = None,
+        participant_type: ParticipantType = ParticipantType.PLAYER,
     ):
         self._name = name
         self._club_id = club_id
@@ -30,6 +34,7 @@ class Event:
         self._description = description
         self._registration_start_date = registration_start_date
         self._registration_end_date = registration_end_date
+        self._participant_type = participant_type
 
         self._registered_id = None
         """ The ID this event is registered under in Nadeo's database. None if not registered. """
@@ -75,11 +80,32 @@ class Event:
         if not self._registered_id:
             print("Could not add participant to event since it hasn't been posted.")
             return
+        if self._participant_type != ParticipantType.PLAYER:
+            print("Could not add participant since this event is not type PLAYER")
+            return
         token = UbiTokenManager().nadeo_club_token
         requests.post(
             url=ADD_PARTICIPANT_URL_FMT.format(self._registered_id),
             headers={"Authorization": "nadeo_v1 t=" + token},
             json={"participant": player_uuid, "seed": seed},
+        )
+
+    def add_team(self, name: str, members: List[str], seed: int) -> None:
+        """
+        Adds a team to the event.
+        """
+        if not self._registered_id:
+            print("Could not add participant to event since it hasn't been posted.")
+            return
+        if self._participant_type != ParticipantType.TEAM:
+            print("Could not add team since this event is not type TEAM")
+            return
+        token = UbiTokenManager().nadeo_club_token
+        members = [{"member": member} for member in members]
+        requests.post(
+            url=ADD_TEAM_URL_FMT.format(self._registered_id),
+            headers={"Authorization": "nadeo_v1 t=" + token},
+            json={"id": name, "name": name, "seed": seed, "members": members}
         )
 
     @staticmethod
@@ -126,7 +152,7 @@ class Event:
         event["startDate"] = ""
         event["maxPlayers"] = 10000
         event["allowedZone"] = ""
-        event["participantType"] = "PLAYER"
+        event["participantType"] = self._participant_type.value
         return event
 
     def valid(self) -> bool:

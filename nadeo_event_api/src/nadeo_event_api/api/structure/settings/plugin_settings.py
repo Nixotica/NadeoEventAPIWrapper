@@ -73,3 +73,37 @@ class QualifierPluginSettings(PluginSettings):
         plugin_settings = super().as_jsonable_dict()
         plugin_settings["S_UsePlayListComplete"] = self._use_playlist_complete
         return plugin_settings
+    
+
+class TMWTPluginSettings(ClassicPluginSettings):
+    def __init__(
+        self,
+        ad_image_urls="",
+        message_timer="",
+        auto_start_mode: AutoStartMode = AutoStartMode.DELAY,
+        auto_start_delay: int = 600,
+        pick_ban_start_auto: bool = True,
+        pick_ban_order: str = "b:0,b:1,p:0,p:1,p:0,p:1,p:0,p:1,p:r",
+        use_auto_ready: bool = True,
+
+        ready_minimum_team_size: int = 2,
+    ):
+        super().__init__(
+            ad_image_urls=ad_image_urls,
+            message_timer=message_timer,
+            auto_start_mode=auto_start_mode,
+            auto_start_delay=auto_start_delay,
+            pick_ban_start_auto=pick_ban_start_auto,
+            pick_ban_order=pick_ban_order,
+            use_auto_ready=use_auto_ready
+        )
+
+        self._ready_minimum_team_size = ready_minimum_team_size
+        # This should ALWAYS be true according to Randomize else it breaks
+        self._pick_ban_use_gamepad_version = True
+
+    def as_jsonable_dict(self) -> dict:
+        plugin_settings = super().as_jsonable_dict()
+        plugin_settings["S_ReadyMinimumTeamSize"] = self._ready_minimum_team_size
+        plugin_settings["S_PickBanUseGamepadVersion"] = self._pick_ban_use_gamepad_version
+        return plugin_settings

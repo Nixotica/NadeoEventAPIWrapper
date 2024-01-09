@@ -13,6 +13,15 @@ class LeaderboardType(Enum):
     # TODO support more leaderboard types
 
 
+class ParticipantType(Enum):
+    """
+    The participant type for an event.
+    """
+
+    PLAYER = "PLAYER"
+    TEAM = "TEAM"
+
+
 class ScriptType(Enum):
     """
     The script type for a round. Determines the gamemode which will be played.
@@ -27,6 +36,8 @@ class ScriptType(Enum):
     """ First player to win X maps wins the match. """
     CUP_SHORT = "TrackMania/Legacy/TM_CupShort_Online.Script.txt"
     """ First player to win the map wins the match. """
+    TMWT_TEAMS = "TrackMania/TM_TMWC2023_Online.Script.txt"
+    """ 2v2 teams, first team to 10 points wins the map, first to X maps wins the match. """
 
     # TODO support more script types
 
@@ -48,6 +59,7 @@ class SpotType(Enum):
     QUALIFICATION = "round_challenge_participant"
     SEED = "competition_participant"
     COMPETITION = "competition_leaderboard"
+    TEAM = "competition_team"
     MATCH = "match_participant"
 
 

@@ -57,6 +57,21 @@ class CompetitionMatchSpot(MatchSpot):
         spot["spotType"] = self._spot_type.value
         spot["rank"] = self._rank
         return spot
+    
+
+class TeamMatchSpot(MatchSpot):
+    def __init__(
+        self,
+        seed: int,
+    ):
+        super().__init__(SpotType.TEAM)
+        self._seed = seed
+
+    def as_jsonable_dict(self) -> dict:
+        spot = {}
+        spot["spotType"] = self._spot_type.value
+        spot["seed"] = self._seed
+        return spot
 
 
 class MatchParticipantMatchSpot(MatchSpot):

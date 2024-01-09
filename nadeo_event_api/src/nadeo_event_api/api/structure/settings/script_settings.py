@@ -3,7 +3,6 @@ from abc import ABC
 from ...structure.enums import RespawnBehavior
 
 
-# TODO add all these settings https://wiki.trackmania.io/en/dedicated-server/Usage/OfficialGameModesSettings
 class ScriptSettings(ABC):
     def __init__(
         self,
@@ -563,4 +562,49 @@ class CupSpecialScriptSettings(ScriptSettings):
         script_settings["S_KOCheckpointNb"] = self._ko_checkpoint_number
         script_settings["S_EnableAmbientSound"] = self._enable_ambient_sound
         script_settings["S_HideScoresHeader"] = self._hide_scores_header
+        return script_settings
+
+class TMWTScriptSettings(ScriptSettings):
+    def __init__(
+        self,
+        chat_time: int = 10,
+        force_laps_number: int = -1,
+        respawn_behavior: RespawnBehavior = RespawnBehavior.DEFAULT,
+        warmup_duration: int = 0,
+        warmup_number: int = 0,
+        warmup_timeout: int = -1,
+
+        crash_detection_threshold: int = 1000,
+        match_points_limit: int = 2,
+    ):
+        """
+        Declares the list of script settings to use in a round. 
+
+        :param chat_time: Chat time at the end of a map or match. Default 10. 
+        :param force_laps_number: Number of laps per round. -1: Use laps from map settings. 0: Independent laps (TimeAttack). 1+: Number of laps. Default is from laps map settings. 
+        :param respawn_behavior: Respawn behavior. Default is standard respawn behavior for the chosen gamemode. 
+        :param warmup_duration: Time in seconds of the warmup. 0: Time based on the AT (5 sec + AT on 1 lap + (AT on 1 lap / 6)). -1: Only one round attempt (give up ends WU for player). Default 0.
+        :param warmup_number: Number of warmup rounds. Default 0. 
+        :param warmup_timeout: Time to finish in seconds after the winners, equivalent of finish_timeout but for warmup, only if warmup_duration is -1. -1: Time based on AT (5 sec + AT / 6). Default -1.  
+        
+        :param crash_detection_threshold: Time in milliseconds for a round to count as a crash for a player from first place. Default 1000.
+        :param match_points_limit: How many map wins are needed to win a match. Default 2. 
+        """
+
+        super().__init__(
+            chat_time=chat_time,
+            force_laps_number=force_laps_number,
+            respawn_behavior=respawn_behavior,
+            warmup_duration=warmup_duration,
+            warmup_number=warmup_number,
+            warmup_timeout=warmup_timeout
+        )
+
+        self._crash_detection_threshold = crash_detection_threshold
+        self._match_points_limit = match_points_limit
+
+    def as_jsonable_dict(self) -> dict:
+        script_settings = super().as_jsonable_dict()
+        script_settings["S_CrashDetectionThreshold"] = self._crash_detection_threshold
+        script_settings["S_MatchPointsLimit"] = self._match_points_limit
         return script_settings

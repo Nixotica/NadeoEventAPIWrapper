@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 import sys
 from typing import List
+from nadeo_event_api.api.structure.settings.plugin_settings import QualifierPluginSettings
 
 # NOTE we do this for now since the api package is still WIP, will separate this into a different
 # repo which consumes that package eventually
@@ -12,7 +13,7 @@ event_api_pkg = os.path.join(
 )
 sys.path.append(str(event_api_pkg))
 
-from nadeo_event_api.api.structure.settings.script_settings import ClassicScriptSettings
+from nadeo_event_api.api.structure.settings.script_settings import CupSpecialScriptSettings, TimeAttackScriptSettings
 from nadeo_event_api.api.structure.round.qualifier import Qualifier, QualifierConfig
 from nadeo_event_api.api.structure.event import Event
 from nadeo_event_api.api.club.campaign import Campaign
@@ -34,7 +35,7 @@ def get_round_config(
         map_pool=map_pool,
         script=ScriptType.CUP_CLASSIC,
         max_players=4,
-        script_settings=ClassicScriptSettings(
+        script_settings=CupSpecialScriptSettings(
             points_repartition="10,6,4,3",
             points_limit=120,
             finish_timeout=15,
@@ -154,11 +155,19 @@ def get_gs_round_1(
         qualifier=Qualifier(
             name="Seeding Qualifier",
             start_date=start_date,
-            end_date=start_date + timedelta(minutes=30),
+            end_date=start_date + timedelta(minutes=40),
             leaderboard_type=LeaderboardType.SUMSCORE,
             config=QualifierConfig(
                 map_pool=map_pool,
                 script=ScriptType.TIME_ATTACK,
+                plugin_settings=QualifierPluginSettings(
+                    use_playlist_complete=True,
+                ),
+                script_settings=TimeAttackScriptSettings(
+                    warmup_number=1,
+                    warmup_duration=20,
+                    time_limit=360,
+                )
             ),
         ),
     )
@@ -301,8 +310,9 @@ event_name = "TestPATCQuali"
 club_id = CLUB_AUTO_EVENTS_STAGING
 campaign_id = 57253  # Uses maps from a campaign
 
-now = datetime.now()
-gs_r1_quali_start = now + timedelta(minutes=5)
+now = datetime.utcnow()
+registration_start = now + timedelta(seconds=10)
+gs_r1_quali_start = now + timedelta(minutes=2)
 gs_r2_start = now + timedelta(hours=2)
 gs_r3_start = now + timedelta(hours=4)
 gs_r4_start = now + timedelta(hours=6)
@@ -327,6 +337,8 @@ swiss_r3 = get_swiss_round_3(swiss_r3_start, map_pool)
 event = Event(
     name=event_name,
     club_id=club_id,
+    registration_start_date=registration_start,
+    registration_end_date=gs_r1_quali_start,
     rounds=[gs_r1, gs_r2, gs_r3, gs_r4, swiss_r1, swiss_r2, swiss_r3],
 )
 event.post()

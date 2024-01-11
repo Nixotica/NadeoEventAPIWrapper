@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-import json
 import os
 from pathlib import Path
 import sys
@@ -12,9 +11,10 @@ event_api_pkg = os.path.join(
 )
 sys.path.append(str(event_api_pkg))
 
-from nadeo_event_api.api.structure.settings.plugin_settings import ClassicPluginSettings
+from nadeo_event_api.api.structure.settings.plugin_settings import ClassicPluginSettings, QualifierPluginSettings
 from nadeo_event_api.api.structure.settings.script_settings import (
     CupSpecialScriptSettings,
+    TimeAttackScriptSettings,
 )
 from nadeo_event_api.api.structure.round.qualifier import Qualifier, QualifierConfig
 from nadeo_event_api.api.structure.event import Event
@@ -165,6 +165,14 @@ def get_gs_round_1(
             config=QualifierConfig(
                 map_pool=map_pool,
                 script=ScriptType.TIME_ATTACK,
+                plugin_settings=QualifierPluginSettings(
+                    use_playlist_complete=True,
+                ),
+                script_settings=TimeAttackScriptSettings(
+                    warmup_number=1,
+                    warmup_duration=20,
+                    time_limit=300,
+                )
             ),
         ),
     )
@@ -307,8 +315,9 @@ event_name = "TestPASLQuali"
 club_id = CLUB_AUTO_EVENTS_STAGING
 campaign_id = 57253  # Uses maps from a campaign
 
-now = datetime.now()
-gs_r1_quali_start = now + timedelta(minutes=5)
+now = datetime.utcnow()
+registration_start = now + timedelta(minutes=1)
+gs_r1_quali_start = now + timedelta(minutes=2)
 gs_r2_start = now + timedelta(hours=2)
 gs_r3_start = now + timedelta(hours=4)
 gs_r4_start = now + timedelta(hours=6)
@@ -333,6 +342,8 @@ swiss_r3 = get_swiss_round_3(swiss_r3_start, map_pool)
 event = Event(
     name=event_name,
     club_id=club_id,
+    registration_start_date=registration_start,
+    registration_end_date=gs_r1_quali_start,
     rounds=[gs_r1, gs_r2, gs_r3, gs_r4, swiss_r1, swiss_r2, swiss_r3],
 )
 event.post()

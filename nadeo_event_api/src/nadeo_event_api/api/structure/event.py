@@ -174,6 +174,9 @@ class Event:
         elif self._registration_start_date or self._registration_end_date:
             print("Event registration start and end must be specified together.")
             return False
+        else:
+            if self._rounds[0]._qualifier is not None:
+                print("Event with qualifier must have a registration period, else it won't start the match automatically. You've been warned!")
 
         if len(self._name) > 16:
             print("Event name is probably too long and will break.")

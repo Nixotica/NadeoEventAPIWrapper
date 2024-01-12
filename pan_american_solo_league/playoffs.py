@@ -67,7 +67,7 @@ def get_round(
             ),
             plugin_settings=ClassicPluginSettings(
                 pick_ban_start_auto=True,
-                pick_ban_order="b:0,b:1,p:0,p:1,p:0,p:1,p:0,p:1,p:r",
+                pick_ban_order="b:0,b:1,p:0,p:1,p:0,p:1,p:0,p:1,p:0,p:1,p:r",
                 auto_start_mode=AutoStartMode.DISABLED,
                 use_auto_ready=False,
             ),

@@ -44,10 +44,11 @@ def get_round_config(
             warmup_duration=60,
             match_points_limit=2,
             cup_points_limit=4,
+            finish_timeout=5,
         ),
         plugin_settings=ClassicPluginSettings(
             pick_ban_start_auto=True,
-            pick_ban_order="b:0,p:0,p:1,p:2,p:3,b:3,p:0,p:1,p:2",
+            pick_ban_order="b:0,b:1,p:0,p:1,p:2,p:3,b:3,b:4,p:0,p:1,p:r",
         ),
     )
 
@@ -160,7 +161,7 @@ def get_gs_round_1(
         qualifier=Qualifier(
             name="Seeding Qualifier",
             start_date=start_date,
-            end_date=start_date + timedelta(minutes=30),
+            end_date=start_date + timedelta(minutes=len(map_pool) * 6),
             leaderboard_type=LeaderboardType.SUMSCORE,
             config=QualifierConfig(
                 map_pool=map_pool,

@@ -14,16 +14,16 @@ sys.path.append(str(event_api_pkg))
 
 from nadeo_event_api.api.structure.event import Event
 from nadeo_event_api.api.club.campaign import Campaign
-from nadeo_event_api.api.structure.enums import LeaderboardType, ScriptType
+from nadeo_event_api.api.structure.enums import AutoStartMode, LeaderboardType, ScriptType
 from nadeo_event_api.api.structure.maps import Map
 from nadeo_event_api.api.structure.round.match_spot import SeedMatchSpot
 from nadeo_event_api.api.structure.round.round import Round, RoundConfig
 from nadeo_event_api.api.structure.settings.script_settings import (
     CupSpecialScriptSettings,
 )
-from nadeo_event_api.api.structure.settings.plugin_settings import ClassicPluginSettings
 from nadeo_event_api.constants import CLUB_AUTO_EVENTS_STAGING
 from nadeo_event_api.api.structure.round.match import Match
+from nadeo_event_api.api.structure.settings.plugin_settings import ClassicPluginSettings
 
 
 def get_player_combinations(players: List[str]) -> List[List[Dict[int, str]]]:
@@ -68,37 +68,42 @@ def get_player_combinations(players: List[str]) -> List[List[Dict[int, str]]]:
     ]
 
 
-def get_round(
+def get_rounds(
     start_date: datetime,
     round_name: str,
     matches: List[Dict[int, str]],
     map_pool: List[Map],
 ) -> Round:
-    return Round(
-        name=round_name,
-        start_date=start_date,
-        end_date=start_date + timedelta(hours=1),
-        matches=[
-            Match(spots=[SeedMatchSpot(seed) for seed in match.keys()])
-            for match in matches
-        ],
-        leaderboard_type=LeaderboardType.BRACKET,
-        config=RoundConfig(
-            map_pool=map_pool,
-            script=ScriptType.CUP_LONG,
-            max_players=4,
-            script_settings=CupSpecialScriptSettings(
-                points_repartition="1,0,0,0",
-                ko_checkpoint_number=0,
-                number_of_winners=3,
-                warmup_duration=60,
-            ),
-            plugin_settings=ClassicPluginSettings(
-                pick_ban_start_auto=True,
-                pick_ban_order="b:0,p:0,p:1,p:2,p:3,b:3,p:0,p:1,p:2",
-            ),
-        ),
-    )
+    rounds = []
+    for i in range(len(map_pool)):
+        rounds.append(
+            Round(
+                name=f"{round_name} Map {i+1}",
+                start_date=start_date + timedelta(minutes=i*20),
+                end_date=start_date + timedelta(minutes=i*20 + 15), # Should be roughly 15 minutes per map
+                matches=[
+                    Match(spots=[SeedMatchSpot(seed) for seed in match.keys()])
+                    for match in matches
+                ],
+                leaderboard_type=LeaderboardType.BRACKET,
+                config=RoundConfig(
+                    map_pool=[map_pool[i]],
+                    script=ScriptType.CUP_SHORT,
+                    max_players=4,
+                    script_settings=CupSpecialScriptSettings(
+                        points_repartition="1,0,0,0",
+                        ko_checkpoint_number=0,
+                        number_of_winners=1,
+                        warmup_duration=15,
+                        cup_points_limit=2, # +1 for finalist
+                    ),
+                    plugin_settings=ClassicPluginSettings(
+                        auto_start_mode=AutoStartMode.DISABLED,
+                    )
+                ),
+            )
+        )
+    return rounds
 
 
 ### NOTE fill these out as appropriate each time the script is run! You shouldn't need to modify anything else! ###
@@ -141,17 +146,22 @@ map_pool = [Map(campaign_map._uuid) for campaign_map in campaign_playlist]
 # Get the rounds (5) and matches (4) of players (16 / 4)
 rounds_and_matches = get_player_combinations(players)
 
-round_1 = get_round(step_1_start, "Step 1", rounds_and_matches[0], map_pool)
-round_2 = get_round(step_2_start, "Step 2", rounds_and_matches[1], map_pool)
-round_3 = get_round(step_3_start, "Step 3", rounds_and_matches[2], map_pool)
-round_4 = get_round(step_4_start, "Step 4", rounds_and_matches[3], map_pool)
-round_5 = get_round(step_5_start, "Step 5", rounds_and_matches[4], map_pool)
+step_1 = get_rounds(step_1_start, "Step 1", rounds_and_matches[0], map_pool)
+step_2 = get_rounds(step_2_start, "Step 2", rounds_and_matches[1], map_pool)
+step_3 = get_rounds(step_3_start, "Step 3", rounds_and_matches[2], map_pool)
+step_4 = get_rounds(step_4_start, "Step 4", rounds_and_matches[3], map_pool)
+step_5 = get_rounds(step_5_start, "Step 5", rounds_and_matches[4], map_pool)
+
+all_rounds = []
+for step in [step_1, step_2, step_3, step_4, step_5]:
+    for r in range(len(step)):
+        all_rounds.append(step[r])
 
 # Create and post the event
 event = Event(
     name=event_name,
     club_id=club_id,
-    rounds=[round_1, round_2, round_3, round_4, round_5],
+    rounds=all_rounds,
 )
 event.post()
 

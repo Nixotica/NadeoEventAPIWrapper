@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with: 
+          python-version: '3.x'
+      
+      - name: Install dependencies and test
+        run: |
+          cd nadeo_event_api
+          pip install -r requirements.txt
+          export UBI_AUTH=${{secrets.UBI_AUTH}}
+          pytest
+          pytest -m integration
+
+      - name: Push to release branch
+        if: success()
+        run: |
+          git checkout -b release
+          git push origin release

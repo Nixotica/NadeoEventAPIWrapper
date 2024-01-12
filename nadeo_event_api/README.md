@@ -1,1 +1,3 @@
 This is a code package for creating events using Nadeo's event creation API. The benefits of using this tool include having your competition playable by console players and letting them handle the event logic for you. This package lets you define your event without having to worry about their difficult to understand and unfailsafed text entry.
+
+This package is consumed by https://github.com/Nixotica/AutoEvents

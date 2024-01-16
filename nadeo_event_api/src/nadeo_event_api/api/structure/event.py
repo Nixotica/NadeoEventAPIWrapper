@@ -76,12 +76,18 @@ class Event:
     def add_participant(self, player_uuid: str, seed: int) -> None:
         """
         Adds a participant to the event.
+
+        :param player_uuid: The account ID of the player (found on trackmania.io)
+        :param seed: The seed of the player for the event (starts at 1)
         """
         if not self._registered_id:
             print("Could not add participant to event since it hasn't been posted.")
             return
         if self._participant_type != ParticipantType.PLAYER:
             print("Could not add participant since this event is not type PLAYER")
+            return
+        if seed == 0:
+            print("WARNING! You tried adding a player with seed zero, they will not be part of the event. Start at 1.")
             return
         token = UbiTokenManager().nadeo_club_token
         requests.post(
@@ -93,6 +99,10 @@ class Event:
     def add_team(self, name: str, members: List[str], seed: int) -> None:
         """
         Adds a team to the event.
+
+        :param name: The name of the team
+        :param members: The list of account IDs of the players in the team (found on trackmania.io)
+        :param seed: The seed of the team for the event (starts at 1)
         """
         if not self._registered_id:
             print("Could not add participant to event since it hasn't been posted.")

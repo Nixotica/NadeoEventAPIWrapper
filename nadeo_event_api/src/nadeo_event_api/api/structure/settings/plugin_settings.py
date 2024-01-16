@@ -27,7 +27,7 @@ class ClassicPluginSettings(PluginSettings):
         message_timer="",
         auto_start_mode: AutoStartMode = AutoStartMode.DELAY,
         auto_start_delay: int = 600,
-        pick_ban_start_auto: bool = False,
+        pick_ban_start_auto: bool = True,
         pick_ban_order: str = "",
         use_auto_ready: bool = True,
     ):
@@ -43,6 +43,9 @@ class ClassicPluginSettings(PluginSettings):
         self._enable_ready_manager = True
         self._ready_start_ratio = 1
 
+        # This should ALWAYS be true according to Randomize else it breaks
+        self._pick_ban_use_gamepad_version = True
+
     def as_jsonable_dict(self) -> dict:
         plugin_settings = super().as_jsonable_dict()
         plugin_settings["S_AutoStartMode"] = self._auto_start_mode.value
@@ -52,6 +55,7 @@ class ClassicPluginSettings(PluginSettings):
         plugin_settings["S_EnableReadyManager"] = self._enable_ready_manager
         plugin_settings["S_UseAutoReady"] = self._use_auto_ready
         plugin_settings["S_ReadyStartRatio"] = self._ready_start_ratio
+        plugin_settings["S_PickBanUseGamepadVersion"] = self._pick_ban_use_gamepad_version
         return plugin_settings
 
 
@@ -99,11 +103,8 @@ class TMWTPluginSettings(ClassicPluginSettings):
         )
 
         self._ready_minimum_team_size = ready_minimum_team_size
-        # This should ALWAYS be true according to Randomize else it breaks
-        self._pick_ban_use_gamepad_version = True
 
     def as_jsonable_dict(self) -> dict:
         plugin_settings = super().as_jsonable_dict()
         plugin_settings["S_ReadyMinimumTeamSize"] = self._ready_minimum_team_size
-        plugin_settings["S_PickBanUseGamepadVersion"] = self._pick_ban_use_gamepad_version
         return plugin_settings

@@ -34,6 +34,12 @@ class SeedMatchSpot(MatchSpot):
         self,
         seed: int,
     ):
+        """
+        A match spot based on event seed. Event seed is determined at the start of a competition
+        by either a qualifier or adding participants with seed explicitly.
+
+        :param seed: The seed of the player in the event (first seed is 1).
+        """
         super().__init__(SpotType.SEED)
         self._seed = seed
 

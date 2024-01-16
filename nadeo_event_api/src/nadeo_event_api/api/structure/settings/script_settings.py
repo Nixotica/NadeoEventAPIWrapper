@@ -38,6 +38,10 @@ class ScriptSettings(ABC):
         script_settings["S_WarmUpDuration"] = self._warmup_duration
         script_settings["S_WarmUpNb"] = self._warmup_number
         script_settings["S_WarmUpTimeout"] = self._warmup_timeout
+
+        # This needs to be here if pick and bans are defined
+        script_settings["S_PickAndBan_Enable"] = True
+
         return script_settings
 
 

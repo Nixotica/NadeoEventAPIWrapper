@@ -19,7 +19,7 @@ from nadeo_event_api.api.structure.settings.script_settings import (
 from nadeo_event_api.api.structure.round.qualifier import Qualifier, QualifierConfig
 from nadeo_event_api.api.structure.event import Event
 from nadeo_event_api.api.club.campaign import Campaign
-from nadeo_event_api.api.structure.enums import LeaderboardType, ScriptType
+from nadeo_event_api.api.structure.enums import AutoStartMode, LeaderboardType, ScriptType
 from nadeo_event_api.api.structure.maps import Map
 from nadeo_event_api.api.structure.round.match import Match
 from nadeo_event_api.api.structure.round.match_spot import (
@@ -38,17 +38,20 @@ def get_round_config(
         script=ScriptType.CUP_LONG,
         max_players=4,
         script_settings=CupSpecialScriptSettings(
-            points_repartition="1,0,0,0",
-            ko_checkpoint_number=0,
-            number_of_winners=2,
+            warmup_number=1,
             warmup_duration=60,
+            points_repartition="10,5,3,0",
+            cup_points_limit=30,
             match_points_limit=2,
-            cup_points_limit=4,
-            finish_timeout=5,
+            number_of_winners=3,
+            finish_timeout=10,
         ),
         plugin_settings=ClassicPluginSettings(
+            auto_start_mode=AutoStartMode.DELAY,
+            auto_start_delay=300,
             pick_ban_start_auto=True,
-            pick_ban_order="b:0,b:1,p:0,p:1,p:2,p:3,b:3,b:4,p:0,p:1,p:r",
+            pick_ban_order="b:0,b:1,p:0,p:1,p:2,p:3,b:3,b:4,p:r,p:r",
+            use_auto_ready=True,
         ),
     )
 

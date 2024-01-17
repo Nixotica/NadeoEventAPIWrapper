@@ -27,7 +27,7 @@ class ClassicPluginSettings(PluginSettings):
         message_timer="",
         auto_start_mode: AutoStartMode = AutoStartMode.DELAY,
         auto_start_delay: int = 600,
-        pick_ban_start_auto: bool = True,
+        pick_ban_start_auto: bool = False,
         pick_ban_order: str = "",
         use_auto_ready: bool = True,
     ):

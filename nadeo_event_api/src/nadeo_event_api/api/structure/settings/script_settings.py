@@ -12,6 +12,7 @@ class ScriptSettings(ABC):
         warmup_duration: int = 0,
         warmup_number: int = 0,
         warmup_timeout: int = -1,
+        pick_ban_enable: bool = False,
     ):
         """
         Declares the list of script settings to use in a round. 
@@ -22,6 +23,7 @@ class ScriptSettings(ABC):
         :param warmup_duration: Time in seconds of the warmup. 0: Time based on the AT (5 sec + AT on 1 lap + (AT on 1 lap / 6)). -1: Only one round attempt (give up ends WU for player). Default 0.
         :param warmup_number: Number of warmup rounds. Default 0. 
         :param warmup_timeout: Time to finish in seconds after the winners, equivalent of finish_timeout but for warmup, only if warmup_duration is -1. -1: Time based on AT (5 sec + AT / 6). Default -1.  
+        :param pick_ban_enable: Enable pick and ban. Defining a pick ban order in plugin settings without this enabled will not enable it.
         """
         self._chat_time = chat_time
         self._force_laps_number = force_laps_number
@@ -29,6 +31,7 @@ class ScriptSettings(ABC):
         self._warmup_duration = warmup_duration
         self._warmup_number = warmup_number
         self._warmup_timeout = warmup_timeout
+        self._pick_ban_enable = pick_ban_enable
 
     def as_jsonable_dict(self) -> dict:
         script_settings = {}
@@ -38,9 +41,7 @@ class ScriptSettings(ABC):
         script_settings["S_WarmUpDuration"] = self._warmup_duration
         script_settings["S_WarmUpNb"] = self._warmup_number
         script_settings["S_WarmUpTimeout"] = self._warmup_timeout
-
-        # This needs to be here if pick and bans are defined
-        script_settings["S_PickAndBan_Enable"] = True
+        script_settings["S_PickAndBan_Enable"] = self._pick_ban_enable
 
         return script_settings
 
@@ -54,6 +55,7 @@ class ChampionScriptSettings(ScriptSettings):
         warmup_duration: int = 0,
         warmup_number: int = 0,
         warmup_timeout: int = -1,
+        pick_ban_enable: bool = False,
 
         best_lap_bonus_points: int = 2,
         disable_give_up: bool = False,
@@ -79,6 +81,7 @@ class ChampionScriptSettings(ScriptSettings):
         :param warmup_duration: Time in seconds of the warmup. 0: Time based on the AT (5 sec + AT on 1 lap + (AT on 1 lap / 6)). -1: Only one round attempt (give up ends WU for player). Default 0.
         :param warmup_number: Number of warmup rounds. Default 0. 
         :param warmup_timeout: Time to finish in seconds after the winners, equivalent of finish_timeout but for warmup, only if warmup_duration is -1. -1: Time based on AT (5 sec + AT / 6). Default -1.  
+        :param pick_ban_enable: Enable pick and ban. Defining a pick ban order in plugin settings without this enabled will not enable it.
 
         :param best_lap_bonus_points: Points bonus attributed to the player with the best lap. Default 2. 
         :param disable_give_up: Disable give up, overrides respawn_behavior. Default False.
@@ -101,7 +104,8 @@ class ChampionScriptSettings(ScriptSettings):
             respawn_behavior=respawn_behavior,
             warmup_duration=warmup_duration,
             warmup_number=warmup_number,
-            warmup_timeout=warmup_timeout
+            warmup_timeout=warmup_timeout,
+            pick_ban_enable=pick_ban_enable
         )
 
         self._best_lap_bonus_points = best_lap_bonus_points
@@ -147,6 +151,7 @@ class CupScriptSettings(ScriptSettings):
         warmup_duration: int = 0,
         warmup_number: int = 0,
         warmup_timeout: int = -1,
+        pick_ban_enable: bool = False,
 
         finish_timeout: int = 5,
         number_of_winners: int = 1,
@@ -163,6 +168,7 @@ class CupScriptSettings(ScriptSettings):
         :param warmup_duration: Time in seconds of the warmup. 0: Time based on the AT (5 sec + AT on 1 lap + (AT on 1 lap / 6)). -1: Only one round attempt (give up ends WU for player). Default 0.
         :param warmup_number: Number of warmup rounds. Default 0. 
         :param warmup_timeout: Time to finish in seconds after the winners, equivalent of finish_timeout but for warmup, only if warmup_duration is -1. -1: Time based on AT (5 sec + AT / 6). Default -1.
+        :param pick_ban_enable: Enable pick and ban. Defining a pick ban order in plugin settings without this enabled will not enable it.
 
         :param finish_timeout: Time to finish the round in seconds after the winner. Use -1 to base on AT (5 sec + AT / 6). Default 5.
         :param number_of_winners: Number of winners in the match. Default 1. 
@@ -176,7 +182,8 @@ class CupScriptSettings(ScriptSettings):
             respawn_behavior=respawn_behavior,
             warmup_duration=warmup_duration,
             warmup_number=warmup_number,
-            warmup_timeout=warmup_timeout
+            warmup_timeout=warmup_timeout,
+            pick_ban_enable=pick_ban_enable
         )
 
         self._finish_timeout = finish_timeout
@@ -204,6 +211,7 @@ class KnockoutScriptSettings(ScriptSettings):
         warmup_duration: int = 0,
         warmup_number: int = 0,
         warmup_timeout: int = -1,
+        pick_ban_enable: bool = False,
 
         eliminated_players_number_ranks: str = "4,16,16",
         finish_timeout: int = 5,
@@ -220,6 +228,7 @@ class KnockoutScriptSettings(ScriptSettings):
         :param warmup_duration: Time in seconds of the warmup. 0: Time based on the AT (5 sec + AT on 1 lap + (AT on 1 lap / 6)). -1: Only one round attempt (give up ends WU for player). Default 0.
         :param warmup_number: Number of warmup rounds. Default 0. 
         :param warmup_timeout: Time to finish in seconds after the winners, equivalent of finish_timeout but for warmup, only if warmup_duration is -1. -1: Time based on AT (5 sec + AT / 6). Default -1.  
+        :param pick_ban_enable: Enable pick and ban. Defining a pick ban order in plugin settings without this enabled will not enable it.
 
         :param eliminated_players_number_ranks: Rank at which one more player is eliminated per round. COTD uses 8,16,16. Default 4,16,16. 
         :param finish_timeout: Time to finish the round in seconds after the winner. Use -1 to base on AT (5 sec + AT / 6). Default 5.
@@ -233,7 +242,8 @@ class KnockoutScriptSettings(ScriptSettings):
             respawn_behavior=respawn_behavior,
             warmup_duration=warmup_duration,
             warmup_number=warmup_number,
-            warmup_timeout=warmup_timeout
+            warmup_timeout=warmup_timeout,
+            pick_ban_enable=pick_ban_enable
         )
 
         self._eliminated_players_number_ranks = eliminated_players_number_ranks
@@ -261,6 +271,7 @@ class LapsScriptSettings(ScriptSettings):
         warmup_duration: int = 0,
         warmup_number: int = 0,
         warmup_timeout: int = -1,
+        pick_ban_enable: bool = False,
 
         disable_giveup: bool = False,
         finish_timeout: int = 5,
@@ -275,6 +286,7 @@ class LapsScriptSettings(ScriptSettings):
         :param warmup_duration: Time in seconds of the warmup. 0: Time based on the AT (5 sec + AT on 1 lap + (AT on 1 lap / 6)). -1: Only one round attempt (give up ends WU for player). Default 0.
         :param warmup_number: Number of warmup rounds. Default 0. 
         :param warmup_timeout: Time to finish in seconds after the winners, equivalent of finish_timeout but for warmup, only if warmup_duration is -1. -1: Time based on AT (5 sec + AT / 6). Default -1.  
+        :param pick_ban_enable: Enable pick and ban. Defining a pick ban order in plugin settings without this enabled will not enable it.
 
         :param disable_give_up: Disable give up, overrides respawn_behavior. Default False.
         :param finish_timeout: Time to finish the round in seconds after the winner. Use -1 to base on AT (5 sec + AT / 6). Default 5.
@@ -286,7 +298,8 @@ class LapsScriptSettings(ScriptSettings):
             respawn_behavior=respawn_behavior,
             warmup_duration=warmup_duration,
             warmup_number=warmup_number,
-            warmup_timeout=warmup_timeout
+            warmup_timeout=warmup_timeout,
+            pick_ban_enable=pick_ban_enable
         )
 
         self._disable_giveup = disable_giveup
@@ -310,6 +323,7 @@ class TeamsScriptSettings(ScriptSettings):
         warmup_duration: int = 0,
         warmup_number: int = 0,
         warmup_timeout: int = -1,
+        pick_ban_enable: bool = False,
 
         cumulate_points: bool = False,
         finish_timeout: int = 5,
@@ -332,6 +346,7 @@ class TeamsScriptSettings(ScriptSettings):
         :param warmup_duration: Time in seconds of the warmup. 0: Time based on the AT (5 sec + AT on 1 lap + (AT on 1 lap / 6)). -1: Only one round attempt (give up ends WU for player). Default 0.
         :param warmup_number: Number of warmup rounds. Default 0. 
         :param warmup_timeout: Time to finish in seconds after the winners, equivalent of finish_timeout but for warmup, only if warmup_duration is -1. -1: Time based on AT (5 sec + AT / 6). Default -1. 
+        :param pick_ban_enable: Enable pick and ban. Defining a pick ban order in plugin settings without this enabled will not enable it.
 
         :param cumulate_points: Cumulate points earned by players to their team score. Default False.
         :param finish_timeout: Time to finish the round in seconds after the winner. Use -1 to base on AT (5 sec + AT / 6). Default 5.
@@ -351,7 +366,8 @@ class TeamsScriptSettings(ScriptSettings):
             respawn_behavior=respawn_behavior,
             warmup_duration=warmup_duration,
             warmup_number=warmup_number,
-            warmup_timeout=warmup_timeout
+            warmup_timeout=warmup_timeout,
+            pick_ban_enable=pick_ban_enable
         )
 
         self._cumulate_points = cumulate_points
@@ -394,6 +410,7 @@ class TimeAttackScriptSettings(ScriptSettings):
         warmup_duration: int = 0,
         warmup_number: int = 0,
         warmup_timeout: int = -1,
+        pick_ban_enable: bool = False,
 
         time_limit: int = 300,
     ):
@@ -406,6 +423,7 @@ class TimeAttackScriptSettings(ScriptSettings):
         :param warmup_duration: Time in seconds of the warmup. 0: Time based on the AT (5 sec + AT on 1 lap + (AT on 1 lap / 6)). -1: Only one round attempt (give up ends WU for player). Default 0.
         :param warmup_number: Number of warmup rounds. Default 0. 
         :param warmup_timeout: Time to finish in seconds after the winners, equivalent of finish_timeout but for warmup, only if warmup_duration is -1. -1: Time based on AT (5 sec + AT / 6). Default -1.  
+        :param pick_ban_enable: Enable pick and ban. Defining a pick ban order in plugin settings without this enabled will not enable it.
 
         :param time_limit: Time limit before going to the next map. 0 or -1 for unlimited time. Default 300.
         """
@@ -415,7 +433,8 @@ class TimeAttackScriptSettings(ScriptSettings):
             respawn_behavior=respawn_behavior,
             warmup_duration=warmup_duration,
             warmup_number=warmup_number,
-            warmup_timeout=warmup_timeout
+            warmup_timeout=warmup_timeout,
+            pick_ban_enable=pick_ban_enable
         )
 
         self._time_limit = time_limit
@@ -435,6 +454,7 @@ class RoundsScriptSettings(ScriptSettings):
         warmup_duration: int = 0,
         warmup_number: int = 0,
         warmup_timeout: int = -1,
+        pick_ban_enable: bool = False,
 
         finish_timeout: int = 5,
         maps_per_match: int = None,
@@ -452,6 +472,7 @@ class RoundsScriptSettings(ScriptSettings):
         :param warmup_duration: Time in seconds of the warmup. 0: Time based on the AT (5 sec + AT on 1 lap + (AT on 1 lap / 6)). -1: Only one round attempt (give up ends WU for player). Default 0.
         :param warmup_number: Number of warmup rounds. Default 0. 
         :param warmup_timeout: Time to finish in seconds after the winners, equivalent of finish_timeout but for warmup, only if warmup_duration is -1. -1: Time based on AT (5 sec + AT / 6). Default -1.  
+        :param pick_ban_enable: Enable pick and ban. Defining a pick ban order in plugin settings without this enabled will not enable it.
 
         :param finish_timeout: Time to finish the round in seconds after the winner. Use -1 to base on AT (5 sec + AT / 6). Default 5.
         :param maps_per_match: Number of maps to play before finishing the match. Set 0 or -1 is equivalent to have only one map. Default None (will keep playing until other match ending condition is met).
@@ -466,7 +487,8 @@ class RoundsScriptSettings(ScriptSettings):
             respawn_behavior=respawn_behavior,
             warmup_duration=warmup_duration,
             warmup_number=warmup_number,
-            warmup_timeout=warmup_timeout
+            warmup_timeout=warmup_timeout,
+            pick_ban_enable=pick_ban_enable
         )
 
         self._finish_timeout = finish_timeout
@@ -497,6 +519,7 @@ class CupSpecialScriptSettings(ScriptSettings):
         warmup_duration: int = 0,
         warmup_number: int = 0,
         warmup_timeout: int = -1,
+        pick_ban_enable: bool = False,
 
         finish_timeout: int = 5,
         number_of_winners: int = 1,
@@ -520,6 +543,7 @@ class CupSpecialScriptSettings(ScriptSettings):
         :param warmup_duration: Time in seconds of the warmup. 0: Time based on the AT (5 sec + AT on 1 lap + (AT on 1 lap / 6)). -1: Only one round attempt (give up ends WU for player). Default 0.
         :param warmup_number: Number of warmup rounds. Default 0. 
         :param warmup_timeout: Time to finish in seconds after the winners, equivalent of finish_timeout but for warmup, only if warmup_duration is -1. -1: Time based on AT (5 sec + AT / 6). Default -1.
+        :param pick_ban_enable: Enable pick and ban. Defining a pick ban order in plugin settings without this enabled will not enable it.
 
         :param finish_timeout: Time to finish the round in seconds after the winner. Use -1 to base on AT (5 sec + AT / 6). Default 5.
         :param number_of_winners: Number of winners in the match. Default 1. 
@@ -539,7 +563,8 @@ class CupSpecialScriptSettings(ScriptSettings):
             respawn_behavior=respawn_behavior,
             warmup_duration=warmup_duration,
             warmup_number=warmup_number,
-            warmup_timeout=warmup_timeout
+            warmup_timeout=warmup_timeout,
+            pick_ban_enable=pick_ban_enable
         )
 
         self._finish_timeout = finish_timeout
@@ -577,6 +602,7 @@ class TMWTScriptSettings(ScriptSettings):
         warmup_duration: int = 0,
         warmup_number: int = 0,
         warmup_timeout: int = -1,
+        pick_ban_enable: bool = False,
 
         crash_detection_threshold: int = 1000,
         match_points_limit: int = 2,
@@ -590,6 +616,7 @@ class TMWTScriptSettings(ScriptSettings):
         :param warmup_duration: Time in seconds of the warmup. 0: Time based on the AT (5 sec + AT on 1 lap + (AT on 1 lap / 6)). -1: Only one round attempt (give up ends WU for player). Default 0.
         :param warmup_number: Number of warmup rounds. Default 0. 
         :param warmup_timeout: Time to finish in seconds after the winners, equivalent of finish_timeout but for warmup, only if warmup_duration is -1. -1: Time based on AT (5 sec + AT / 6). Default -1.  
+        :param pick_ban_enable: Enable pick and ban. Defining a pick ban order in plugin settings without this enabled will not enable it.
         
         :param crash_detection_threshold: Time in milliseconds for a round to count as a crash for a player from first place. Default 1000.
         :param match_points_limit: How many map wins are needed to win a match. Default 2. 
@@ -601,7 +628,8 @@ class TMWTScriptSettings(ScriptSettings):
             respawn_behavior=respawn_behavior,
             warmup_duration=warmup_duration,
             warmup_number=warmup_number,
-            warmup_timeout=warmup_timeout
+            warmup_timeout=warmup_timeout,
+            pick_ban_enable=pick_ban_enable
         )
 
         self._crash_detection_threshold = crash_detection_threshold

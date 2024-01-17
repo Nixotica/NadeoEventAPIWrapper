@@ -10,7 +10,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Fetch all history
+
+      - name: Set up Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -25,9 +33,10 @@ jobs:
           pytest
           pytest -m integration
 
-      - name: Push to release branch
+      - name: Merge Master into Release branch
         if: success()
         run: |
-          git fetch origin release
+          git fetch origin
           git checkout release
-          git merge --allow-unrelated-histories -X theirs master --no-edit
+          git merge --no-ff master -m "Merging changes from master into release"
+          git push origin release

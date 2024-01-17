@@ -32,6 +32,7 @@
           "scriptSettings": {
             "S_ChatTime": 10,
             "S_ForceLapsNb": -1,
+            "S_PickAndBan_Enable": false,
             "S_RespawnBehaviour": 0,
             "S_TimeLimit": 300,
             "S_WarmUpDuration": 0,
@@ -48,7 +49,7 @@
       "config": {
         "name": "round_1",
         "maps": [
-            "round_map"
+          "round_map"
         ],
         "script": "TrackMania/TM_Cup_Online.Script.txt",
         "plugin": "",
@@ -56,6 +57,7 @@
           "S_AdImageUrls": "",
           "S_AutoStartMode": "delay",
           "S_AutoStartDelay": 600,
+          "S_PickBanUseGamepadVersion": true,
           "S_PickBanStartAuto": false,
           "S_PickBanOrder": "",
           "S_EnableReadyManager": true,
@@ -70,6 +72,7 @@
           "S_FinishTimeout": 5,
           "S_ForceLapsNb": -1,
           "S_NbOfWinners": 1,
+          "S_PickAndBan_Enable": false,
           "S_PointsLimit": 100,
           "S_PointsRepartition": "10,6,4,3,2,1",
           "S_RespawnBehaviour": 0,

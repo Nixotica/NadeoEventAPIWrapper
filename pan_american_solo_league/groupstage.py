@@ -88,12 +88,13 @@ def get_round(
             script=ScriptType.CUP_LONG,
             max_players=4,
             script_settings=CupSpecialScriptSettings(
-                points_repartition="1,0,0,0",
-                ko_checkpoint_number=0,
-                number_of_winners=3,
+                warmup_number=1,
                 warmup_duration=60,
-                cup_points_limit=3, # +1 for finalist
-                match_points_limit=2, # Win 2 maps
+                points_repartition="10,5,3,0",
+                cup_points_limit=30,
+                match_points_limit=2,
+                number_of_winners=3,
+                finish_timeout=10,
             ),
             plugin_settings=ClassicPluginSettings(
                 pick_ban_start_auto=True,
@@ -168,4 +169,4 @@ event.post()
 
 # Add the players to the event
 for player_idx in range(len(players)):
-    event.add_participant(players[player_idx], player_idx)
+    event.add_participant(players[player_idx], player_idx + 1)

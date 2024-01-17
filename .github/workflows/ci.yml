@@ -16,6 +16,12 @@ jobs:
         uses: actions/setup-python@v2
         with: 
           python-version: '3.x'
+
+      - name: Fetch from release branch
+        run: |
+          git fetch origin release
+          git checkout release
+          git merge -X theirs mainline --no-edit
       
       - name: Install dependencies and test
         run: |

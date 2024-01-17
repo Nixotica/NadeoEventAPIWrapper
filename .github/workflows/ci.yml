@@ -30,4 +30,4 @@ jobs:
         run: |
           git fetch origin release
           git checkout release
-          git merge -X theirs master --no-edit
+          git merge --allow-unrelated-histories -X theirs master --no-edit

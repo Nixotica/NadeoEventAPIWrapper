@@ -4,7 +4,8 @@
 
 1. Install python 3.10+ 
 2. Set an environment variable "UBI_AUTH" with "Basic <user:pass>" where user:pass is converted to base 64
-3. From /NadeoEventAPIWrapper/ run python3 path/to/script.py
+3. Run pip install "git+https://github.com/Nixotica/NadeoEventAPIWrapper.git@release#egg=nadeo_event_api&subdirectory=nadeo_event_api"
+4. From /NadeoEventAPIWrapper/ run python3 path/to/script.py
 
 ## Development
 

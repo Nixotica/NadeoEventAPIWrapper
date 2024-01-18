@@ -14,7 +14,11 @@ sys.path.append(str(event_api_pkg))
 
 from nadeo_event_api.api.structure.event import Event
 from nadeo_event_api.api.club.campaign import Campaign
-from nadeo_event_api.api.structure.enums import AutoStartMode, LeaderboardType, ScriptType
+from nadeo_event_api.api.structure.enums import (
+    AutoStartMode,
+    LeaderboardType,
+    ScriptType,
+)
 from nadeo_event_api.api.structure.maps import Map
 from nadeo_event_api.api.structure.round.match_spot import SeedMatchSpot
 from nadeo_event_api.api.structure.round.round import Round, RoundConfig
@@ -79,8 +83,11 @@ def get_rounds(
         rounds.append(
             Round(
                 name=f"{round_name} Map {i+1}",
-                start_date=start_date + timedelta(minutes=i*20),
-                end_date=start_date + timedelta(minutes=i*20 + 15), # Should be roughly 15 minutes per map
+                start_date=start_date + timedelta(minutes=i * 20),
+                end_date=start_date
+                + timedelta(
+                    minutes=i * 20 + 15
+                ),  # Should be roughly 15 minutes per map
                 matches=[
                     Match(spots=[SeedMatchSpot(seed) for seed in match.keys()])
                     for match in matches
@@ -95,11 +102,11 @@ def get_rounds(
                         ko_checkpoint_number=0,
                         number_of_winners=1,
                         warmup_duration=15,
-                        cup_points_limit=2, # +1 for finalist
+                        cup_points_limit=2,  # +1 for finalist
                     ),
                     plugin_settings=ClassicPluginSettings(
                         auto_start_mode=AutoStartMode.DISABLED,
-                    )
+                    ),
                 ),
             )
         )

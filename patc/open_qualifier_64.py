@@ -4,7 +4,9 @@ import os
 from pathlib import Path
 import sys
 from typing import List
-from nadeo_event_api.api.structure.settings.plugin_settings import QualifierPluginSettings
+from nadeo_event_api.api.structure.settings.plugin_settings import (
+    QualifierPluginSettings,
+)
 
 # NOTE we do this for now since the api package is still WIP, will separate this into a different
 # repo which consumes that package eventually
@@ -13,7 +15,10 @@ event_api_pkg = os.path.join(
 )
 sys.path.append(str(event_api_pkg))
 
-from nadeo_event_api.api.structure.settings.script_settings import CupSpecialScriptSettings, TimeAttackScriptSettings
+from nadeo_event_api.api.structure.settings.script_settings import (
+    CupSpecialScriptSettings,
+    TimeAttackScriptSettings,
+)
 from nadeo_event_api.api.structure.round.qualifier import Qualifier, QualifierConfig
 from nadeo_event_api.api.structure.event import Event
 from nadeo_event_api.api.club.campaign import Campaign
@@ -167,7 +172,7 @@ def get_gs_round_1(
                     warmup_number=1,
                     warmup_duration=20,
                     time_limit=360,
-                )
+                ),
             ),
         ),
     )

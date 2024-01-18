@@ -14,7 +14,11 @@ sys.path.append(str(event_api_pkg))
 
 from nadeo_event_api.api.structure.event import Event
 from nadeo_event_api.api.club.campaign import Campaign
-from nadeo_event_api.api.structure.enums import AutoStartMode, LeaderboardType, ScriptType
+from nadeo_event_api.api.structure.enums import (
+    AutoStartMode,
+    LeaderboardType,
+    ScriptType,
+)
 from nadeo_event_api.api.structure.maps import Map
 from nadeo_event_api.api.structure.round.match_spot import SeedMatchSpot
 from nadeo_event_api.api.structure.round.round import Round, RoundConfig
@@ -139,11 +143,11 @@ step_1_start = datetime(
     day=2,
     hour=20,
     tzinfo=UTC,
-) # March 2 2024 @ 12:00pm Pacific
-step_2_start = step_1_start + timedelta(hours=2) # 2:00pm 
-step_3_start = step_1_start + timedelta(hours=4) # 4:00pm 
-step_4_start = step_1_start + timedelta(days=7) # March 9 2024 @ 12:00pm Pacific
-step_5_start = step_4_start + timedelta(hours=2) # 2:00pm
+)  # March 2 2024 @ 12:00pm Pacific
+step_2_start = step_1_start + timedelta(hours=2)  # 2:00pm
+step_3_start = step_1_start + timedelta(hours=4)  # 4:00pm
+step_4_start = step_1_start + timedelta(days=7)  # March 9 2024 @ 12:00pm Pacific
+step_5_start = step_4_start + timedelta(hours=2)  # 2:00pm
 ### NOTE END ###
 
 # Get the map pool

@@ -2,10 +2,12 @@ from abc import ABC
 
 from ...structure.enums import RespawnBehavior
 
+# Nadeo api documentation: https://wiki.trackmania.io/en/dedicated-server/Usage/OfficialGameModesSettings
 
-class ScriptSettings(ABC):
+# 
+class BaseScriptSettings():
     def __init__(
-        self,
+        self,         
         chat_time: int = 10,
         force_laps_number: int = -1,
         respawn_behavior: RespawnBehavior = RespawnBehavior.DEFAULT,
@@ -13,6 +15,29 @@ class ScriptSettings(ABC):
         warmup_number: int = 0,
         warmup_timeout: int = -1,
         pick_ban_enable: bool = False,
+                 ):
+        
+        self._chat_time = chat_time
+        self._force_laps_number = force_laps_number
+        self._respawn_behavior = respawn_behavior
+        self._warmup_duration = warmup_duration
+        self._warmup_number = warmup_number
+        self._warmup_timeout = warmup_timeout
+        self._pick_ban_enable = pick_ban_enable
+
+
+class ScriptSettings(ABC):
+    def __init__(
+        self,
+        
+        base_script_settings_variables: BaseScriptSettings
+        # chat_time: int = 10,
+        # force_laps_number: int = -1,
+        # respawn_behavior: RespawnBehavior = RespawnBehavior.DEFAULT,
+        # warmup_duration: int = 0,
+        # warmup_number: int = 0,
+        # warmup_timeout: int = -1,
+        # pick_ban_enable: bool = False,
     ):
         """
         Declares the list of script settings to use in a round. 
@@ -25,23 +50,25 @@ class ScriptSettings(ABC):
         :param warmup_timeout: Time to finish in seconds after the winners, equivalent of finish_timeout but for warmup, only if warmup_duration is -1. -1: Time based on AT (5 sec + AT / 6). Default -1.  
         :param pick_ban_enable: Enable pick and ban. Defining a pick ban order in plugin settings without this enabled will not enable it.
         """
-        self._chat_time = chat_time
-        self._force_laps_number = force_laps_number
-        self._respawn_behavior = respawn_behavior
-        self._warmup_duration = warmup_duration
-        self._warmup_number = warmup_number
-        self._warmup_timeout = warmup_timeout
-        self._pick_ban_enable = pick_ban_enable
+        self.base_script_settings_variables = base_script_settings_variables
+
+        # self._chat_time = base_script_settings_variables.chat_time
+        # self._force_laps_number = force_laps_number
+        # self._respawn_behavior = respawn_behavior
+        # self._warmup_duration = warmup_duration
+        # self._warmup_number = warmup_number
+        # self._warmup_timeout = warmup_timeout
+        # self._pick_ban_enable = pick_ban_enable
 
     def as_jsonable_dict(self) -> dict:
         script_settings = {}
-        script_settings["S_ChatTime"] = self._chat_time
-        script_settings["S_ForceLapsNb"] = self._force_laps_number
-        script_settings["S_RespawnBehaviour"] = self._respawn_behavior.value
-        script_settings["S_WarmUpDuration"] = self._warmup_duration
-        script_settings["S_WarmUpNb"] = self._warmup_number
-        script_settings["S_WarmUpTimeout"] = self._warmup_timeout
-        script_settings["S_PickAndBan_Enable"] = self._pick_ban_enable
+        script_settings["S_ChatTime"] = self.base_script_settings_variables._chat_time
+        script_settings["S_ForceLapsNb"] = self.base_script_settings_variables._force_laps_number
+        script_settings["S_RespawnBehaviour"] = self.base_script_settings_variables._respawn_behavior.value
+        script_settings["S_WarmUpDuration"] = self.base_script_settings_variables._warmup_duration
+        script_settings["S_WarmUpNb"] = self.base_script_settings_variables._warmup_number
+        script_settings["S_WarmUpTimeout"] = self.base_script_settings_variables._warmup_timeout
+        script_settings["S_PickAndBan_Enable"] = self.base_script_settings_variables._pick_ban_enable
 
         return script_settings
 
@@ -49,13 +76,7 @@ class ScriptSettings(ABC):
 class ChampionScriptSettings(ScriptSettings):
     def __init__(
         self,
-        chat_time: int = 10,
-        force_laps_number: int = -1,
-        respawn_behavior: RespawnBehavior = RespawnBehavior.DEFAULT,
-        warmup_duration: int = 0,
-        warmup_number: int = 0,
-        warmup_timeout: int = -1,
-        pick_ban_enable: bool = False,
+        base_script_settings_variables: BaseScriptSettings,
 
         best_lap_bonus_points: int = 2,
         disable_give_up: bool = False,
@@ -99,13 +120,7 @@ class ChampionScriptSettings(ScriptSettings):
         :param use_tie_break: Continue to play the map until the tie is broken. Default False.
         """
         super().__init__(
-            chat_time=chat_time,
-            force_laps_number=force_laps_number,
-            respawn_behavior=respawn_behavior,
-            warmup_duration=warmup_duration,
-            warmup_number=warmup_number,
-            warmup_timeout=warmup_timeout,
-            pick_ban_enable=pick_ban_enable
+        base_script_settings_variables
         )
 
         self._best_lap_bonus_points = best_lap_bonus_points
@@ -145,13 +160,7 @@ class ChampionScriptSettings(ScriptSettings):
 class CupScriptSettings(ScriptSettings):
     def __init__(
         self,
-        chat_time: int = 10,
-        force_laps_number: int = -1,
-        respawn_behavior: RespawnBehavior = RespawnBehavior.DEFAULT,
-        warmup_duration: int = 0,
-        warmup_number: int = 0,
-        warmup_timeout: int = -1,
-        pick_ban_enable: bool = False,
+        base_script_settings_variables: BaseScriptSettings,
 
         finish_timeout: int = 5,
         number_of_winners: int = 1,
@@ -177,13 +186,7 @@ class CupScriptSettings(ScriptSettings):
         :param rounds_per_map: Number of rounds to play on one map before going to the next. -1 or 0: unlimited. Default 5.
         """
         super().__init__(
-            chat_time=chat_time,
-            force_laps_number=force_laps_number,
-            respawn_behavior=respawn_behavior,
-            warmup_duration=warmup_duration,
-            warmup_number=warmup_number,
-            warmup_timeout=warmup_timeout,
-            pick_ban_enable=pick_ban_enable
+            base_script_settings_variables
         )
 
         self._finish_timeout = finish_timeout
@@ -205,13 +208,7 @@ class CupScriptSettings(ScriptSettings):
 class KnockoutScriptSettings(ScriptSettings):
     def __init__(
         self,
-        chat_time: int = 10,
-        force_laps_number: int = -1,
-        respawn_behavior: RespawnBehavior = RespawnBehavior.DEFAULT,
-        warmup_duration: int = 0,
-        warmup_number: int = 0,
-        warmup_timeout: int = -1,
-        pick_ban_enable: bool = False,
+        base_script_settings_variables: BaseScriptSettings,
 
         eliminated_players_number_ranks: str = "4,16,16",
         finish_timeout: int = 5,
@@ -237,13 +234,7 @@ class KnockoutScriptSettings(ScriptSettings):
         :param rounds_without_elimination: Number of rounds without elimination (like warmup, but only on first map of match). Default 1.
         """
         super().__init__(
-            chat_time=chat_time,
-            force_laps_number=force_laps_number,
-            respawn_behavior=respawn_behavior,
-            warmup_duration=warmup_duration,
-            warmup_number=warmup_number,
-            warmup_timeout=warmup_timeout,
-            pick_ban_enable=pick_ban_enable
+            base_script_settings_variables
         )
 
         self._eliminated_players_number_ranks = eliminated_players_number_ranks
@@ -265,13 +256,7 @@ class KnockoutScriptSettings(ScriptSettings):
 class LapsScriptSettings(ScriptSettings):
     def __init__(
         self,
-        chat_time: int = 10,
-        force_laps_number: int = -1,
-        respawn_behavior: RespawnBehavior = RespawnBehavior.DEFAULT,
-        warmup_duration: int = 0,
-        warmup_number: int = 0,
-        warmup_timeout: int = -1,
-        pick_ban_enable: bool = False,
+        base_script_settings_variables: BaseScriptSettings,
 
         disable_giveup: bool = False,
         finish_timeout: int = 5,
@@ -293,13 +278,7 @@ class LapsScriptSettings(ScriptSettings):
         :param time_limit: Time limit before going to the next map. 0 or -1 for unlimited time. Default 0. 
         """
         super().__init__(
-            chat_time=chat_time,
-            force_laps_number=force_laps_number,
-            respawn_behavior=respawn_behavior,
-            warmup_duration=warmup_duration,
-            warmup_number=warmup_number,
-            warmup_timeout=warmup_timeout,
-            pick_ban_enable=pick_ban_enable
+            base_script_settings_variables
         )
 
         self._disable_giveup = disable_giveup
@@ -317,13 +296,7 @@ class LapsScriptSettings(ScriptSettings):
 class TeamsScriptSettings(ScriptSettings):
     def __init__(
         self,
-        chat_time: int = 10,
-        force_laps_number: int = -1,
-        respawn_behavior: RespawnBehavior = RespawnBehavior.DEFAULT,
-        warmup_duration: int = 0,
-        warmup_number: int = 0,
-        warmup_timeout: int = -1,
-        pick_ban_enable: bool = False,
+        base_script_settings_variables: BaseScriptSettings,
 
         cumulate_points: bool = False,
         finish_timeout: int = 5,
@@ -361,13 +334,7 @@ class TeamsScriptSettings(ScriptSettings):
         :param winners_ratio: Ratio of players who will win points. 
         """
         super().__init__(
-            chat_time=chat_time,
-            force_laps_number=force_laps_number,
-            respawn_behavior=respawn_behavior,
-            warmup_duration=warmup_duration,
-            warmup_number=warmup_number,
-            warmup_timeout=warmup_timeout,
-            pick_ban_enable=pick_ban_enable
+            base_script_settings_variables
         )
 
         self._cumulate_points = cumulate_points
@@ -404,13 +371,7 @@ class TeamsScriptSettings(ScriptSettings):
 class TimeAttackScriptSettings(ScriptSettings):
     def __init__(
         self,
-        chat_time: int = 10,
-        force_laps_number: int = -1,
-        respawn_behavior: RespawnBehavior = RespawnBehavior.DEFAULT,
-        warmup_duration: int = 0,
-        warmup_number: int = 0,
-        warmup_timeout: int = -1,
-        pick_ban_enable: bool = False,
+        base_script_settings_variables: BaseScriptSettings,
 
         time_limit: int = 300,
     ):
@@ -428,13 +389,7 @@ class TimeAttackScriptSettings(ScriptSettings):
         :param time_limit: Time limit before going to the next map. 0 or -1 for unlimited time. Default 300.
         """
         super().__init__(
-            chat_time=chat_time,
-            force_laps_number=force_laps_number,
-            respawn_behavior=respawn_behavior,
-            warmup_duration=warmup_duration,
-            warmup_number=warmup_number,
-            warmup_timeout=warmup_timeout,
-            pick_ban_enable=pick_ban_enable
+            base_script_settings_variables
         )
 
         self._time_limit = time_limit
@@ -448,13 +403,7 @@ class TimeAttackScriptSettings(ScriptSettings):
 class RoundsScriptSettings(ScriptSettings):
     def __init__(
         self,
-        chat_time: int = 10,
-        force_laps_number: int = -1,
-        respawn_behavior: RespawnBehavior = RespawnBehavior.DEFAULT,
-        warmup_duration: int = 0,
-        warmup_number: int = 0,
-        warmup_timeout: int = -1,
-        pick_ban_enable: bool = False,
+        base_script_settings_variables: BaseScriptSettings,
 
         finish_timeout: int = 5,
         maps_per_match: int = None,
@@ -482,13 +431,7 @@ class RoundsScriptSettings(ScriptSettings):
         :param use_tie_break: Continue to play the map until the tie is broken. Default True.
         """
         super().__init__(
-            chat_time=chat_time,
-            force_laps_number=force_laps_number,
-            respawn_behavior=respawn_behavior,
-            warmup_duration=warmup_duration,
-            warmup_number=warmup_number,
-            warmup_timeout=warmup_timeout,
-            pick_ban_enable=pick_ban_enable
+            base_script_settings_variables
         )
 
         self._finish_timeout = finish_timeout
@@ -513,13 +456,7 @@ class RoundsScriptSettings(ScriptSettings):
 class CupSpecialScriptSettings(ScriptSettings):
     def __init__(
         self,
-        chat_time: int = 10,
-        force_laps_number: int = -1,
-        respawn_behavior: RespawnBehavior = RespawnBehavior.DEFAULT,
-        warmup_duration: int = 0,
-        warmup_number: int = 0,
-        warmup_timeout: int = -1,
-        pick_ban_enable: bool = False,
+        base_script_settings_variables: BaseScriptSettings,
 
         finish_timeout: int = 5,
         number_of_winners: int = 1,
@@ -558,13 +495,7 @@ class CupSpecialScriptSettings(ScriptSettings):
         :param hide_scores_header: True: Move total points to left panel instead of top. False: Keep total points at top. Default False.
         """
         super().__init__(
-            chat_time=chat_time,
-            force_laps_number=force_laps_number,
-            respawn_behavior=respawn_behavior,
-            warmup_duration=warmup_duration,
-            warmup_number=warmup_number,
-            warmup_timeout=warmup_timeout,
-            pick_ban_enable=pick_ban_enable
+            base_script_settings_variables
         )
 
         self._finish_timeout = finish_timeout
@@ -596,13 +527,7 @@ class CupSpecialScriptSettings(ScriptSettings):
 class TMWTScriptSettings(ScriptSettings):
     def __init__(
         self,
-        chat_time: int = 10,
-        force_laps_number: int = -1,
-        respawn_behavior: RespawnBehavior = RespawnBehavior.DEFAULT,
-        warmup_duration: int = 0,
-        warmup_number: int = 0,
-        warmup_timeout: int = -1,
-        pick_ban_enable: bool = False,
+        base_script_settings_variables: BaseScriptSettings,
 
         crash_detection_threshold: int = 1000,
         match_points_limit: int = 2,
@@ -623,13 +548,7 @@ class TMWTScriptSettings(ScriptSettings):
         """
 
         super().__init__(
-            chat_time=chat_time,
-            force_laps_number=force_laps_number,
-            respawn_behavior=respawn_behavior,
-            warmup_duration=warmup_duration,
-            warmup_number=warmup_number,
-            warmup_timeout=warmup_timeout,
-            pick_ban_enable=pick_ban_enable
+            base_script_settings_variables
         )
 
         self._crash_detection_threshold = crash_detection_threshold

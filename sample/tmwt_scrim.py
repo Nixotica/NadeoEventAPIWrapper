@@ -56,7 +56,6 @@ event = Event(
         matches=[Match(
             spots=[TeamMatchSpot(1), TeamMatchSpot(2)],
         )],
-        leaderboard_type=LeaderboardType.BRACKET,
         config=RoundConfig(
             map_pool=map_pool,
             script=ScriptType.TMWT_TEAMS,

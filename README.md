@@ -13,6 +13,13 @@ If you want to contribute to either the premade events (like NCSA Solo League) y
 
 Make sure to add some tests to new code in nadeo_event_api, and pytest from /NadeoEventAPIWrapper/nadeo_event_api/. It won't run integration tests by default, since it's very easy to hit the API limit and get locked out for a few hours. Only run individual integration tests if you're working on one. 
 
+## Fork
+
+There is a GitHub Action which requires UBI_AUTH to run integration tests, and they will fail on your fork. This is because it uses UBI_AUTH to authenticate with a specific club (belonging to Nixotica) to test. However, if you make a PR to the source repo, an Action will run against it to verify integration tests pass. If you want to make an integration test, do the following:
+
+1. Create the test with a club that you own to create the event in (or other personalized data to test).
+2. Before PR, switch it to the club AUTO_EVENTS_STAGING_CLUB, as this is the standard I use to test events in. 
+
 ## Contact
 
 This is entirely owned by Nick Walters (nixotica@gmail.com) and does not guarantee any functionality to remain unbroken. Reach out if you have any concerns or issues with setup. 

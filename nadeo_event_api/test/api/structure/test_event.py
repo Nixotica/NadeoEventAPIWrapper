@@ -41,7 +41,6 @@ class TestEvent(unittest.TestCase):
                             ],
                         ),
                     ],
-                    leaderboard_type=LeaderboardType.BRACKET,
                     config=RoundConfig(
                         map_pool=[
                             Map("round_map"),
@@ -90,7 +89,6 @@ class TestEvent(unittest.TestCase):
                             ],
                         ),
                     ],
-                    leaderboard_type=LeaderboardType.BRACKET,
                     config=RoundConfig(
                         map_pool=[
                             Map("_jTSBKAuePtwJ2tUz8UZx25rYzl"),

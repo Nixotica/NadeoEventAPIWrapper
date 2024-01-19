@@ -50,7 +50,6 @@ event = Event(
         start_date=match_start,
         end_date=match_start + timedelta(hours=1),
         matches=[Match(spots=[SeedMatchSpot(x) for x in range(1,5)])],
-        leaderboard_type=LeaderboardType.BRACKET,
         config=RoundConfig(
             map_pool=map_pool,
             script=ScriptType.CUP_LONG,

@@ -52,7 +52,6 @@ def get_round(
                 ]
             )
         ],
-        leaderboard_type=LeaderboardType.BRACKET,
         config=RoundConfig(
             map_pool=map_pool,
             script=ScriptType.CUP_LONG,

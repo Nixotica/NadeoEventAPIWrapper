@@ -30,7 +30,7 @@ event_name = "TMWTExample"
 club_id = 69352 # "Auto Events Staging"
 campaign_id = 57253  # "Test Solo League"
 
-#
+# Create teams of two by UID
 team_a = [
     "dadbaf28-e7b5-429b-bf37-8c8c1419fcf4",  # That_Ski_Freak
     "bd45204c-80f1-4809-b983-38b3f0ffc1ef",  # WirtualTM

@@ -56,33 +56,30 @@ map_pool = [Map(campaign_map._uuid) for campaign_map in campaign_playlist]
 event = Event(
     name=event_name,
     club_id=club_id,
-    rounds=[
-        Round(
-            name="Round 1",
-            start_date=match_start,
-            end_date=match_start + timedelta(hours=1),
-            matches=[Match(spots=[SeedMatchSpot(x) for x in range(1, 5)])],
-            leaderboard_type=LeaderboardType.BRACKET,
-            config=RoundConfig(
-                map_pool=map_pool,
-                script=ScriptType.CUP_LONG,
-                max_players=4,
-                script_settings=CupSpecialScriptSettings(
-                    warmup_number=1,
-                    warmup_duration=60,
-                    points_repartition="10,5,3,0",
-                    cup_points_limit=30,
-                    match_points_limit=2,
-                    number_of_winners=3,
-                    finish_timeout=10,
-                ),
-                plugin_settings=ClassicPluginSettings(
-                    auto_start_mode=AutoStartMode.DISABLED,
-                    use_auto_ready=False,
-                    pick_ban_order="p:0,p:1,p:2,p:3,p:r,p:r",
-                    pick_ban_start_auto=True,
-                ),
+    rounds=[Round(
+        name="Round 1",
+        start_date=match_start,
+        end_date=match_start + timedelta(hours=1),
+        matches=[Match(spots=[SeedMatchSpot(x) for x in range(1,5)])],
+        config=RoundConfig(
+            map_pool=map_pool,
+            script=ScriptType.CUP_LONG,
+            max_players=4,
+            script_settings=CupSpecialScriptSettings(
+                warmup_number=1,
+                warmup_duration=60,
+                points_repartition="10,5,3,0",
+                cup_points_limit=30,
+                match_points_limit=2,
+                number_of_winners=3,
+                finish_timeout=10,
             ),
+            plugin_settings=ClassicPluginSettings(
+                auto_start_mode=AutoStartMode.DISABLED,
+                use_auto_ready=False,
+                pick_ban_order="p:0,p:1,p:2,p:3,p:r,p:r",
+                pick_ban_start_auto=True,
+            )
         )
     ],
 )

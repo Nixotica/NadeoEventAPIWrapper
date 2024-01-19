@@ -166,7 +166,6 @@ def get_gs_round_1(
             get_match_from_quali(12, 28, 37, 53),
             get_match_from_quali(13, 29, 36, 52),
         ],
-        leaderboard_type=LeaderboardType.BRACKET,
         config=get_round_config(map_pool=map_pool),
         qualifier=Qualifier(
             name="Seeding Qualifier",
@@ -215,7 +214,6 @@ def get_gs_round_2(
             get_match_from_prev_round(0, 12, 3, 13, 4, 14, 3, 15, 4),
             get_match_from_prev_round(0, 12, 4, 13, 3, 14, 4, 15, 3),
         ],
-        leaderboard_type=LeaderboardType.BRACKET,
         config=get_round_config(map_pool=map_pool),
     )
 
@@ -242,7 +240,6 @@ def get_gs_round_3(
             get_match_from_prev_round(1, 12, 3, 13, 4, 14, 1, 15, 2),
             get_match_from_prev_round(1, 12, 4, 13, 3, 14, 2, 15, 1),
         ],
-        leaderboard_type=LeaderboardType.BRACKET,
         config=get_round_config(map_pool=map_pool),
     )
 
@@ -261,7 +258,6 @@ def get_gs_round_4(
             get_match_from_prev_round(2, 7, 1, 7, 2, 8, 1, 8, 2),
             get_match_from_prev_round(2, 10, 1, 10, 2, 11, 1, 11, 2),
         ],
-        leaderboard_type=LeaderboardType.BRACKET,
         config=get_round_config(map_pool=map_pool),
     )
 
@@ -280,7 +276,6 @@ def get_swiss_round_1(
             get_match_with_round(2, 6, 3, 2, 3, 4, 3, 0, 1, 3, 3, 2),
             get_match_with_round(2, 9, 3, 2, 0, 4, 3, 1, 1, 3, 2, 2),
         ],
-        leaderboard_type=LeaderboardType.BRACKET,
         config=get_round_config(map_pool=map_pool),
     )
 
@@ -299,7 +294,6 @@ def get_swiss_round_2(
             get_match_with_round(4, 0, 3, 4, 1, 4, 4, 2, 4, 4, 3, 3),
             get_match_with_round(4, 0, 4, 4, 1, 3, 4, 2, 3, 4, 3, 4),
         ],
-        leaderboard_type=LeaderboardType.BRACKET,
         config=get_round_config(map_pool=map_pool),
     )
 
@@ -316,7 +310,6 @@ def get_swiss_round_3(
             get_match_with_round(5, 0, 3, 5, 1, 4, 5, 2, 1, 5, 3, 2),
             get_match_with_round(5, 0, 4, 5, 1, 3, 5, 2, 2, 5, 3, 1),
         ],
-        leaderboard_type=LeaderboardType.BRACKET,
         config=get_round_config(map_pool=map_pool),
     )
 

@@ -86,7 +86,6 @@ def get_round(
             Match(spots=[SeedMatchSpot(seed) for seed in match.keys()])
             for match in matches
         ],
-        leaderboard_type=LeaderboardType.BRACKET,
         config=RoundConfig(
             map_pool=map_pool,
             script=ScriptType.CUP_LONG,

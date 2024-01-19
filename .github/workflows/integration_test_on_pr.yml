@@ -1,8 +1,10 @@
 name: IntegrationTestOnPR
 
 on:
-    workflow_run:
-      workflows: [UnitTestOnPR]
+  workflow_run:
+    workflows: [ UnitTestOnPR ]
+    types:
+      - completed
   
 jobs:
   build:
@@ -11,6 +13,8 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.workflow_run.head_branch }}
 
     - name: Set up Git
       run: |

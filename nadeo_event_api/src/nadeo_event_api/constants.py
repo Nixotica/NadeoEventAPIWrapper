@@ -16,13 +16,9 @@ ADD_PARTICIPANT_URL_FMT = (
     "https://meet.trackmania.nadeo.club/api/competitions/{0}/register"
 )
 
-ADD_TEAM_URL_FMT = (
-    "https://meet.trackmania.nadeo.club/api/competitions/{0}/teams"
-)
+ADD_TEAM_URL_FMT = "https://meet.trackmania.nadeo.club/api/competitions/{0}/teams"
 
 NADEO_DATE_FMT = "%Y-%m-%dT%H:%M:%S.000Z"
-
-CLUB_AUTO_EVENTS_STAGING = 69352
 
 SECRET_FILE = "secrets.json"
 SECRET_UBI_AUTH = "UBI_AUTH"

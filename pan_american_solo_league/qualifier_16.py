@@ -11,7 +11,10 @@ event_api_pkg = os.path.join(
 )
 sys.path.append(str(event_api_pkg))
 
-from nadeo_event_api.api.structure.settings.plugin_settings import ClassicPluginSettings, QualifierPluginSettings
+from nadeo_event_api.api.structure.settings.plugin_settings import (
+    ClassicPluginSettings,
+    QualifierPluginSettings,
+)
 from nadeo_event_api.api.structure.settings.script_settings import (
     CupSpecialScriptSettings,
     TimeAttackScriptSettings,
@@ -19,7 +22,11 @@ from nadeo_event_api.api.structure.settings.script_settings import (
 from nadeo_event_api.api.structure.round.qualifier import Qualifier, QualifierConfig
 from nadeo_event_api.api.structure.event import Event
 from nadeo_event_api.api.club.campaign import Campaign
-from nadeo_event_api.api.structure.enums import AutoStartMode, LeaderboardType, ScriptType
+from nadeo_event_api.api.structure.enums import (
+    AutoStartMode,
+    LeaderboardType,
+    ScriptType,
+)
 from nadeo_event_api.api.structure.maps import Map
 from nadeo_event_api.api.structure.round.match import Match
 from nadeo_event_api.api.structure.round.match_spot import (
@@ -27,7 +34,6 @@ from nadeo_event_api.api.structure.round.match_spot import (
     QualificationMatchSpot,
 )
 from nadeo_event_api.api.structure.round.round import Round, RoundConfig
-from nadeo_event_api.constants import CLUB_AUTO_EVENTS_STAGING
 
 
 def get_round_config(
@@ -175,7 +181,7 @@ def get_gs_round_1(
                     warmup_number=1,
                     warmup_duration=20,
                     time_limit=300,
-                )
+                ),
             ),
         ),
     )
@@ -309,7 +315,7 @@ def get_swiss_round_3(
 
 ### NOTE fill these out as appropriate each time the script is run! You shouldn't need to modify anything else! ###
 event_name = "TestPASLQuali"
-club_id = CLUB_AUTO_EVENTS_STAGING
+club_id = 69352 # "Auto Events Staging"
 campaign_id = 57253  # Uses maps from a campaign
 
 now = datetime.utcnow()

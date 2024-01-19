@@ -80,7 +80,7 @@ class AutoStartMode(Enum):
 
 class RespawnBehavior(Enum):
     """
-    The respawn behavior for a round. 
+    The respawn behavior for a round.
     """
 
     DEFAULT = 0

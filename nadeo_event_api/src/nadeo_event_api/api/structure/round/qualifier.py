@@ -87,9 +87,9 @@ class Qualifier:
 
         :returns: True if valid, False otherwise.
         """
-        
+
         if self._end_date <= self._start_date:
             print("Qualifier end date must be after start date.")
             return False
-        
+
         return True

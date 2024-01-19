@@ -46,7 +46,6 @@ class TestEvent(unittest.TestCase):
                             Map("round_map"),
                         ],
                         script=ScriptType.CUP,
-                        
                         max_players=32,
                     ),
                     qualifier=Qualifier(

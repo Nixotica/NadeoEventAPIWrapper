@@ -63,7 +63,7 @@ class CompetitionMatchSpot(MatchSpot):
         spot["spotType"] = self._spot_type.value
         spot["rank"] = self._rank
         return spot
-    
+
 
 class TeamMatchSpot(MatchSpot):
     def __init__(

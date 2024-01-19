@@ -6,7 +6,12 @@ import sys
 from time import tzname
 from typing import List
 
-from pytz import timezone, utc
+from pytz import (
+    timezone, utc,
+)
+from nadeo_event_api.api.structure.settings.plugin_settings import (
+    QualifierPluginSettings,
+)
 
 # NOTE we do this for now since the api package is still WIP, will separate this into a different
 # repo which consumes that package eventually
@@ -170,7 +175,7 @@ def get_gs_round_1(
                     warmup_number=1,
                     warmup_duration=20,
                     time_limit=360,
-                )
+                ),
             ),
         ),
     )

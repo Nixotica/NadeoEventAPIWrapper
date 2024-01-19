@@ -12,7 +12,11 @@ event_api_pkg = os.path.join(
 sys.path.append(str(event_api_pkg))
 
 from nadeo_event_api.api.club.campaign import Campaign
-from nadeo_event_api.api.structure.enums import LeaderboardType, ParticipantType, ScriptType
+from nadeo_event_api.api.structure.enums import (
+    LeaderboardType,
+    ParticipantType,
+    ScriptType,
+)
 from nadeo_event_api.api.structure.event import Event
 from nadeo_event_api.api.structure.maps import Map
 from nadeo_event_api.api.structure.round.match import Match
@@ -28,7 +32,7 @@ event_name = "TMWTExample"
 club_id = CLUB_AUTO_EVENTS_STAGING
 campaign_id = 57253  # "Test Solo League"
 
-# 
+#
 team_a = [
     "dadbaf28-e7b5-429b-bf37-8c8c1419fcf4",  # That_Ski_Freak
     "bd45204c-80f1-4809-b983-38b3f0ffc1ef",  # WirtualTM

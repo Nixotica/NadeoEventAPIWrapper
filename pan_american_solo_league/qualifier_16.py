@@ -11,7 +11,10 @@ event_api_pkg = os.path.join(
 )
 sys.path.append(str(event_api_pkg))
 
-from nadeo_event_api.api.structure.settings.plugin_settings import ClassicPluginSettings, QualifierPluginSettings
+from nadeo_event_api.api.structure.settings.plugin_settings import (
+    ClassicPluginSettings,
+    QualifierPluginSettings,
+)
 from nadeo_event_api.api.structure.settings.script_settings import (
     CupSpecialScriptSettings,
     TimeAttackScriptSettings,
@@ -19,7 +22,11 @@ from nadeo_event_api.api.structure.settings.script_settings import (
 from nadeo_event_api.api.structure.round.qualifier import Qualifier, QualifierConfig
 from nadeo_event_api.api.structure.event import Event
 from nadeo_event_api.api.club.campaign import Campaign
-from nadeo_event_api.api.structure.enums import AutoStartMode, LeaderboardType, ScriptType
+from nadeo_event_api.api.structure.enums import (
+    AutoStartMode,
+    LeaderboardType,
+    ScriptType,
+)
 from nadeo_event_api.api.structure.maps import Map
 from nadeo_event_api.api.structure.round.match import Match
 from nadeo_event_api.api.structure.round.match_spot import (
@@ -175,7 +182,7 @@ def get_gs_round_1(
                     warmup_number=1,
                     warmup_duration=20,
                     time_limit=300,
-                )
+                ),
             ),
         ),
     )

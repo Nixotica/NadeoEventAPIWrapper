@@ -14,7 +14,11 @@ sys.path.append(str(event_api_pkg))
 
 from nadeo_event_api.api.structure.event import Event
 from nadeo_event_api.api.club.campaign import Campaign
-from nadeo_event_api.api.structure.enums import AutoStartMode, LeaderboardType, ScriptType
+from nadeo_event_api.api.structure.enums import (
+    AutoStartMode,
+    LeaderboardType,
+    ScriptType,
+)
 from nadeo_event_api.api.structure.maps import Map
 from nadeo_event_api.api.structure.round.match import Match
 from nadeo_event_api.api.structure.round.match_spot import (

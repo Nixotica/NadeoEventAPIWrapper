@@ -1,5 +1,6 @@
+import os
 import pytest
-from src.nadeo_event_api.constants import CLUB_AUTO_EVENTS_STAGING
+from src.nadeo_event_api.environment import MY_CLUB
 from src.nadeo_event_api.api.club.campaign import Campaign
 from src.nadeo_event_api.api.structure.maps import PlaylistMap
 import unittest
@@ -8,9 +9,8 @@ import unittest
 class TestCampaign(unittest.TestCase):
     @pytest.mark.integration
     def test_get_campaign_map_playlist(self):
-        # Auto Events Staging / Test Campaign
-        test_club_id = CLUB_AUTO_EVENTS_STAGING
-        test_campaign_id = 55190
+        test_club_id = 69352 # Auto Events Staging
+        test_campaign_id = 55190 # Test Campaign
 
         test_campaign = Campaign(test_club_id, test_campaign_id)
 

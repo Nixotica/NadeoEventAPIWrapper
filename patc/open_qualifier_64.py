@@ -6,7 +6,12 @@ import sys
 from time import tzname
 from typing import List
 
-from pytz import timezone, utc
+from pytz import (
+    timezone, utc,
+)
+from nadeo_event_api.api.structure.settings.plugin_settings import (
+    QualifierPluginSettings,
+)
 
 # NOTE we do this for now since the api package is still WIP, will separate this into a different
 # repo which consumes that package eventually
@@ -28,7 +33,6 @@ from nadeo_event_api.api.structure.round.match_spot import (
     QualificationMatchSpot,
 )
 from nadeo_event_api.api.structure.round.round import Round, RoundConfig
-from nadeo_event_api.constants import CLUB_AUTO_EVENTS_STAGING
 
 
 def get_round_config(
@@ -170,7 +174,7 @@ def get_gs_round_1(
                     warmup_number=1,
                     warmup_duration=20,
                     time_limit=360,
-                )
+                ),
             ),
         ),
     )

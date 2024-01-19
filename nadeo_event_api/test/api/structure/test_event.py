@@ -3,8 +3,9 @@ import os
 import pytest
 import unittest
 import json
+
+from nadeo_event_api.environment import MY_CLUB
 from ..utils_for_test import are_json_structures_equal
-from src.nadeo_event_api.constants import CLUB_AUTO_EVENTS_STAGING
 from src.nadeo_event_api.api.structure.round.qualifier import Qualifier, QualifierConfig
 from src.nadeo_event_api.api.structure.maps import Map
 from src.nadeo_event_api.api.structure.enums import LeaderboardType, ScriptType
@@ -46,7 +47,6 @@ class TestEvent(unittest.TestCase):
                             Map("round_map"),
                         ],
                         script=ScriptType.CUP,
-                        
                         max_players=32,
                     ),
                     qualifier=Qualifier(
@@ -71,7 +71,7 @@ class TestEvent(unittest.TestCase):
         now = datetime.utcnow()
         event = Event(
             name="my_event",
-            club_id=CLUB_AUTO_EVENTS_STAGING,
+            club_id=os.getenv(MY_CLUB),
             rounds=[
                 Round(
                     name="round_1",

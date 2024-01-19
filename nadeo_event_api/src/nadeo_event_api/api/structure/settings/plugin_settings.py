@@ -55,7 +55,9 @@ class ClassicPluginSettings(PluginSettings):
         plugin_settings["S_EnableReadyManager"] = self._enable_ready_manager
         plugin_settings["S_UseAutoReady"] = self._use_auto_ready
         plugin_settings["S_ReadyStartRatio"] = self._ready_start_ratio
-        plugin_settings["S_PickBanUseGamepadVersion"] = self._pick_ban_use_gamepad_version
+        plugin_settings[
+            "S_PickBanUseGamepadVersion"
+        ] = self._pick_ban_use_gamepad_version
         return plugin_settings
 
 
@@ -72,12 +74,12 @@ class QualifierPluginSettings(PluginSettings):
         )
 
         self._use_playlist_complete = use_playlist_complete
-        
+
     def as_jsonable_dict(self) -> dict:
         plugin_settings = super().as_jsonable_dict()
         plugin_settings["S_UsePlayListComplete"] = self._use_playlist_complete
         return plugin_settings
-    
+
 
 class TMWTPluginSettings(ClassicPluginSettings):
     def __init__(
@@ -89,7 +91,6 @@ class TMWTPluginSettings(ClassicPluginSettings):
         pick_ban_start_auto: bool = True,
         pick_ban_order: str = "b:0,b:1,p:0,p:1,p:0,p:1,p:0,p:1,p:r",
         use_auto_ready: bool = True,
-
         ready_minimum_team_size: int = 2,
     ):
         super().__init__(
@@ -99,7 +100,7 @@ class TMWTPluginSettings(ClassicPluginSettings):
             auto_start_delay=auto_start_delay,
             pick_ban_start_auto=pick_ban_start_auto,
             pick_ban_order=pick_ban_order,
-            use_auto_ready=use_auto_ready
+            use_auto_ready=use_auto_ready,
         )
 
         self._ready_minimum_team_size = ready_minimum_team_size

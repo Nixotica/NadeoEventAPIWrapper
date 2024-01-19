@@ -12,20 +12,26 @@ event_api_pkg = os.path.join(
 sys.path.append(str(event_api_pkg))
 
 from nadeo_event_api.api.club.campaign import Campaign
-from nadeo_event_api.api.structure.enums import AutoStartMode, LeaderboardType, ParticipantType, ScriptType
+from nadeo_event_api.api.structure.enums import (
+    AutoStartMode,
+    ScriptType,
+)
 from nadeo_event_api.api.structure.event import Event
 from nadeo_event_api.api.structure.maps import Map
 from nadeo_event_api.api.structure.round.match import Match
 from nadeo_event_api.api.structure.round.match_spot import SeedMatchSpot, TeamMatchSpot
 from nadeo_event_api.api.structure.round.round import Round, RoundConfig
-from nadeo_event_api.api.structure.settings.plugin_settings import ClassicPluginSettings, TMWTPluginSettings
-from nadeo_event_api.api.structure.settings.script_settings import CupSpecialScriptSettings, TMWTScriptSettings
-from nadeo_event_api.constants import CLUB_AUTO_EVENTS_STAGING
+from nadeo_event_api.api.structure.settings.plugin_settings import (
+    ClassicPluginSettings,
+)
+from nadeo_event_api.api.structure.settings.script_settings import (
+    CupSpecialScriptSettings,
+)
 
 # Event info
 event_name = "FastCupTest"
-club_id = CLUB_AUTO_EVENTS_STAGING
-campaign_id = 58885	  # "Fast Cup Test"
+club_id = 69352 # "Auto Events Staging"
+campaign_id = 58885  # "Fast Cup Test"
 
 players = [
     "dadbaf28-e7b5-429b-bf37-8c8c1419fcf4",  # That_Ski_Freak
@@ -70,10 +76,10 @@ event = Event(
                 pick_ban_start_auto=True,
             )
         )
-    )]
+    ],
 )
 event.post()
 
 # Add the players to the event
 for player_idx in range(len(players)):
-    event.add_participant(players[player_idx], player_idx+1)
+    event.add_participant(players[player_idx], player_idx + 1)

@@ -1,4 +1,4 @@
-name: CI
+name: CheckAndRelease
 
 on:
   push:
@@ -29,7 +29,8 @@ jobs:
         run: |
           cd nadeo_event_api
           pip install -r requirements.txt
-          export UBI_AUTH="${{secrets.UBI_AUTH}}"
+          export UBI_AUTH="${{secrets.UBI_AUTH}}" # README.md
+          export MY_CLUB="${{secrets.MY_CLUB}}"   # README.md
           pytest
           pytest -m integration
 

@@ -88,7 +88,9 @@ class Event:
             print("Could not add participant since this event is not type PLAYER")
             return
         if seed == 0:
-            print("WARNING! You tried adding a player with seed zero, they will not be part of the event. Start at 1.")
+            print(
+                "WARNING! You tried adding a player with seed zero, they will not be part of the event. Start at 1."
+            )
             return
         token = UbiTokenManager().nadeo_club_token
         requests.post(
@@ -116,7 +118,7 @@ class Event:
         requests.post(
             url=ADD_TEAM_URL_FMT.format(self._registered_id),
             headers={"Authorization": "nadeo_v1 t=" + token},
-            json={"id": name, "name": name, "seed": seed, "members": members}
+            json={"id": name, "name": name, "seed": seed, "members": members},
         )
 
     @staticmethod
@@ -187,12 +189,14 @@ class Event:
             return False
         else:
             if self._rounds[0]._qualifier is not None:
-                print("Event with qualifier must have a registration period, else it won't start the match automatically. You've been warned!")
+                print(
+                    "Event with qualifier must have a registration period, else it won't start the match automatically. You've been warned!"
+                )
 
         if len(self._name) > 16:
             print("Event name is probably too long and will break.")
             return False
-        
+
         for round_idx in range(len(self._rounds)):
             if not self._rounds[round_idx].valid():
                 print(f"Round {round_idx} is invalid.")

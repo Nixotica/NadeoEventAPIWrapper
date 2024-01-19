@@ -2,7 +2,8 @@ from datetime import datetime
 from typing import List
 import requests
 
-from nadeo_event_api.api.structure.enums import ParticipantType
+from .enums import ParticipantType
+from ...utils import dt_standardize
 from .round.spot_structure import SpotStructure
 from ...constants import (
     ADD_PARTICIPANT_URL_FMT,
@@ -32,8 +33,8 @@ class Event:
         self._club_id = club_id
         self._rounds = rounds
         self._description = description
-        self._registration_start_date = registration_start_date
-        self._registration_end_date = registration_end_date
+        self._registration_start_date = dt_standardize(registration_start_date) if registration_start_date else None
+        self._registration_end_date = dt_standardize(registration_end_date) if registration_end_date else None
         self._participant_type = participant_type
 
         self._registered_id = None
@@ -175,7 +176,7 @@ class Event:
 
         :returns: True if valid, False otherwise.
         """
-        now = datetime.utcnow()
+        now = dt_standardize(datetime.utcnow())
         if self._registration_start_date and self._registration_end_date:
             if now > self._registration_start_date or now > self._registration_end_date:
                 print("Event registration must be later than current time.")
@@ -201,14 +202,13 @@ class Event:
                 print(f"Round {round_idx} is invalid.")
                 return False
             if round_idx > 0:
-                if (
-                    self._rounds[round_idx - 1]._end_date
-                    >= self._rounds[round_idx]._start_date
-                ):
-                    print(f"Round {round_idx - 1} must end before the next begins.")
+
+                if self._rounds[round_idx - 1]._end_date >= self._rounds[round_idx]._start_date:
+                    print(f"Round {round_idx - 1} must end ({self._rounds[round_idx - 1]._end_date}) before the next begins ({self._rounds[round_idx]._start_date}).")
+
                     return False
                 if self._rounds[round_idx]._qualifier is not None:
-                    print(f"Round {round_idx} has a qualifier, but is not the first.")
+                    print(f"Round {round_idx} has a qualifier, but only the first round may have one.")
                     return False
 
         # TODO check that maps are real

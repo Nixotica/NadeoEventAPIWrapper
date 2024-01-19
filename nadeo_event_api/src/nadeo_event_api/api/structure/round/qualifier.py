@@ -1,10 +1,13 @@
 from datetime import datetime
 from typing import List
 
+
 from ...structure.settings.plugin_settings import (
     PluginSettings,
     QualifierPluginSettings,
 )
+from nadeo_event_api.utils import dt_standardize
+
 from ...structure.settings.script_settings import (
     ScriptSettings,
     TimeAttackScriptSettings,
@@ -61,8 +64,8 @@ class Qualifier:
         config: QualifierConfig,
     ):
         self._name = name
-        self._start_date = start_date
-        self._end_date = end_date
+        self._start_date = dt_standardize(start_date)
+        self._end_date = dt_standardize(end_date)
         self._leaderboard_type = leaderboard_type
         self._config = config
 

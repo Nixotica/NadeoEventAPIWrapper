@@ -1,5 +1,7 @@
 from datetime import datetime
 from typing import List
+
+from nadeo_event_api.utils import dt_standardize
 from ....constants import NADEO_DATE_FMT
 from .match import Match
 from .qualifier import Qualifier
@@ -59,8 +61,8 @@ class Round:
         qualifier: Qualifier = None,
     ):
         self._name = name
-        self._start_date = start_date
-        self._end_date = end_date
+        self._start_date = dt_standardize(start_date)
+        self._end_date = dt_standardize(end_date)
         self._matches = matches
         self._leaderboard_type = leaderboard_type
         self._config = config

@@ -26,7 +26,6 @@ from nadeo_event_api.api.structure.settings.script_settings import (
     CupSpecialScriptSettings,
 )
 from nadeo_event_api.api.structure.settings.plugin_settings import ClassicPluginSettings
-from nadeo_event_api.constants import CLUB_AUTO_EVENTS_STAGING
 from nadeo_event_api.api.structure.round.match import Match
 
 
@@ -111,7 +110,7 @@ def get_round(
 
 ### NOTE fill these out as appropriate each time the script is run! You shouldn't need to modify anything else! ###
 event_name = "TestSoloLeague"
-club_id = CLUB_AUTO_EVENTS_STAGING
+club_id = 69352 # "Auto Events Staging"
 campaign_id = 57253  # "Test Solo League"
 
 # This MUST be 16 players in order of seed (1-16)

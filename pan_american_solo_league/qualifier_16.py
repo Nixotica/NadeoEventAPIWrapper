@@ -34,7 +34,6 @@ from nadeo_event_api.api.structure.round.match_spot import (
     QualificationMatchSpot,
 )
 from nadeo_event_api.api.structure.round.round import Round, RoundConfig
-from nadeo_event_api.constants import CLUB_AUTO_EVENTS_STAGING
 
 
 def get_round_config(
@@ -316,7 +315,7 @@ def get_swiss_round_3(
 
 ### NOTE fill these out as appropriate each time the script is run! You shouldn't need to modify anything else! ###
 event_name = "TestPASLQuali"
-club_id = CLUB_AUTO_EVENTS_STAGING
+club_id = 69352 # "Auto Events Staging"
 campaign_id = 57253  # Uses maps from a campaign
 
 now = datetime.utcnow()

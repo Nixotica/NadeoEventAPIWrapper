@@ -27,5 +27,6 @@ jobs:
         cd nadeo_event_api
         pip install -r requirements.txt
         export UBI_AUTH="${{secrets.UBI_AUTH}}"
+        export MY_CLUB=69352
         pytest
         pytest -m integration

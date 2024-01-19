@@ -13,7 +13,6 @@ sys.path.append(str(event_api_pkg))
 
 from nadeo_event_api.api.club.campaign import Campaign
 from nadeo_event_api.api.structure.enums import (
-    LeaderboardType,
     ParticipantType,
     ScriptType,
 )
@@ -24,12 +23,11 @@ from nadeo_event_api.api.structure.round.match_spot import TeamMatchSpot
 from nadeo_event_api.api.structure.round.round import Round, RoundConfig
 from nadeo_event_api.api.structure.settings.plugin_settings import TMWTPluginSettings
 from nadeo_event_api.api.structure.settings.script_settings import TMWTScriptSettings
-from nadeo_event_api.constants import CLUB_AUTO_EVENTS_STAGING
 
 
 # Event info
 event_name = "TMWTExample"
-club_id = CLUB_AUTO_EVENTS_STAGING
+club_id = 69352 # "Auto Events Staging"
 campaign_id = 57253  # "Test Solo League"
 
 #

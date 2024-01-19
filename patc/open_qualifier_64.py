@@ -33,7 +33,6 @@ from nadeo_event_api.api.structure.round.match_spot import (
     QualificationMatchSpot,
 )
 from nadeo_event_api.api.structure.round.round import Round, RoundConfig
-from nadeo_event_api.constants import CLUB_AUTO_EVENTS_STAGING
 
 
 def get_round_config(

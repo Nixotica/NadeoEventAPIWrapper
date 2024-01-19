@@ -14,8 +14,6 @@ sys.path.append(str(event_api_pkg))
 from nadeo_event_api.api.club.campaign import Campaign
 from nadeo_event_api.api.structure.enums import (
     AutoStartMode,
-    LeaderboardType,
-    ParticipantType,
     ScriptType,
 )
 from nadeo_event_api.api.structure.event import Event
@@ -25,17 +23,14 @@ from nadeo_event_api.api.structure.round.match_spot import SeedMatchSpot, TeamMa
 from nadeo_event_api.api.structure.round.round import Round, RoundConfig
 from nadeo_event_api.api.structure.settings.plugin_settings import (
     ClassicPluginSettings,
-    TMWTPluginSettings,
 )
 from nadeo_event_api.api.structure.settings.script_settings import (
     CupSpecialScriptSettings,
-    TMWTScriptSettings,
 )
-from nadeo_event_api.constants import CLUB_AUTO_EVENTS_STAGING
 
 # Event info
 event_name = "FastCupTest"
-club_id = CLUB_AUTO_EVENTS_STAGING
+club_id = 69352 # "Auto Events Staging"
 campaign_id = 58885  # "Fast Cup Test"
 
 players = [

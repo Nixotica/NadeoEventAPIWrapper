@@ -14,7 +14,6 @@ event_api_pkg = os.path.join(
 )
 sys.path.append(str(event_api_pkg))
 
-from nadeo_event_api.constants import CLUB_AUTO_EVENTS_STAGING
 from nadeo_event_api.api.structure.event import Event
 from nadeo_event_api.api.authenticate import UbiTokenManager
 from nadeo_event_api.api.enums import NadeoService
@@ -87,7 +86,7 @@ def get_round(
 
 
 event_name = "TestKOEvent"
-club_id = CLUB_AUTO_EVENTS_STAGING
+club_id = 69352 # "Auto Events Staging"
 campaign_id = 57253  # "Test Solo League"
 
 # Get a random map from the campaign

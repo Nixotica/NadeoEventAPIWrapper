@@ -1,0 +1,31 @@
+name: IntegrationTestOnPR
+
+on:
+    workflow_run:
+      workflows: [UnitTestOnPR]
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Git
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with: 
+        python-version: '3.x'
+    
+    - name: Install dependencies and test
+      run: |
+        cd nadeo_event_api
+        pip install -r requirements.txt
+        export UBI_AUTH="${{secrets.UBI_AUTH}}"
+        export MY_CLUB="${{secrets.MY_CLUB}}"
+        pytest -m integration

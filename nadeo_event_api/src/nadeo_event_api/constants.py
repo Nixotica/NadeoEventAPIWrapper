@@ -18,6 +18,10 @@ ADD_PARTICIPANT_URL_FMT = (
 
 ADD_TEAM_URL_FMT = "https://meet.trackmania.nadeo.club/api/competitions/{0}/teams"
 
+ADD_LOGO_URL_FMT = "https://meet.trackmania.nadeo.club/api/competitions/{0}/upload/logo"
+
+GET_EVENT_URL_FMT = "https://meet.trackmania.nadeo.club/api/competitions/{0}"
+
 NADEO_DATE_FMT = "%Y-%m-%dT%H:%M:%S.000Z"
 
 SECRET_FILE = "secrets.json"

@@ -112,5 +112,7 @@ class TestEvent(unittest.TestCase):
         )
         event.post()
         self.assertIsNotNone(event._registered_id)
+        event.add_logo("https://upload.wikimedia.org/wikipedia/en/9/9a/Trollface_non-free.png")
+        self.assertIsNotNone(event._registered_logo_url)
         event.delete()
         self.assertIsNone(event._registered_id)

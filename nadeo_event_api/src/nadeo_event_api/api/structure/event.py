@@ -6,6 +6,7 @@ from .enums import ParticipantType
 from ...utils import dt_standardize
 from .round.spot_structure import SpotStructure
 from ...constants import (
+    ADD_LOGO_URL_FMT,
     ADD_PARTICIPANT_URL_FMT,
     ADD_TEAM_URL_FMT,
     CREATE_COMP_URL,
@@ -40,6 +41,15 @@ class Event:
         self._registered_id = None
         """ The ID this event is registered under in Nadeo's database. None if not registered. """
 
+        self._live_id = None
+        """ The LiveID this event is registered under in NadeoClubServices. """
+
+        self._personal_logo_url = None
+        """ The URL of the logo that was posted to this event. This is the source of the logo, not the address stored by the event in Nadeo services. """
+
+        self._registered_logo_url = None
+        """ The URL of the logo for this event. This will be stored in s3 after it's posted to the event. """
+
     def post(self) -> None:
         """
         Posts the event if valid.
@@ -55,7 +65,9 @@ class Event:
         ).json()
         if "exception" in response:
             print("Failed to post event: ", response)
+            return
         self._registered_id = response["competition"]["id"]
+        self._live_id = response["competition"]["liveId"]
         print(
             f"Your event is viewable at https://admin.trackmania.nadeo.club/competition/{self._registered_id}"
         )
@@ -120,6 +132,28 @@ class Event:
             headers={"Authorization": "nadeo_v1 t=" + token},
             json={"id": name, "name": name, "seed": seed, "members": members},
         )
+
+    def add_logo(self, logo_url: str) -> None:
+        """
+        Adds a logo to the event. 
+
+        :param logo_url: The URL of the logo. 
+        """
+        if not self._registered_id:
+            print("Could not add logo to event since it hasn't been posted.")
+            return
+        response = requests.get(logo_url)
+        if response.status_code != 200:
+            print(f"Failed to download logo from url: {logo_url}")
+            return
+        token = UbiTokenManager().nadeo_club_token
+        response = requests.post(
+            url=ADD_LOGO_URL_FMT.format(self._registered_id),
+            headers={"Authorization": "nadeo_v1 t=" + token, "Content-Type": "application/binary"},
+            data=response.content,
+        ).json()
+        self._personal_logo_url = logo_url
+        self._registered_logo_url = response
 
     @staticmethod
     def delete_from_id(event_id: int) -> None:

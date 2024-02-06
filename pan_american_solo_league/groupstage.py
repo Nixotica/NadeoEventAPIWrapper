@@ -1,5 +1,5 @@
 import datetime
-from datetime import UTC, datetime, timedelta, tzinfo
+from datetime import UTC, datetime, timedelta
 import os
 from pathlib import Path
 import sys
@@ -16,7 +16,6 @@ from nadeo_event_api.api.structure.event import Event
 from nadeo_event_api.api.club.campaign import Campaign
 from nadeo_event_api.api.structure.enums import (
     AutoStartMode,
-    LeaderboardType,
     ScriptType,
 )
 from nadeo_event_api.api.structure.maps import Map
@@ -100,7 +99,7 @@ def get_round(
             ),
             plugin_settings=ClassicPluginSettings(
                 pick_ban_start_auto=True,
-                pick_ban_order="b:0,b:1,p:0,p:1,p:2,p:3,b:3,b:4,p:0,p:1,p:r",
+                pick_ban_order="b:3,b:2,b:1,b:0,p:0,p:1,p:2,p:3,p:r,p:r,p:r",
                 auto_start_mode=AutoStartMode.DISABLED,
                 use_auto_ready=False,
             ),
@@ -109,7 +108,7 @@ def get_round(
 
 
 ### NOTE fill these out as appropriate each time the script is run! You shouldn't need to modify anything else! ###
-event_name = "TestSoloLeague"
+event_name = "PASL Groupstage"
 club_id = 69352 # "Auto Events Staging"
 campaign_id = 57253  # "Test Solo League"
 

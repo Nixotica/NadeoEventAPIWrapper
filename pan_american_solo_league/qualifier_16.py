@@ -4,6 +4,8 @@ from pathlib import Path
 import sys
 from typing import List
 
+from pytz import timezone
+
 # NOTE we do this for now since the api package is still WIP, will separate this into a different
 # repo which consumes that package eventually
 event_api_pkg = os.path.join(
@@ -16,6 +18,7 @@ from nadeo_event_api.api.structure.settings.plugin_settings import (
     QualifierPluginSettings,
 )
 from nadeo_event_api.api.structure.settings.script_settings import (
+    BaseScriptSettings,
     CupSpecialScriptSettings,
     TimeAttackScriptSettings,
 )
@@ -38,26 +41,29 @@ from nadeo_event_api.api.structure.round.round import Round, RoundConfig
 
 def get_round_config(
     map_pool: List[Map],
+    num_winners: int,
 ) -> RoundConfig:
     return RoundConfig(
         map_pool=map_pool,
         script=ScriptType.CUP_LONG,
         max_players=4,
         script_settings=CupSpecialScriptSettings(
-            warmup_number=1,
-            warmup_duration=60,
+            base_script_settings=BaseScriptSettings(
+                warmup_number=1,
+                warmup_duration=60,
+            ),
             points_repartition="10,5,3,0",
             cup_points_limit=30,
             match_points_limit=2,
-            number_of_winners=3,
+            number_of_winners=num_winners,
             finish_timeout=10,
         ),
         plugin_settings=ClassicPluginSettings(
             auto_start_mode=AutoStartMode.DELAY,
             auto_start_delay=300,
             pick_ban_start_auto=True,
-            pick_ban_order="b:0,b:1,p:0,p:1,p:2,p:3,b:3,b:4,p:r,p:r",
-            use_auto_ready=True,
+            pick_ban_order="b:3,b:2,b:1,b:0,p:0,p:1,p:2,p:3,p:r,p:r,p:r",
+            use_auto_ready=False,
         ),
     )
 
@@ -91,38 +97,6 @@ def get_match_from_prev_round(
     )
 
 
-def get_match_with_round(
-    prev_first_seed_round: int,
-    prev_first_seed_match: int,
-    prev_first_seed_rank: int,
-    prev_second_seed_round: int,
-    prev_second_seed_match: int,
-    prev_second_seed_rank: int,
-    prev_third_seed_round: int,
-    prev_third_seed_match: int,
-    prev_third_seed_rank: int,
-    prev_fourth_seed_round: int,
-    prev_fourth_seed_match: int,
-    prev_fourth_seed_rank: int,
-) -> Match:
-    return Match(
-        spots=[
-            MatchParticipantMatchSpot(
-                prev_first_seed_round, prev_first_seed_match, prev_first_seed_rank
-            ),
-            MatchParticipantMatchSpot(
-                prev_second_seed_round, prev_second_seed_match, prev_second_seed_rank
-            ),
-            MatchParticipantMatchSpot(
-                prev_third_seed_round, prev_third_seed_match, prev_third_seed_rank
-            ),
-            MatchParticipantMatchSpot(
-                prev_fourth_seed_round, prev_fourth_seed_match, prev_fourth_seed_rank
-            ),
-        ]
-    )
-
-
 def get_match_from_quali(
     first_seed: int,
     second_seed: int,
@@ -139,37 +113,30 @@ def get_match_from_quali(
     )
 
 
-def get_gs_round_1(
-    start_date: datetime,
+def get_round_1(
+    quali_start_date: datetime,
+    round_start_date: datetime,
     map_pool: List[Map],
 ) -> Round:
     return Round(
-        name="GS - Round 1",
-        start_date=start_date + timedelta(minutes=35),
-        end_date=start_date + timedelta(hours=1, minutes=35),
+        name="Round 1",
+        start_date=round_start_date,
+        end_date=round_start_date + timedelta(hours=1),
         matches=[
-            get_match_from_quali(1, 17, 48, 64),
-            get_match_from_quali(8, 24, 41, 57),
-            get_match_from_quali(9, 25, 40, 56),
-            get_match_from_quali(16, 32, 33, 49),
-            get_match_from_quali(2, 18, 47, 63),
-            get_match_from_quali(7, 23, 42, 58),
-            get_match_from_quali(10, 26, 39, 55),
-            get_match_from_quali(15, 31, 34, 50),
-            get_match_from_quali(3, 19, 46, 62),
-            get_match_from_quali(6, 22, 43, 59),
-            get_match_from_quali(11, 27, 38, 54),
-            get_match_from_quali(14, 30, 35, 51),
-            get_match_from_quali(4, 20, 45, 61),
-            get_match_from_quali(5, 21, 44, 60),
-            get_match_from_quali(12, 28, 37, 53),
-            get_match_from_quali(13, 29, 36, 52),
+            get_match_from_quali(1, 16, 17, 32),
+            get_match_from_quali(2, 15, 18, 31),
+            get_match_from_quali(3, 14, 19, 30),
+            get_match_from_quali(4, 13, 20, 29),
+            get_match_from_quali(5, 12, 21, 28),
+            get_match_from_quali(6, 11, 22, 27),
+            get_match_from_quali(7, 10, 23, 26),
+            get_match_from_quali(8, 9, 24, 25),
         ],
-        config=get_round_config(map_pool=map_pool),
+        config=get_round_config(map_pool=map_pool, num_winners=2),
         qualifier=Qualifier(
             name="Seeding Qualifier",
-            start_date=start_date,
-            end_date=start_date + timedelta(minutes=len(map_pool) * 6),
+            start_date=quali_start_date,
+            end_date=quali_start_date + timedelta(minutes=len(map_pool) * 6), # 6 minutes per map roughly
             leaderboard_type=LeaderboardType.SUMSCORE,
             config=QualifierConfig(
                 map_pool=map_pool,
@@ -178,175 +145,106 @@ def get_gs_round_1(
                     use_playlist_complete=True,
                 ),
                 script_settings=TimeAttackScriptSettings(
-                    warmup_number=1,
-                    warmup_duration=20,
-                    time_limit=300,
+                    base_script_settings=BaseScriptSettings(
+                        warmup_number=1,
+                        warmup_duration=20,
+                    ),
+                    time_limit=300, 
                 ),
             ),
         ),
     )
 
 
-def get_gs_round_2(
+def get_round_2(
     start_date: datetime,
     map_pool: List[Map],
 ) -> Round:
     return Round(
-        name="GS - Round 2",
+        name="Round 2",
         start_date=start_date,
         end_date=start_date + timedelta(hours=1),
         matches=[
-            get_match_from_prev_round(0, 0, 1, 1, 2, 2, 1, 3, 2),
-            get_match_from_prev_round(0, 0, 2, 1, 1, 2, 2, 3, 1),
-            get_match_from_prev_round(0, 0, 3, 1, 4, 2, 3, 3, 4),
-            get_match_from_prev_round(0, 0, 4, 1, 3, 2, 4, 3, 3),
-            get_match_from_prev_round(0, 4, 1, 5, 2, 6, 1, 7, 2),
-            get_match_from_prev_round(0, 4, 2, 5, 1, 6, 2, 7, 1),
-            get_match_from_prev_round(0, 4, 3, 5, 4, 6, 3, 7, 4),
-            get_match_from_prev_round(0, 4, 4, 5, 3, 6, 4, 7, 3),
-            get_match_from_prev_round(0, 8, 1, 9, 2, 10, 1, 11, 2),
-            get_match_from_prev_round(0, 8, 2, 9, 1, 10, 2, 11, 1),
-            get_match_from_prev_round(0, 8, 3, 9, 4, 10, 3, 11, 4),
-            get_match_from_prev_round(0, 8, 4, 9, 3, 10, 4, 11, 3),
-            get_match_from_prev_round(0, 12, 1, 13, 2, 14, 1, 15, 2),
-            get_match_from_prev_round(0, 12, 2, 13, 1, 14, 2, 15, 1),
-            get_match_from_prev_round(0, 12, 3, 13, 4, 14, 3, 15, 4),
-            get_match_from_prev_round(0, 12, 4, 13, 3, 14, 4, 15, 3),
+            get_match_from_prev_round(0, 0, 1, 7, 1, 3, 2, 4, 2),
+            get_match_from_prev_round(0, 1, 1, 6, 1, 2, 2, 5, 2),
+            get_match_from_prev_round(0, 2, 1, 5, 1, 1, 2, 6, 2),
+            get_match_from_prev_round(0, 3, 1, 4, 1, 0, 2, 7, 2),
+            get_match_from_prev_round(0, 0, 3, 7, 3, 3, 4, 4, 4),
+            get_match_from_prev_round(0, 1, 3, 6, 3, 2, 4, 5, 4),
+            get_match_from_prev_round(0, 2, 3, 5, 3, 1, 4, 6, 4),
+            get_match_from_prev_round(0, 3, 3, 4, 3, 0, 4, 7, 4),
         ],
-        config=get_round_config(map_pool=map_pool),
+        config=get_round_config(map_pool=map_pool, num_winners=2),
     )
 
 
-def get_gs_round_3(
+def get_round_3(
     start_date: datetime,
     map_pool: List[Map],
 ) -> Round:
     return Round(
-        name="GS - Round 3",
+        name="Round 3",
         start_date=start_date,
         end_date=start_date + timedelta(hours=1),
         matches=[
-            get_match_from_prev_round(1, 0, 1, 0, 2, 1, 1, 1, 2),
-            get_match_from_prev_round(1, 0, 3, 1, 4, 2, 1, 3, 2),
-            get_match_from_prev_round(1, 0, 4, 1, 3, 2, 2, 3, 1),
-            get_match_from_prev_round(1, 4, 1, 4, 2, 5, 1, 5, 2),
-            get_match_from_prev_round(1, 4, 3, 5, 4, 6, 1, 7, 2),
-            get_match_from_prev_round(1, 4, 4, 5, 3, 6, 2, 7, 1),
-            get_match_from_prev_round(1, 8, 1, 8, 2, 9, 1, 9, 2),
-            get_match_from_prev_round(1, 8, 3, 9, 4, 10, 1, 11, 2),
-            get_match_from_prev_round(1, 8, 4, 9, 3, 10, 2, 11, 1),
-            get_match_from_prev_round(1, 12, 1, 12, 2, 13, 1, 13, 2),
-            get_match_from_prev_round(1, 12, 3, 13, 4, 14, 1, 15, 2),
-            get_match_from_prev_round(1, 12, 4, 13, 3, 14, 2, 15, 1),
+            get_match_from_prev_round(1, 0, 1, 2, 1, 1, 2, 3, 2),
+            get_match_from_prev_round(1, 1, 1, 3, 1, 0, 2, 2, 2),
+            get_match_from_prev_round(1, 4, 1, 5, 2, 2, 3, 3, 4),
+            get_match_from_prev_round(1, 5, 1, 6, 2, 3, 3, 0, 4),
+            get_match_from_prev_round(1, 6, 1, 7, 2, 0, 3, 1, 4),
+            get_match_from_prev_round(1, 7, 1, 0, 2, 1, 3, 2, 4),
         ],
-        config=get_round_config(map_pool=map_pool),
+        config=get_round_config(map_pool=map_pool, num_winners=3),
     )
 
 
-def get_gs_round_4(
+def get_round_4(
     start_date: datetime,
     map_pool: List[Map],
 ) -> Round:
     return Round(
-        name="GS - Round 4",
+        name="Round 4",
         start_date=start_date,
         end_date=start_date + timedelta(hours=1),
         matches=[
-            get_match_from_prev_round(2, 1, 1, 1, 2, 2, 1, 2, 2),
-            get_match_from_prev_round(2, 4, 1, 4, 2, 5, 1, 5, 2),
-            get_match_from_prev_round(2, 7, 1, 7, 2, 8, 1, 8, 2),
-            get_match_from_prev_round(2, 10, 1, 10, 2, 11, 1, 11, 2),
+            get_match_from_prev_round(2, 2, 1, 3, 2, 4, 3, 0, 4),
+            get_match_from_prev_round(2, 3, 1, 4, 2, 5, 3, 1, 4),
+            get_match_from_prev_round(2, 4, 1, 5, 2, 2, 3, 0, 3),
+            get_match_from_prev_round(2, 5, 1, 2, 2, 3, 3, 1, 3),
         ],
-        config=get_round_config(map_pool=map_pool),
-    )
-
-
-def get_swiss_round_1(
-    start_date: datetime,
-    map_pool: List[Map],
-) -> Round:
-    return Round(
-        name="Swiss - Round 1",
-        start_date=start_date,
-        end_date=start_date + timedelta(hours=1),
-        matches=[
-            get_match_with_round(2, 0, 3, 2, 9, 4, 3, 2, 1, 3, 1, 2),
-            get_match_with_round(2, 3, 3, 2, 6, 4, 3, 3, 1, 3, 0, 2),
-            get_match_with_round(2, 6, 3, 2, 3, 4, 3, 0, 1, 3, 3, 2),
-            get_match_with_round(2, 9, 3, 2, 0, 4, 3, 1, 1, 3, 2, 2),
-        ],
-        config=get_round_config(map_pool=map_pool),
-    )
-
-
-def get_swiss_round_2(
-    start_date: datetime,
-    map_pool: List[Map],
-) -> Round:
-    return Round(
-        name="Swiss - Round 2",
-        start_date=start_date,
-        end_date=start_date + timedelta(hours=1),
-        matches=[
-            get_match_with_round(4, 0, 1, 4, 1, 2, 4, 2, 2, 4, 3, 1),
-            get_match_with_round(4, 0, 2, 4, 1, 1, 4, 2, 1, 4, 3, 2),
-            get_match_with_round(4, 0, 3, 4, 1, 4, 4, 2, 4, 4, 3, 3),
-            get_match_with_round(4, 0, 4, 4, 1, 3, 4, 2, 3, 4, 3, 4),
-        ],
-        config=get_round_config(map_pool=map_pool),
-    )
-
-
-def get_swiss_round_3(
-    start_date: datetime,
-    map_pool: List[Map],
-) -> Round:
-    return Round(
-        name="Swiss - Round 3",
-        start_date=start_date,
-        end_date=start_date + timedelta(hours=1),
-        matches=[
-            get_match_with_round(5, 0, 3, 5, 1, 4, 5, 2, 1, 5, 3, 2),
-            get_match_with_round(5, 0, 4, 5, 1, 3, 5, 2, 2, 5, 3, 1),
-        ],
-        config=get_round_config(map_pool=map_pool),
+        config=get_round_config(map_pool=map_pool, num_winners=3),
     )
 
 
 ### NOTE fill these out as appropriate each time the script is run! You shouldn't need to modify anything else! ###
-event_name = "TestPASLQuali"
+event_name = "PASL Qualifier"
 club_id = 69352 # "Auto Events Staging"
 campaign_id = 57253  # Uses maps from a campaign
 
 now = datetime.utcnow()
 registration_start = now + timedelta(minutes=1)
-gs_r1_quali_start = now + timedelta(minutes=2)
-gs_r2_start = now + timedelta(hours=2)
-gs_r3_start = now + timedelta(hours=4)
-gs_r4_start = now + timedelta(hours=6)
-swiss_r1_start = now + timedelta(hours=8)
-swiss_r2_start = now + timedelta(hours=10)
-swiss_r3_start = now + timedelta(hours=12)
+r1_quali_start = datetime(2024, 2, 25, 9, 30, tzinfo=timezone('US/Pacific'))
+r1_start = datetime(2024, 2, 25, 11, tzinfo=timezone('US/Pacific'))
+r2_start = datetime(2024, 2, 25, 12, 30, tzinfo=timezone('US/Pacific'))
+r3_start = datetime(2024, 2, 25, 14, tzinfo=timezone('US/Pacific'))
+r4_start = datetime(2024, 2, 25, 15, 30, tzinfo=timezone('US/Pacific'))
 ### NOTE END ###
 
 # Get the map pool
 campaign_playlist = Campaign(club_id, campaign_id)._playlist
 map_pool = [Map(campaign_map._uuid) for campaign_map in campaign_playlist]
 
-gs_r1 = get_gs_round_1(gs_r1_quali_start, map_pool)
-gs_r2 = get_gs_round_2(gs_r2_start, map_pool)
-gs_r3 = get_gs_round_3(gs_r3_start, map_pool)
-gs_r4 = get_gs_round_4(gs_r4_start, map_pool)
-swiss_r1 = get_swiss_round_1(swiss_r1_start, map_pool)
-swiss_r2 = get_swiss_round_2(swiss_r2_start, map_pool)
-swiss_r3 = get_swiss_round_3(swiss_r3_start, map_pool)
+r1 = get_round_1(r1_quali_start, r1_start, map_pool)
+r2 = get_round_2(r2_start, map_pool)
+r3 = get_round_3(r3_start, map_pool)
+r4 = get_round_4(r4_start, map_pool)
 
 # Create and post the event
 event = Event(
     name=event_name,
     club_id=club_id,
     registration_start_date=registration_start,
-    registration_end_date=gs_r1_quali_start,
-    rounds=[gs_r1, gs_r2, gs_r3, gs_r4, swiss_r1, swiss_r2, swiss_r3],
+    registration_end_date=r1_quali_start,
+    rounds=[r1, r2, r3, r4],
 )
 event.post()

@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-import json
 import os
 from pathlib import Path
 import sys
@@ -16,7 +15,6 @@ from nadeo_event_api.api.structure.event import Event
 from nadeo_event_api.api.club.campaign import Campaign
 from nadeo_event_api.api.structure.enums import (
     AutoStartMode,
-    LeaderboardType,
     ScriptType,
 )
 from nadeo_event_api.api.structure.maps import Map
@@ -61,7 +59,6 @@ def get_round(
             max_players=2,
             script_settings=CupSpecialScriptSettings(
                 points_repartition="1,0",
-                ko_checkpoint_number=2,
                 number_of_winners=1,
                 warmup_duration=60,
                 match_points_limit=4,
@@ -69,7 +66,7 @@ def get_round(
             ),
             plugin_settings=ClassicPluginSettings(
                 pick_ban_start_auto=True,
-                pick_ban_order="b:0,b:1,p:0,p:1,p:0,p:1,p:0,p:1,p:0,p:1,p:r",
+                pick_ban_order="b:1,b:0,p:0,p:1,p:0,p:1,p:0,p:1,p:0,p:1,p:r",
                 auto_start_mode=AutoStartMode.DISABLED,
                 use_auto_ready=False,
             ),
@@ -78,7 +75,7 @@ def get_round(
 
 
 ### NOTE fill these out as appropriate each time the script is run! You shouldn't need to modify anything else! ###
-event_name = "TestSoloPlayoff"
+event_name = "PASL Playoffs"
 club_id = 69352 # "Auto Events Staging"
 campaign_id = 57253  # "Test Solo League"
 

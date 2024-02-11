@@ -218,16 +218,16 @@ def get_round_4(
 
 ### NOTE fill these out as appropriate each time the script is run! You shouldn't need to modify anything else! ###
 event_name = "PASL Qualifier"
-club_id = 69352 # "Auto Events Staging"
-campaign_id = 57253  # Uses maps from a campaign
+club_id = 68298 # "NCSA Trackmania"
+campaign_id = 60108 # "PASL Winter 2024"
 
 now = datetime.utcnow()
 registration_start = now + timedelta(minutes=1)
-r1_quali_start = datetime(2024, 2, 25, 9, 30, tzinfo=timezone('US/Pacific'))
-r1_start = datetime(2024, 2, 25, 11, tzinfo=timezone('US/Pacific'))
-r2_start = datetime(2024, 2, 25, 12, 30, tzinfo=timezone('US/Pacific'))
-r3_start = datetime(2024, 2, 25, 14, tzinfo=timezone('US/Pacific'))
-r4_start = datetime(2024, 2, 25, 15, 30, tzinfo=timezone('US/Pacific'))
+r1_quali_start = datetime(2024, 2, 25, 18)
+r1_start = datetime(2024, 2, 25, 19, 25)
+r2_start = datetime(2024, 2, 25, 20, 30)
+r3_start = datetime(2024, 2, 25, 22)
+r4_start = datetime(2024, 2, 25, 23, 30)
 ### NOTE END ###
 
 # Get the map pool

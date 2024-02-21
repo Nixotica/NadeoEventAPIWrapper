@@ -22,6 +22,8 @@ ADD_LOGO_URL_FMT = "https://meet.trackmania.nadeo.club/api/competitions/{0}/uplo
 
 GET_EVENT_URL_FMT = "https://meet.trackmania.nadeo.club/api/competitions/{0}"
 
+GET_PARTICIPANTS_URL_FMT = "https://meet.trackmania.nadeo.club/api/competitions/{0}/participants?offset={1}&length={2}"
+
 NADEO_DATE_FMT = "%Y-%m-%dT%H:%M:%S.000Z"
 
 SECRET_FILE = "secrets.json"

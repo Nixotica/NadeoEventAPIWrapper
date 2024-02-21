@@ -117,11 +117,12 @@ def get_round_1(
     quali_start_date: datetime,
     round_start_date: datetime,
     map_pool: List[Map],
+    qualifier_map_pool: List[Map],
 ) -> Round:
     return Round(
         name="Round 1",
         start_date=round_start_date,
-        end_date=round_start_date + timedelta(hours=1),
+        end_date=round_start_date + timedelta(minutes=59),
         matches=[
             get_match_from_quali(1, 16, 17, 32),
             get_match_from_quali(2, 15, 18, 31),
@@ -136,10 +137,10 @@ def get_round_1(
         qualifier=Qualifier(
             name="Seeding Qualifier",
             start_date=quali_start_date,
-            end_date=quali_start_date + timedelta(minutes=len(map_pool) * 6), # 6 minutes per map roughly
+            end_date=quali_start_date + timedelta(minutes=len(qualifier_map_pool) * 6), # 6 minutes per map roughly
             leaderboard_type=LeaderboardType.SUMSCORE,
             config=QualifierConfig(
-                map_pool=map_pool,
+                map_pool=qualifier_map_pool,
                 script=ScriptType.TIME_ATTACK,
                 plugin_settings=QualifierPluginSettings(
                     use_playlist_complete=True,
@@ -163,7 +164,7 @@ def get_round_2(
     return Round(
         name="Round 2",
         start_date=start_date,
-        end_date=start_date + timedelta(hours=1),
+        end_date=start_date + timedelta(minutes=59),
         matches=[
             get_match_from_prev_round(0, 0, 1, 7, 1, 3, 2, 4, 2),
             get_match_from_prev_round(0, 1, 1, 6, 1, 2, 2, 5, 2),
@@ -185,7 +186,7 @@ def get_round_3(
     return Round(
         name="Round 3",
         start_date=start_date,
-        end_date=start_date + timedelta(hours=1),
+        end_date=start_date + timedelta(minutes=59),
         matches=[
             get_match_from_prev_round(1, 0, 1, 2, 1, 1, 2, 3, 2),
             get_match_from_prev_round(1, 1, 1, 3, 1, 0, 2, 2, 2),
@@ -205,7 +206,7 @@ def get_round_4(
     return Round(
         name="Round 4",
         start_date=start_date,
-        end_date=start_date + timedelta(hours=1),
+        end_date=start_date + timedelta(minutes=59),
         matches=[
             get_match_from_prev_round(2, 2, 1, 3, 2, 4, 3, 0, 4),
             get_match_from_prev_round(2, 3, 1, 4, 2, 5, 3, 1, 4),
@@ -224,17 +225,18 @@ campaign_id = 60108 # "PASL Winter 2024"
 now = datetime.utcnow()
 registration_start = now + timedelta(minutes=1)
 r1_quali_start = datetime(2024, 2, 25, 18)
-r1_start = datetime(2024, 2, 25, 19, 25)
-r2_start = datetime(2024, 2, 25, 20, 30)
-r3_start = datetime(2024, 2, 25, 22)
-r4_start = datetime(2024, 2, 25, 23, 30)
+r1_start = datetime(2024, 2, 25, 19)
+r2_start = datetime(2024, 2, 25, 20)
+r3_start = datetime(2024, 2, 25, 21)
+r4_start = datetime(2024, 2, 25, 22)
 ### NOTE END ###
 
 # Get the map pool
 campaign_playlist = Campaign(club_id, campaign_id)._playlist
 map_pool = [Map(campaign_map._uuid) for campaign_map in campaign_playlist]
+qualifier_map_pool = map_pool[len(map_pool)//2:]
 
-r1 = get_round_1(r1_quali_start, r1_start, map_pool)
+r1 = get_round_1(r1_quali_start, r1_start, map_pool, qualifier_map_pool)
 r2 = get_round_2(r2_start, map_pool)
 r3 = get_round_3(r3_start, map_pool)
 r4 = get_round_4(r4_start, map_pool)

@@ -11,6 +11,7 @@ from ...constants import (
     ADD_TEAM_URL_FMT,
     CREATE_COMP_URL,
     DELETE_COMP_URL_FMT,
+    GET_PARTICIPANTS_URL_FMT,
     NADEO_DATE_FMT,
 )
 
@@ -111,6 +112,17 @@ class Event:
             json={"participant": player_uuid, "seed": seed},
         )
 
+    def get_participants(self) -> List[str]:
+        """
+        Gets the participants registered to the event.
+
+        :returns: A list of player UUIDs
+        """
+        if not self._registered_id:
+            print("Could not get participants from event since it hasn't been posted.")
+            return
+        return Event.get_participants_from_id(self._registered_id)
+
     def add_team(self, name: str, members: List[str], seed: int) -> None:
         """
         Adds a team to the event.
@@ -168,10 +180,18 @@ class Event:
             headers={"Authorization": "nadeo_v1 t=" + token},
         )
 
-    """
-    TODO Get the registered players from original competition (static method)
-    get_participants_url = f"https://competition.trackmania.nadeo.club/api/competitions/{comp_id}/participants?offset=0&length=50"
-    """
+    @staticmethod
+    def get_participants_from_id(event_id: int) -> List[str]:
+        # TODO return type Participant 
+        token = UbiTokenManager().nadeo_club_token
+        response = requests.get(
+            url=GET_PARTICIPANTS_URL_FMT.format(event_id, 0, 50), # TODO pagination support
+            headers={"Authorization": "nadeo_v1 t=" + token},
+        ).json()
+        uuids = []
+        for participant_info in response:
+            uuids.append(participant_info['participant'])
+        return uuids
 
     def _as_jsonable_dict(self) -> dict:
         """

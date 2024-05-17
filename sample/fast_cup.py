@@ -26,6 +26,7 @@ from nadeo_event_api.api.structure.settings.plugin_settings import (
 )
 from nadeo_event_api.api.structure.settings.script_settings import (
     CupSpecialScriptSettings,
+    BaseScriptSettings,
 )
 
 # Event info
@@ -61,8 +62,7 @@ event = Event(
             script=ScriptType.CUP_LONG,
             max_players=4,
             script_settings=CupSpecialScriptSettings(
-                warmup_number=1,
-                warmup_duration=60,
+                base_script_settings=BaseScriptSettings(),
                 points_repartition="10,5,3,0",
                 cup_points_limit=30,
                 match_points_limit=2,
@@ -76,7 +76,7 @@ event = Event(
                 pick_ban_start_auto=True,
             )
         )
-    ],
+    )],
 )
 event.post()
 

@@ -70,7 +70,7 @@ class Event:
         self._registered_id = response["competition"]["id"]
         self._live_id = response["competition"]["liveId"]
         print(
-            f"Your event is viewable at https://admin.trackmania.nadeo.club/competition/{self._registered_id}"
+            f"Your event is viewable at https://www.trackmania.com/competition/{self._registered_id}"
         )
 
     def delete(self) -> None:

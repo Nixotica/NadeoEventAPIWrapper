@@ -43,8 +43,8 @@ class ClassicPluginSettings(PluginSettings):
         self._enable_ready_manager = True
         self._ready_start_ratio = 1
 
-        # This should ALWAYS be true according to Randomize else it breaks
-        self._pick_ban_use_gamepad_version = True
+        # This should ALWAYS be true according to Randomize else it breaks UNLESS its not teams
+        self._pick_ban_use_gamepad_version = False
 
     def as_jsonable_dict(self) -> dict:
         plugin_settings = super().as_jsonable_dict()

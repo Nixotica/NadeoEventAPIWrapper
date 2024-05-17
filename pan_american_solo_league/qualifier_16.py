@@ -51,6 +51,7 @@ def get_round_config(
             base_script_settings=BaseScriptSettings(
                 warmup_number=1,
                 warmup_duration=60,
+                pick_ban_enable=True,
             ),
             points_repartition="10,5,3,0",
             cup_points_limit=30,

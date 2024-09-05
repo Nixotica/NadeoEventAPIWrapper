@@ -71,7 +71,7 @@ class TestEvent(unittest.TestCase):
         now = datetime.utcnow()
         event = Event(
             name="my_event",
-            club_id=os.getenv(MY_CLUB),
+            club_id=os.getenv(MY_CLUB),  # type: ignore
             rounds=[
                 Round(
                     name="round_1",
@@ -112,7 +112,9 @@ class TestEvent(unittest.TestCase):
         )
         event.post()
         self.assertIsNotNone(event._registered_id)
-        event.add_logo("https://upload.wikimedia.org/wikipedia/en/9/9a/Trollface_non-free.png")
+        event.add_logo(
+            "https://www.trackmania.com/build/images/Flags/GBR.1ef3a1eb.png"
+        )
         self.assertIsNotNone(event._registered_logo_url)
         event.delete()
         self.assertIsNone(event._registered_id)

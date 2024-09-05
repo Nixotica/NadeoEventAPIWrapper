@@ -27,7 +27,7 @@ from nadeo_event_api.api.structure.settings.script_settings import TMWTScriptSet
 
 # Event info
 event_name = "TMWTExample"
-club_id = 69352 # "Auto Events Staging"
+club_id = 69352  # "Auto Events Staging"
 campaign_id = 57253  # "Test Solo League"
 
 # Create teams of two by UID
@@ -51,25 +51,29 @@ map_pool = [Map(campaign_map._uuid) for campaign_map in campaign_playlist]
 event = Event(
     name=event_name,
     club_id=club_id,
-    rounds=[Round(
-        name="Round 1",
-        start_date=match_start,
-        end_date=match_start + timedelta(hours=1),
-        matches=[Match(
-            spots=[TeamMatchSpot(1), TeamMatchSpot(2)],
-        )],
-        config=RoundConfig(
-            map_pool=map_pool,
-            script=ScriptType.TMWT_TEAMS,
-            max_players=4,
-            script_settings=TMWTScriptSettings(
-                match_points_limit=4,
+    rounds=[
+        Round(
+            name="Round 1",
+            start_date=match_start,
+            end_date=match_start + timedelta(hours=1),
+            matches=[
+                Match(
+                    spots=[TeamMatchSpot(1), TeamMatchSpot(2)],
+                )
+            ],
+            config=RoundConfig(
+                map_pool=map_pool,
+                script=ScriptType.TMWT_TEAMS,
+                max_players=4,
+                script_settings=TMWTScriptSettings(
+                    match_points_limit=4,
+                ),
+                plugin_settings=TMWTPluginSettings(
+                    ready_minimum_team_size=1,
+                ),
             ),
-            plugin_settings=TMWTPluginSettings(
-                ready_minimum_team_size=1,
-            ),
-        ),
-    )],
+        )
+    ],
     participant_type=ParticipantType.TEAM,
 )
 event.post()

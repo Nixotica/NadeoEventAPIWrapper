@@ -4,6 +4,7 @@ from ...structure.enums import RespawnBehavior
 
 # Nadeo api documentation: https://wiki.trackmania.io/en/dedicated-server/Usage/OfficialGameModesSettings
 
+
 class BaseScriptSettings:
     def __init__(
         self,
@@ -36,10 +37,7 @@ class BaseScriptSettings:
 
 
 class ScriptSettings(ABC):
-    def __init__(
-        self,
-        base_script_settings: BaseScriptSettings = BaseScriptSettings()
-    ):
+    def __init__(self, base_script_settings: BaseScriptSettings = BaseScriptSettings()):
         """
         Declares the list of script settings to use in a round.
 
@@ -56,21 +54,13 @@ class ScriptSettings(ABC):
     def as_jsonable_dict(self) -> dict:
         script_settings = {}
         script_settings["S_ChatTime"] = self.base_script_settings._chat_time
-        script_settings[
-            "S_ForceLapsNb"
-        ] = self.base_script_settings._force_laps_number
+        script_settings["S_ForceLapsNb"] = self.base_script_settings._force_laps_number
         script_settings[
             "S_RespawnBehaviour"
         ] = self.base_script_settings._respawn_behavior.value
-        script_settings[
-            "S_WarmUpDuration"
-        ] = self.base_script_settings._warmup_duration
-        script_settings[
-            "S_WarmUpNb"
-        ] = self.base_script_settings._warmup_number
-        script_settings[
-            "S_WarmUpTimeout"
-        ] = self.base_script_settings._warmup_timeout
+        script_settings["S_WarmUpDuration"] = self.base_script_settings._warmup_duration
+        script_settings["S_WarmUpNb"] = self.base_script_settings._warmup_number
+        script_settings["S_WarmUpTimeout"] = self.base_script_settings._warmup_timeout
         script_settings[
             "S_PickAndBan_Enable"
         ] = self.base_script_settings._pick_ban_enable
@@ -294,11 +284,11 @@ class TeamsScriptSettings(ScriptSettings):
         base_script_settings: BaseScriptSettings = BaseScriptSettings(),
         cumulate_points: bool = False,
         finish_timeout: int = 5,
-        maps_per_match: int = None,
+        maps_per_match: int | None = None,
         max_points_per_round: int = 6,
         points_gap: int = 0,
         points_limit: int = 5,
-        points_repartition: str = None,
+        points_repartition: str | None = None,
         rounds_per_map: int = -1,
         use_alternate_rules: bool = True,
         use_tie_break: bool = True,
@@ -394,7 +384,7 @@ class RoundsScriptSettings(ScriptSettings):
         self,
         base_script_settings: BaseScriptSettings = BaseScriptSettings(),
         finish_timeout: int = 5,
-        maps_per_match: int = None,
+        maps_per_match: int | None = None,
         points_limit: int = 50,
         points_repartition: str = "10,6,4,3,2,1",
         rounds_per_map: int = -1,
@@ -448,9 +438,9 @@ class CupSpecialScriptSettings(ScriptSettings):
         points_limit: int = 100,
         points_repartition: str = "10,6,4,3,2,1",
         rounds_per_map: int = 5,
-        match_points_limit: int = 2,
-        cup_points_limit: int = 2,
-        ko_checkpoint_number: int = 0,
+        match_points_limit: int | None = None,
+        cup_points_limit: int | None = None,
+        ko_checkpoint_number: int | None = None,
         enable_ambient_sound: bool = False,
         hide_scores_header: bool = False,
         # TODO S_OverridePlayerProfiles as raw text json file for team + player names
@@ -499,9 +489,12 @@ class CupSpecialScriptSettings(ScriptSettings):
         script_settings["S_PointsLimit"] = self._points_limit
         script_settings["S_PointsRepartition"] = self._points_repartition
         script_settings["S_RoundsPerMap"] = self._rounds_per_map
-        script_settings["S_MatchPointsLimit"] = self._match_points_limit
-        script_settings["S_CupPointsLimit"] = self._cup_points_limit
-        script_settings["S_KOCheckpointNb"] = self._ko_checkpoint_number
+        if self._match_points_limit is not None:
+            script_settings["S_MatchPointsLimit"] = self._match_points_limit
+        if self._cup_points_limit is not None:
+            script_settings["S_CupPointsLimit"] = self._cup_points_limit
+        if self._ko_checkpoint_number is not None:
+            script_settings["S_KOCheckpointNb"] = self._ko_checkpoint_number
         script_settings["S_EnableAmbientSound"] = self._enable_ambient_sound
         script_settings["S_HideScoresHeader"] = self._hide_scores_header
         return script_settings

@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import List
+from warnings import warn
 import requests
 
 from .enums import ParticipantType
@@ -26,17 +27,21 @@ class Event:
         name: str,
         club_id: int,
         rounds: List[Round],
-        description: str = None,
-        registration_start_date: datetime = None,
-        registration_end_date: datetime = None,
+        description: str = None,  # type: ignore
+        registration_start_date: datetime = None,  # type: ignore
+        registration_end_date: datetime = None,  # type: ignore
         participant_type: ParticipantType = ParticipantType.PLAYER,
     ):
         self._name = name
         self._club_id = club_id
         self._rounds = rounds
         self._description = description
-        self._registration_start_date = dt_standardize(registration_start_date) if registration_start_date else None
-        self._registration_end_date = dt_standardize(registration_end_date) if registration_end_date else None
+        self._registration_start_date = (
+            dt_standardize(registration_start_date) if registration_start_date else None
+        )
+        self._registration_end_date = (
+            dt_standardize(registration_end_date) if registration_end_date else None
+        )
         self._participant_type = participant_type
 
         self._registered_id = None
@@ -55,6 +60,7 @@ class Event:
         """
         Posts the event if valid.
         """
+        warn("This method is being deprecated. Use event_api.create_event instead.")
         if not self.valid():
             print("Event is not valid, and therefore will not post.")
             return
@@ -120,7 +126,7 @@ class Event:
         """
         if not self._registered_id:
             print("Could not get participants from event since it hasn't been posted.")
-            return
+            return []
         return Event.get_participants_from_id(self._registered_id)
 
     def add_team(self, name: str, members: List[str], seed: int) -> None:
@@ -138,18 +144,18 @@ class Event:
             print("Could not add team since this event is not type TEAM")
             return
         token = UbiTokenManager().nadeo_club_token
-        members = [{"member": member} for member in members]
+        team_members = [{"member": member} for member in members]
         requests.post(
             url=ADD_TEAM_URL_FMT.format(self._registered_id),
             headers={"Authorization": "nadeo_v1 t=" + token},
-            json={"id": name, "name": name, "seed": seed, "members": members},
+            json={"id": name, "name": name, "seed": seed, "members": team_members},
         )
 
     def add_logo(self, logo_url: str) -> None:
         """
-        Adds a logo to the event. 
+        Adds a logo to the event.
 
-        :param logo_url: The URL of the logo. 
+        :param logo_url: The URL of the logo.
         """
         if not self._registered_id:
             print("Could not add logo to event since it hasn't been posted.")
@@ -161,7 +167,10 @@ class Event:
         token = UbiTokenManager().nadeo_club_token
         response = requests.post(
             url=ADD_LOGO_URL_FMT.format(self._registered_id),
-            headers={"Authorization": "nadeo_v1 t=" + token, "Content-Type": "application/binary"},
+            headers={
+                "Authorization": "nadeo_v1 t=" + token,
+                "Content-Type": "application/binary",
+            },
             data=response.content,
         ).json()
         self._personal_logo_url = logo_url
@@ -182,15 +191,17 @@ class Event:
 
     @staticmethod
     def get_participants_from_id(event_id: int) -> List[str]:
-        # TODO return type Participant 
+        # TODO return type Participant
         token = UbiTokenManager().nadeo_club_token
         response = requests.get(
-            url=GET_PARTICIPANTS_URL_FMT.format(event_id, 0, 50), # TODO pagination support
+            url=GET_PARTICIPANTS_URL_FMT.format(
+                event_id, 0, 50
+            ),  # TODO pagination support
             headers={"Authorization": "nadeo_v1 t=" + token},
         ).json()
         uuids = []
         for participant_info in response:
-            uuids.append(participant_info['participant'])
+            uuids.append(participant_info["participant"])
         return uuids
 
     def _as_jsonable_dict(self) -> dict:
@@ -256,11 +267,18 @@ class Event:
                 print(f"Round {round_idx} is invalid.")
                 return False
             if round_idx > 0:
-                if self._rounds[round_idx - 1]._end_date >= self._rounds[round_idx]._start_date:
-                    print(f"Round {round_idx - 1} must end ({self._rounds[round_idx - 1]._end_date}) before the next begins ({self._rounds[round_idx]._start_date}).")
+                if (
+                    self._rounds[round_idx - 1]._end_date
+                    >= self._rounds[round_idx]._start_date
+                ):
+                    print(
+                        f"Round {round_idx - 1} must end ({self._rounds[round_idx - 1]._end_date}) before the next begins ({self._rounds[round_idx]._start_date})."
+                    )
                     return False
                 if self._rounds[round_idx]._qualifier is not None:
-                    print(f"Round {round_idx} has a qualifier, but only the first round may have one.")
+                    print(
+                        f"Round {round_idx} has a qualifier, but only the first round may have one."
+                    )
                     return False
 
         # TODO check that maps are real

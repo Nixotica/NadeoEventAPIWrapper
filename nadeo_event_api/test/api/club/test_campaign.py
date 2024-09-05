@@ -9,8 +9,8 @@ import unittest
 class TestCampaign(unittest.TestCase):
     @pytest.mark.integration
     def test_get_campaign_map_playlist(self):
-        test_club_id = 69352 # Auto Events Staging
-        test_campaign_id = 55190 # Test Campaign
+        test_club_id = 69352  # Auto Events Staging
+        test_campaign_id = 55190  # Test Campaign
 
         test_campaign = Campaign(test_club_id, test_campaign_id)
 

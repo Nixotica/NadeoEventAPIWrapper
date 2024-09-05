@@ -86,7 +86,7 @@ def get_round(
 
 
 event_name = "TestKOEvent"
-club_id = 69352 # "Auto Events Staging"
+club_id = 69352  # "Auto Events Staging"
 campaign_id = 57253  # "Test Solo League"
 
 # Get a random map from the campaign
@@ -98,11 +98,9 @@ registration_start = datetime.utcnow() + timedelta(minutes=1)
 start_time = registration_start + timedelta(minutes=3)
 
 # Qualifier
-qualifier = get_qualifier(
-    start_time, start_time + timedelta(minutes=6), [random_map]
-)
+qualifier = get_qualifier(start_time, start_time + timedelta(minutes=6), [random_map])
 
-# Knockout round 
+# Knockout round
 ko_round = get_round(
     qualifier._end_date + timedelta(minutes=1),
     qualifier._end_date + timedelta(minutes=60),

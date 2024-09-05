@@ -7,7 +7,8 @@ from time import tzname
 from typing import List
 
 from pytz import (
-    timezone, utc,
+    timezone,
+    utc,
 )
 from nadeo_event_api.api.structure.settings.plugin_settings import (
     QualifierPluginSettings,
@@ -20,8 +21,13 @@ event_api_pkg = os.path.join(
 )
 sys.path.append(str(event_api_pkg))
 
-from nadeo_event_api.api.structure.settings.plugin_settings import QualifierPluginSettings
-from nadeo_event_api.api.structure.settings.script_settings import CupSpecialScriptSettings, TimeAttackScriptSettings
+from nadeo_event_api.api.structure.settings.plugin_settings import (
+    QualifierPluginSettings,
+)
+from nadeo_event_api.api.structure.settings.script_settings import (
+    CupSpecialScriptSettings,
+    TimeAttackScriptSettings,
+)
 from nadeo_event_api.api.structure.round.qualifier import Qualifier, QualifierConfig
 from nadeo_event_api.api.structure.event import Event
 from nadeo_event_api.api.club.campaign import Campaign
@@ -314,14 +320,14 @@ def get_swiss_round_4(
         name="Swiss - Round 4",
         start_date=start_date,
         end_date=start_date + timedelta(minutes=40),
-        matches=[], # CD will add the matches if necessary as tie breaker
+        matches=[],  # CD will add the matches if necessary as tie breaker
         config=get_round_config(map_pool=map_pool),
     )
 
 
 ### NOTE fill these out as appropriate each time the script is run! You shouldn't need to modify anything else! ###
 event_name = "PATC Qualifier"
-club_id = 68298 
+club_id = 68298
 campaign_id = 58789  # Uses maps from a campaign
 
 registration_start = datetime.utcnow() + timedelta(minutes=1)

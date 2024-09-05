@@ -57,7 +57,7 @@
           "S_AdImageUrls": "",
           "S_AutoStartMode": "delay",
           "S_AutoStartDelay": 600,
-          "S_PickBanUseGamepadVersion": true,
+          "S_PickBanUseGamepadVersion": false,
           "S_PickBanStartAuto": false,
           "S_PickBanOrder": "",
           "S_EnableReadyManager": true,

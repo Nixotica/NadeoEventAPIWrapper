@@ -20,6 +20,7 @@ ADD_TEAM_URL_FMT = "https://meet.trackmania.nadeo.club/api/competitions/{0}/team
 
 ADD_LOGO_URL_FMT = "https://meet.trackmania.nadeo.club/api/competitions/{0}/upload/logo"
 
+# https://webservices.openplanet.dev/meet/competitions/competition
 GET_EVENT_URL_FMT = "https://meet.trackmania.nadeo.club/api/competitions/{0}"
 
 GET_PARTICIPANTS_URL_FMT = "https://meet.trackmania.nadeo.club/api/competitions/{0}/participants?offset={1}&length={2}"

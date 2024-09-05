@@ -3,7 +3,10 @@ from typing import List
 
 from nadeo_event_api.utils import dt_standardize
 
-from ...structure.settings.plugin_settings import PluginSettings, QualifierPluginSettings
+from ...structure.settings.plugin_settings import (
+    PluginSettings,
+    QualifierPluginSettings,
+)
 from ...structure.settings.script_settings import (
     ScriptSettings,
     TimeAttackScriptSettings,

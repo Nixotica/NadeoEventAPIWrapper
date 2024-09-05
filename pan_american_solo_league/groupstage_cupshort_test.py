@@ -113,7 +113,7 @@ def get_rounds(
 
 ### NOTE fill these out as appropriate each time the script is run! You shouldn't need to modify anything else! ###
 event_name = "TestSoloLeague"
-club_id = 69352 # "Auto Events Staging"
+club_id = 69352  # "Auto Events Staging"
 campaign_id = 57253  # "Test Solo League"
 
 # This MUST be 16 players in order of seed (1-16)

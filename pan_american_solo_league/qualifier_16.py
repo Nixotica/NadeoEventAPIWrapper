@@ -51,6 +51,7 @@ def get_round_config(
             base_script_settings=BaseScriptSettings(
                 warmup_number=1,
                 warmup_duration=60,
+                pick_ban_enable=True,
             ),
             points_repartition="10,5,3,0",
             cup_points_limit=30,
@@ -137,7 +138,10 @@ def get_round_1(
         qualifier=Qualifier(
             name="Seeding Qualifier",
             start_date=quali_start_date,
-            end_date=quali_start_date + timedelta(minutes=len(qualifier_map_pool) * 6), # 6 minutes per map roughly
+            end_date=quali_start_date
+            + timedelta(
+                minutes=len(qualifier_map_pool) * 6
+            ),  # 6 minutes per map roughly
             leaderboard_type=LeaderboardType.SUMSCORE,
             config=QualifierConfig(
                 map_pool=qualifier_map_pool,
@@ -150,7 +154,7 @@ def get_round_1(
                         warmup_number=1,
                         warmup_duration=20,
                     ),
-                    time_limit=300, 
+                    time_limit=300,
                 ),
             ),
         ),
@@ -219,8 +223,8 @@ def get_round_4(
 
 ### NOTE fill these out as appropriate each time the script is run! You shouldn't need to modify anything else! ###
 event_name = "PASL Qualifier"
-club_id = 68298 # "NCSA Trackmania"
-campaign_id = 60108 # "PASL Winter 2024"
+club_id = 68298  # "NCSA Trackmania"
+campaign_id = 60108  # "PASL Winter 2024"
 
 now = datetime.utcnow()
 registration_start = now + timedelta(minutes=1)
@@ -234,7 +238,7 @@ r4_start = datetime(2024, 2, 25, 22)
 # Get the map pool
 campaign_playlist = Campaign(club_id, campaign_id)._playlist
 map_pool = [Map(campaign_map._uuid) for campaign_map in campaign_playlist]
-qualifier_map_pool = map_pool[len(map_pool)//2:]
+qualifier_map_pool = map_pool[len(map_pool) // 2 :]
 
 r1 = get_round_1(r1_quali_start, r1_start, map_pool, qualifier_map_pool)
 r2 = get_round_2(r2_start, map_pool)

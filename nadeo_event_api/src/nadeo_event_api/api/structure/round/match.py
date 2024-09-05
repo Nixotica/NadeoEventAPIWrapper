@@ -14,6 +14,6 @@ class Match:
 
     def as_jsonable_dict(self) -> dict:
         match = {}
-        match["spots"] = [spot.as_jsonable_dict() for spot in self._spots]
+        match["spots"] = [spot.as_jsonable_dict() for spot in self._spots]  # type: ignore
         match["settings"] = self._settings
         return match

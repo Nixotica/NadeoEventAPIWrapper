@@ -63,7 +63,9 @@ class Round:
         self._start_date = dt_standardize(start_date)
         self._end_date = dt_standardize(end_date)
         self._matches = matches
-        self._leaderboard_type = LeaderboardType.BRACKET # It seems like rounds only support this type...
+        self._leaderboard_type = (
+            LeaderboardType.BRACKET
+        )  # It seems like rounds only support this type...
         self._config = config
         self._qualifier = qualifier
         self._team_leaderboard_type = "TEAM_SCORE"  # TODO figure out what this is

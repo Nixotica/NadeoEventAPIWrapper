@@ -26,18 +26,19 @@ from nadeo_event_api.api.structure.settings.plugin_settings import (
 )
 from nadeo_event_api.api.structure.settings.script_settings import (
     CupSpecialScriptSettings,
+    BaseScriptSettings,
 )
 
 # Event info
 event_name = "FastCupTest"
-club_id = 69352 # "Auto Events Staging"
-campaign_id = 58885  # "Fast Cup Test"
+club_id = 58261  # "Auto Events" 69352 # "Auto Events Staging"
+campaign_id = 55644  # "Delta Bracket Beta" 58885 # "Fast Cup Test"
 
 players = [
     "dadbaf28-e7b5-429b-bf37-8c8c1419fcf4",  # That_Ski_Freak
     "2e34c3cb-9548-4815-aee3-c68518a1fd88",  # Nixotica
-    "ec0269d5-2d19-41eb-a931-01b8a11c2784",  # Random.TX
-    "f5e37115-d85a-4f3e-bc5a-969d6e29fede",  # tewbs
+    "12ea0824-1698-4c61-ba1f-c2eb73a97477",  # CD alt
+    "df9448f1-a8d5-4682-9003-1c2777c62b91",  # alxshaer
 ]
 
 now = datetime.utcnow()
@@ -45,36 +46,37 @@ match_start = now + timedelta(minutes=1)
 
 # Get the map pool
 campaign_playlist = Campaign(club_id, campaign_id)._playlist
-map_pool = [Map(campaign_map._uuid) for campaign_map in campaign_playlist]
+map_pool = [Map(campaign_map._uuid) for campaign_map in campaign_playlist]  # type: ignore
 
 # Create the event
 event = Event(
     name=event_name,
     club_id=club_id,
-    rounds=[Round(
-        name="Round 1",
-        start_date=match_start,
-        end_date=match_start + timedelta(hours=1),
-        matches=[Match(spots=[SeedMatchSpot(x) for x in range(1,5)])],
-        config=RoundConfig(
-            map_pool=map_pool,
-            script=ScriptType.CUP_LONG,
-            max_players=4,
-            script_settings=CupSpecialScriptSettings(
-                warmup_number=1,
-                warmup_duration=60,
-                points_repartition="10,5,3,0",
-                cup_points_limit=30,
-                match_points_limit=2,
-                number_of_winners=3,
-                finish_timeout=10,
+    rounds=[
+        Round(
+            name="Round 1",
+            start_date=match_start,
+            end_date=match_start + timedelta(hours=1),
+            matches=[Match(spots=[SeedMatchSpot(x) for x in range(1, 5)])],
+            config=RoundConfig(
+                map_pool=map_pool,
+                script=ScriptType.CUP_LONG,
+                max_players=4,
+                script_settings=CupSpecialScriptSettings(
+                    base_script_settings=BaseScriptSettings(),
+                    points_repartition="10,5,3,0",
+                    cup_points_limit=30,
+                    match_points_limit=2,
+                    number_of_winners=3,
+                    finish_timeout=10,
+                ),
+                plugin_settings=ClassicPluginSettings(
+                    auto_start_mode=AutoStartMode.DISABLED,
+                    use_auto_ready=False,
+                    pick_ban_order="p:0,p:1,p:2,p:3,p:r,p:r",
+                    pick_ban_start_auto=True,
+                ),
             ),
-            plugin_settings=ClassicPluginSettings(
-                auto_start_mode=AutoStartMode.DISABLED,
-                use_auto_ready=False,
-                pick_ban_order="p:0,p:1,p:2,p:3,p:r,p:r",
-                pick_ban_start_auto=True,
-            )
         )
     ],
 )

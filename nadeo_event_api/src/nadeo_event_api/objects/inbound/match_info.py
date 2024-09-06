@@ -35,7 +35,7 @@ class MatchInfo:
     start_date: int | None
     end_date: int | None
     status: str | None  # TODO - enumerate
-    participant_type: ParticipantType
+    participant_type: str | None
     join_link: str | None
     server_status: str | None  # TODO - enumerate
     manialink: str | None
@@ -62,7 +62,7 @@ class MatchInfo:
             start_date=start_date,
             end_date=end_date,
             status=status,
-            participant_type=ParticipantType(participant_type),
+            participant_type=participant_type,
             join_link=join_link,
             server_status=server_status,
             manialink=manialink,

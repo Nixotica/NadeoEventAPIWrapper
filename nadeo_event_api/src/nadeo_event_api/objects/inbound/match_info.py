@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import Any, Dict, List
 from ...api.structure.enums import ParticipantType, ScriptType
@@ -5,11 +7,14 @@ from ...api.structure.enums import ParticipantType, ScriptType
 
 @dataclass
 class PublicConfig:
-    script: ScriptType
+    script: ScriptType | None
     maps: List[str] | None
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]):
+    def from_dict(cls, data: Dict[str, Any] | None) -> PublicConfig | None:
+        if data is None:
+            return None
+
         script = data.get("script")
         maps = data.get("maps")
 

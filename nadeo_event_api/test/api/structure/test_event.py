@@ -112,9 +112,7 @@ class TestEvent(unittest.TestCase):
         )
         event.post()
         self.assertIsNotNone(event._registered_id)
-        event.add_logo(
-            "https://www.trackmania.com/build/images/Flags/GBR.1ef3a1eb.png"
-        )
+        event.add_logo("https://www.trackmania.com/build/images/Flags/GBR.1ef3a1eb.png")
         self.assertIsNotNone(event._registered_logo_url)
         event.delete()
         self.assertIsNone(event._registered_id)

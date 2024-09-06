@@ -28,4 +28,4 @@ class Match:
         tags = data.get("tags")
         deleted_on = data.get("deletedOn")
 
-        return cls(id, name, club_match_live_id, position, is_completed, tags, deleted_on) # type: ignore
+        return cls(id, name, club_match_live_id, position, is_completed, tags, deleted_on)  # type: ignore

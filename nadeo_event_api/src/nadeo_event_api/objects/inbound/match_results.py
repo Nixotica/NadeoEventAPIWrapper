@@ -13,8 +13,8 @@ class RankedParticipant:
     participant: str
     rank: int | None
     score: int | None
-    zone: str | None 
-    team: str | None 
+    zone: str | None
+    team: str | None
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]):
@@ -24,8 +24,7 @@ class RankedParticipant:
         zone = data.get("zone")
         team = data.get("team")
 
-        return cls(participant, rank, score, zone, team) # type: ignore
-
+        return cls(participant, rank, score, zone, team)  # type: ignore
 
 
 """
@@ -45,6 +44,6 @@ class MatchResults:
     def from_dict(cls, data: Dict[str, Any]):
         match_live_id = data.get("matchLiveId")
         round_position = data.get("roundPosition")
-        results = [RankedParticipant.from_dict(result) for result in data.get("results")] # type: ignore
+        results = [RankedParticipant.from_dict(result) for result in data.get("results")]  # type: ignore
 
-        return cls(match_live_id, round_position, results) # type: ignore
+        return cls(match_live_id, round_position, results)  # type: ignore

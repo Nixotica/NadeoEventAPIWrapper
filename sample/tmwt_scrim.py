@@ -22,13 +22,14 @@ from nadeo_event_api.api.structure.round.match import Match
 from nadeo_event_api.api.structure.round.match_spot import TeamMatchSpot
 from nadeo_event_api.api.structure.round.round import Round, RoundConfig
 from nadeo_event_api.api.structure.settings.plugin_settings import TMWTPluginSettings
-from nadeo_event_api.api.structure.settings.script_settings import TMWTScriptSettings
+from nadeo_event_api.api.structure.settings.script_settings import TMWTScriptSettings, BaseScriptSettings
 
 
 # Event info
 event_name = "TMWTExample"
-club_id = 69352  # "Auto Events Staging"
-campaign_id = 57253  # "Test Solo League"
+match_club_id = 69352  # "Auto Events Staging"
+campaign_club_id = 383 # TMWT
+campaign_id = 74274  # "TMWT Fall 2024"
 
 # Create teams of two by UID
 team_a = [
@@ -41,16 +42,16 @@ team_b = [
 ]
 
 now = datetime.utcnow()
-match_start = now + timedelta(minutes=2)
+match_start = now + timedelta(minutes=1)
 
 # Get the map pool
-campaign_playlist = Campaign(club_id, campaign_id)._playlist
-map_pool = [Map(campaign_map._uuid) for campaign_map in campaign_playlist]
+campaign_playlist = Campaign(campaign_club_id, campaign_id)._playlist
+map_pool = [Map(campaign_map._uuid) for campaign_map in campaign_playlist] # type: ignore
 
 # Create the event
 event = Event(
     name=event_name,
-    club_id=club_id,
+    club_id=match_club_id,
     rounds=[
         Round(
             name="Round 1",
@@ -62,14 +63,20 @@ event = Event(
                 )
             ],
             config=RoundConfig(
-                map_pool=map_pool,
+                map_pool=[map_pool[0]],
                 script=ScriptType.TMWT_TEAMS,
                 max_players=4,
                 script_settings=TMWTScriptSettings(
-                    match_points_limit=4,
+                    base_script_settings=BaseScriptSettings(
+                        warmup_number=1,
+                        warmup_duration=60,
+                    ),
+                    match_points_limit=1,
                 ),
                 plugin_settings=TMWTPluginSettings(
                     ready_minimum_team_size=1,
+                    pick_ban_start_auto=False,
+                    pick_ban_order="",
                 ),
             ),
         )

@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 import os
+import time
 import pytest
 import unittest
 import json
@@ -13,6 +14,7 @@ from src.nadeo_event_api.api.structure.round.match_spot import SeedMatchSpot
 from src.nadeo_event_api.api.structure.round.match import Match
 from src.nadeo_event_api.api.structure.round.round import Round, RoundConfig
 from src.nadeo_event_api.api.structure.event import Event
+from src.nadeo_event_api.api.event_api import get_rounds_for_event, get_matches_for_round
 
 
 class TestEvent(unittest.TestCase):
@@ -72,6 +74,8 @@ class TestEvent(unittest.TestCase):
         event = Event(
             name="my_event",
             club_id=os.getenv(MY_CLUB),  # type: ignore
+            registration_start_date=now + timedelta(minutes=1),
+            registration_end_date=now + timedelta(minutes=9),
             rounds=[
                 Round(
                     name="round_1",
@@ -114,5 +118,7 @@ class TestEvent(unittest.TestCase):
         self.assertIsNotNone(event._registered_id)
         event.add_logo("https://www.trackmania.com/build/images/Flags/GBR.1ef3a1eb.png")
         self.assertIsNotNone(event._registered_logo_url)
+        rounds = get_rounds_for_event(event._registered_id)  # type: ignore
+        self.assertEqual(len(rounds), 1)
         event.delete()
         self.assertIsNone(event._registered_id)

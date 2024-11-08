@@ -504,8 +504,10 @@ class TMWTScriptSettings(ScriptSettings):
     def __init__(
         self,
         base_script_settings: BaseScriptSettings = BaseScriptSettings(),
+        teams_url: str | None = None,
         crash_detection_threshold: int = 1000,
         match_points_limit: int = 2,
+        match_info: str | None = None,
     ):
         """
         Declares the list of script settings to use in a round.
@@ -518,17 +520,29 @@ class TMWTScriptSettings(ScriptSettings):
         :param warmup_timeout: Time to finish in seconds after the winners, equivalent of finish_timeout but for warmup, only if warmup_duration is -1. -1: Time based on AT (5 sec + AT / 6). Default -1.
         :param pick_ban_enable: Enable pick and ban. Defining a pick ban order in plugin settings without this enabled will not enable it.
 
+        :param teams_url: URL to the teams pastebin (example: https://pastebin.com/MYJAHQXN). Teams are randomized if this is None (bug from Nadeo's side).
         :param crash_detection_threshold: Time in milliseconds for a round to count as a crash for a player from first place. Default 1000.
         :param match_points_limit: How many map wins are needed to win a match. Default 2.
+        :param match_info: Match info to display at the top bar of the game. 
         """
 
         super().__init__(base_script_settings)
 
+        self._teams_url = teams_url
         self._crash_detection_threshold = crash_detection_threshold
         self._match_points_limit = match_points_limit
+        self._match_info = match_info
 
     def as_jsonable_dict(self) -> dict:
         script_settings = super().as_jsonable_dict()
+
+        if self._teams_url is not None:
+            script_settings["S_TeamsUrl"] = self._teams_url
+
         script_settings["S_CrashDetectionThreshold"] = self._crash_detection_threshold
         script_settings["S_MatchPointsLimit"] = self._match_points_limit
+
+        if self._match_info is not None:
+            script_settings["S_MatchInfo"] = self._match_info
+
         return script_settings

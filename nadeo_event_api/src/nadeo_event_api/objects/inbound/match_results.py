@@ -30,6 +30,30 @@ class RankedParticipant:
 """
 Example: 
 
+{'position': 1, 'team': 'Red', 'rank': 2, 'score': 0}
+"""
+
+
+@dataclass
+class RankedTeam:
+    position: int
+    team: str
+    rank: int
+    score: int
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]):
+        position = data.get("position")
+        team = data.get("team")
+        rank = data.get("rank")
+        score = data.get("score")
+
+        return cls(position, team, rank, score)  # type: ignore
+
+
+"""
+Example: 
+
 {'matchLiveId': 'LID-MTCH-bs5s12wftrrdqjp', 'roundPosition': 0, 'results': [RankedParticpant], 'scoreUnit': 'point', 'teams': []}
 """
 
@@ -39,11 +63,13 @@ class MatchResults:
     match_live_id: str
     round_position: int
     results: List[RankedParticipant]
+    teams: List[RankedTeam]
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]):
         match_live_id = data.get("matchLiveId")
         round_position = data.get("roundPosition")
-        results = [RankedParticipant.from_dict(result) for result in data.get("results")]  # type: ignore
+        results = [RankedParticipant.from_dict(result) for result in data.get("results", [])]
+        teams = [RankedTeam.from_dict(team) for team in data.get("teams", [])]  
 
-        return cls(match_live_id, round_position, results)  # type: ignore
+        return cls(match_live_id, round_position, results, teams)  # type: ignore

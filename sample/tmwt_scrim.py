@@ -26,19 +26,19 @@ from nadeo_event_api.api.structure.settings.script_settings import TMWTScriptSet
 
 
 # Event info
-event_name = "TMWTExample"
+event_name = "finalfinal"
 match_club_id = 69352  # "Auto Events Staging"
 campaign_club_id = 383 # TMWT
 campaign_id = 74274  # "TMWT Fall 2024"
 
 # Create teams of two by UID
 team_a = [
-    "dadbaf28-e7b5-429b-bf37-8c8c1419fcf4",  # That_Ski_Freak
-    "bd45204c-80f1-4809-b983-38b3f0ffc1ef",  # WirtualTM
+    "2e34c3cb-9548-4815-aee3-c68518a1fd88",  # Nixotica
+    "6e3bf3f9-7dcb-47d4-bdae-037ab66628f2",  # Randomize
 ]
 team_b = [
-    "b981e0b1-2d6a-4470-9b52-c1f6b0b1d0a6",  # longi.tm
-    "2e34c3cb-9548-4815-aee3-c68518a1fd88",  # Nixotica
+    "ec0269d5-2d19-41eb-a931-01b8a11c2784",  # Random
+    "df9448f1-a8d5-4682-9003-1c2777c62b91",  # alxshaer
 ]
 
 now = datetime.utcnow()
@@ -63,7 +63,7 @@ event = Event(
                 )
             ],
             config=RoundConfig(
-                map_pool=[map_pool[0]],
+                map_pool=[map_pool[3]],
                 script=ScriptType.TMWT_TEAMS,
                 max_players=4,
                 script_settings=TMWTScriptSettings(
@@ -71,7 +71,9 @@ event = Event(
                         warmup_number=1,
                         warmup_duration=60,
                     ),
+                    teams_url="https://pastebin.com/raw/62NPyvWu",  # (Nixotica, Randomize) vs (alxshaer, Random)
                     match_points_limit=1,
+                    match_info="Fuck me Randomize"
                 ),
                 plugin_settings=TMWTPluginSettings(
                     ready_minimum_team_size=1,
@@ -86,5 +88,5 @@ event = Event(
 event.post()
 
 # Add teams
-event.add_team("team_a", team_a, 1)
-event.add_team("team_b", team_b, 2)
+event.add_team("Blu", team_a, 1)
+event.add_team("Red", team_b, 2)

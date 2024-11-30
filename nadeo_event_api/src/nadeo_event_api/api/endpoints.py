@@ -20,3 +20,5 @@ GET_MATCHES_FOR_ROUND_URL_FMT = (
 GET_ROUNDS_FOR_EVENT_URL_FMT = (
     "https://meet.trackmania.nadeo.club/api/competitions/{0}/rounds"
 )
+
+PASTEBIN_POST_URL = "https://pastebin.com/api/api_post.php"

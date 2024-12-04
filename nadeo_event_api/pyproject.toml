@@ -24,9 +24,3 @@ Homepage = "https://github.com/pypa/sampleproject"
 pythonpath = [
   ".", "src"
 ]
-
-[tool.setuptools]
-include-package-data = true
-
-[tool.setuptools.package-data]
-'nadeo_event_api.objects.outbound.pastebin' = ["pastebin_2v2_template.json"]

@@ -2,6 +2,8 @@ import json
 import os
 from typing import List
 
+from nadeo_event_api.objects.outbound.pastebin.pastebin_2v2_template import PASTEBIN_TEMPLATE_DICT
+
 
 class Tmwt2v2PastebinTeam:
     def __init__(
@@ -26,12 +28,8 @@ class Tmwt2v2Pastebin:
         self.team_a = team_a
         self.team_b = team_b
 
-    def as_jsonable_dict(self) -> dict:
-        curr_dir = os.path.dirname(__file__)
-        file_path = os.path.join(curr_dir, "pastebin_2v2_template.json")
-
-        with open(file_path, "r") as f:
-            pastebin_json = json.load(f)
+    def as_jsonable_dict(self):
+        pastebin_json = PASTEBIN_TEMPLATE_DICT
 
         pastebin_json[0]["Name"] = self.team_a.team_name
         pastebin_json[0]["Players"][0]["AccountId"] = self.team_a.p1_tm_account_id

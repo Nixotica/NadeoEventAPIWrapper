@@ -2,7 +2,7 @@ PASTEBIN_TEMPLATE_DICT = [
     {
         "Id": "one",
         "Name": "",
-        "LogoUrl": "https://imgur.com/a/lVPx8Xf",
+        "LogoUrl": "",
         "Sign2x3Url": "",
         "Sign16x9Url": "",
         "Sign64x10Url": "",

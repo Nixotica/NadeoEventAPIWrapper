@@ -1,7 +1,8 @@
 from typing import List
 import requests
 
-from nadeo_event_api.objects.inbound.match_info import MatchInfo
+from ..objects.inbound.event_players import Participant, Team
+from ..objects.inbound.match_info import MatchInfo
 
 from ..objects.inbound.round import Round
 from ..objects.inbound.match import Match
@@ -14,6 +15,8 @@ from .endpoints import (
     GET_MATCHES_FOR_ROUND_URL_FMT,
     GET_ROUNDS_FOR_EVENT_URL_FMT,
     GET_MATCH_INFO_URL_FMT,
+    GET_EVENT_PARTICIPANTS_URL_FMT,
+    GET_EVENT_TEAMS_URL_FMT
 )
 from .authenticate import UbiTokenManager
 from .structure.event import Event
@@ -100,3 +103,28 @@ def get_event_leaderboard(event_id: int, length: int, offset: int) -> str:
     )
     # TODO - return as object
     return response.content.decode("utf-8")
+
+
+def get_event_participants(event_id: int, length: int, offset: int) -> List[Participant]:
+    """
+    Gets the individual participants of an event.
+    """
+    token = UbiTokenManager().nadeo_club_token
+    response = requests.get(
+        url=GET_EVENT_PARTICIPANTS_URL_FMT.format(event_id, length, offset),
+        headers={"Authorization": "nadeo_v1 t=" + token},
+    ).json()
+
+    return [Participant.from_dict(p) for p in response]
+
+def get_event_teams(event_id: int) -> List[Team]:
+    """
+    Gets the teams of an event.
+    """
+    token = UbiTokenManager().nadeo_club_token
+    response = requests.get(
+        url=GET_EVENT_TEAMS_URL_FMT.format(event_id),
+        headers={"Authorization": "nadeo_v1 t=" + token},
+    ).json()
+
+    return [Team.from_dict(t) for t in response]

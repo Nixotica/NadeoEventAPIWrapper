@@ -16,7 +16,7 @@ class UbiTokenManager:
             cls._instance = super(UbiTokenManager, cls).__new__(cls)
         return cls._instance
 
-    def authenticate(self, service: NadeoService, authorization: str = None) -> str:
+    def authenticate(self, service: NadeoService, authorization: str = None) -> str: # type: ignore
         """
         Authenticates with the provided Nadeo service given authorization
         and returns an access token.

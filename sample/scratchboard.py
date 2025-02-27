@@ -18,25 +18,30 @@ sys.path.append(str(event_api_pkg))
 
 # print(match_results)
 
-from nadeo_event_api.api.pastebin.pastebin_api import post_tmwt_2v2
-from nadeo_event_api.objects.outbound.pastebin.tmwt_2v2 import Tmwt2v2Pastebin, Tmwt2v2PastebinTeam
+# from nadeo_event_api.api.pastebin.pastebin_api import post_tmwt_2v2
+# from nadeo_event_api.objects.outbound.pastebin.tmwt_2v2 import Tmwt2v2Pastebin, Tmwt2v2PastebinTeam
 
-blue_team = Tmwt2v2PastebinTeam(
-    team_name="Blue",
-    p1_tm_account_id="2e34c3cb-9548-4815-aee3-c68518a1fd88",  # Nixotica
-    p2_tm_account_id="6e3bf3f9-7dcb-47d4-bdae-037ab66628f2",  # Randomize
-)
+# blue_team = Tmwt2v2PastebinTeam(
+#     team_name="Blue",
+#     p1_tm_account_id="2e34c3cb-9548-4815-aee3-c68518a1fd88",  # Nixotica
+#     p2_tm_account_id="6e3bf3f9-7dcb-47d4-bdae-037ab66628f2",  # Randomize
+# )
 
-red_team = Tmwt2v2PastebinTeam(
-    team_name="Red",
-    p1_tm_account_id="c7818ba0-5e85-408e-a852-f658e8b90eec",  # Dummy
-    p2_tm_account_id="551dd1f5-2380-417d-98a5-8e2244f9287f",  # Revants
-)
+# red_team = Tmwt2v2PastebinTeam(
+#     team_name="Red",
+#     p1_tm_account_id="c7818ba0-5e85-408e-a852-f658e8b90eec",  # Dummy
+#     p2_tm_account_id="551dd1f5-2380-417d-98a5-8e2244f9287f",  # Revants
+# )
 
-pastebin = Tmwt2v2Pastebin(
-    team_a=blue_team,
-    team_b=red_team,
-)
+# pastebin = Tmwt2v2Pastebin(
+#     team_a=blue_team,
+#     team_b=red_team,
+# )
 
-url = post_tmwt_2v2(pastebin, os.environ.get("PASTEBIN_API_DEV_KEY")) # type: ignore
-print(url)
+# url = post_tmwt_2v2(pastebin, os.environ.get("PASTEBIN_API_DEV_KEY")) # type: ignore
+# print(url)
+
+from nadeo_event_api.api.event_api import get_event_teams, get_event_participants
+
+print(get_event_teams(24706))
+print(get_event_participants(24706, 4, 0))

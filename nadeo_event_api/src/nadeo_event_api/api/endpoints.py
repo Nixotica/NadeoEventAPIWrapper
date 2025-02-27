@@ -21,4 +21,14 @@ GET_ROUNDS_FOR_EVENT_URL_FMT = (
     "https://meet.trackmania.nadeo.club/api/competitions/{0}/rounds"
 )
 
+# https://webservices.openplanet.dev/meet/competitions/participants
+GET_EVENT_PARTICIPANTS_URL_FMT = (
+    "https://meet.trackmania.nadeo.club/api/competitions/{0}/participants?length={1}&offset={2}"
+)
+
+# https://webservices.openplanet.dev/meet/competitions/teams
+GET_EVENT_TEAMS_URL_FMT = (
+    "https://meet.trackmania.nadeo.club/api/competitions/{0}/mode-teams"
+)
+
 PASTEBIN_POST_URL = "https://pastebin.com/api/api_post.php"

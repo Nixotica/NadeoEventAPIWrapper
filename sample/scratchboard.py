@@ -41,7 +41,9 @@ sys.path.append(str(event_api_pkg))
 # url = post_tmwt_2v2(pastebin, os.environ.get("PASTEBIN_API_DEV_KEY")) # type: ignore
 # print(url)
 
-from nadeo_event_api.api.event_api import get_event_teams, get_event_participants
+from nadeo_event_api.api.event_api import get_event_teams, get_event_participants, get_display_name
 
-print(get_event_teams(24706))
-print(get_event_participants(24706, 4, 0))
+# print(get_event_teams(24706))
+# print(get_event_participants(24706, 4, 0))
+
+print(get_display_name("2e34c3cb-9548-4815-aee3-c68518a1fd88"))

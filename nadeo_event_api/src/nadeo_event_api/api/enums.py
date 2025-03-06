@@ -8,3 +8,4 @@ class NadeoService(Enum):
 
     CLUB = "NadeoClubServices"
     LIVE = "NadeoLiveServices"
+    PROD = "NadeoServices"

@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 import requests
 
 from ..objects.inbound.event_players import Participant, Team
@@ -16,7 +16,8 @@ from .endpoints import (
     GET_ROUNDS_FOR_EVENT_URL_FMT,
     GET_MATCH_INFO_URL_FMT,
     GET_EVENT_PARTICIPANTS_URL_FMT,
-    GET_EVENT_TEAMS_URL_FMT
+    GET_EVENT_TEAMS_URL_FMT,
+    GET_DISPLAY_NAMES_FMT
 )
 from .authenticate import UbiTokenManager
 from .structure.event import Event
@@ -128,3 +129,13 @@ def get_event_teams(event_id: int) -> List[Team]:
     ).json()
 
     return [Team.from_dict(t) for t in response]
+
+def get_display_name(account_id: str) -> Optional[str]:
+    """ 
+    Gets the display name for a given account id if exists.
+    """
+    token = UbiTokenManager().nadeo_prod_token
+    response = requests.get(
+        url=GET_DISPLAY_NAMES_FMT.format(account_id),
+        headers={"Authorization": "nadeo_v1 t=" + token},
+    ).json()

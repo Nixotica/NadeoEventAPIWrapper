@@ -10,6 +10,7 @@ class UbiTokenManager:
     _instance = None
     _nadeo_live_token = None
     _nadeo_club_token = None
+    _nadeo_prod_token = None
 
     def __new__(cls):
         if cls._instance is None:
@@ -21,7 +22,7 @@ class UbiTokenManager:
         Authenticates with the provided Nadeo service given authorization
         and returns an access token.
 
-        :param service: Audience (e.g. "NadeoClubServices", "NadeoLiveServices")
+        :param service: Audience (e.g. "NadeoClubServices", "NadeoLiveServices", "NadeoServices")
         :param authorization: Override authorization (Basic <user:pass> base 64) if not defined in environment.
         :return: Access token
         """
@@ -47,6 +48,8 @@ class UbiTokenManager:
             self._nadeo_live_token = auth
         elif service == NadeoService.CLUB:
             self._nadeo_club_token = auth
+        elif service == NadeoService.PROD:
+            self._nadeo_prod_token = auth
         return auth
 
     @property
@@ -60,6 +63,12 @@ class UbiTokenManager:
         if self._nadeo_club_token is None:
             self._nadeo_club_token = self.authenticate(NadeoService.CLUB)
         return self._nadeo_club_token
+    
+    @property
+    def nadeo_prod_token(self) -> str:
+        if self._nadeo_prod_token is None:
+            self._nadeo_prod_token = self.authenticate(NadeoService.PROD)
+        return self._nadeo_prod_token
 
     @nadeo_live_token.setter
     def nadeo_live_token(self, value):
@@ -68,3 +77,7 @@ class UbiTokenManager:
     @nadeo_club_token.setter
     def nadeo_club_token(self, value):
         self._nadeo_club_token = value
+
+    @nadeo_prod_token.setter
+    def nadeo_prod_token(self, value):
+        self._nadeo_prod_token = value

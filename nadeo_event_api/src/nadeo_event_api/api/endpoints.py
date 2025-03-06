@@ -31,4 +31,8 @@ GET_EVENT_TEAMS_URL_FMT = (
     "https://meet.trackmania.nadeo.club/api/competitions/{0}/mode-teams"
 )
 
+GET_DISPLAY_NAMES_FMT = (
+    "https://prod.trackmania.core.nadeo.online/accounts/displayNames/?accountIdList={0}"
+)
+
 PASTEBIN_POST_URL = "https://pastebin.com/api/api_post.php"

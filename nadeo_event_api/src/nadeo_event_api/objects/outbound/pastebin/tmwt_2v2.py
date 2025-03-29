@@ -31,9 +31,11 @@ class Tmwt2v2Pastebin:
     def as_jsonable_dict(self):
         pastebin_json = PASTEBIN_TEMPLATE_DICT
 
+        pastebin_json[0]["Id"] = self.team_a.team_name
         pastebin_json[0]["Name"] = self.team_a.team_name
         pastebin_json[0]["Players"][0]["AccountId"] = self.team_a.p1_tm_account_id
         pastebin_json[0]["Players"][1]["AccountId"] = self.team_a.p2_tm_account_id
+        pastebin_json[1]["Id"] = self.team_b.team_name
         pastebin_json[1]["Name"] = self.team_b.team_name
         pastebin_json[1]["Players"][0]["AccountId"] = self.team_b.p1_tm_account_id
         pastebin_json[1]["Players"][1]["AccountId"] = self.team_b.p2_tm_account_id

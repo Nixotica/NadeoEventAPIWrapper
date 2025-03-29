@@ -1,4 +1,7 @@
 from abc import ABC
+from typing import Dict, Optional
+
+from nadeo_event_api.objects.outbound.settings.pick_ban_style import PickBanStyle
 
 from ...structure.enums import RespawnBehavior
 
@@ -36,6 +39,28 @@ class BaseScriptSettings:
         self._pick_ban_enable = pick_ban_enable
 
 
+class BaseTMWTScriptSettings:
+    def __init__(
+        self,
+        base_script_settings: BaseScriptSettings = BaseScriptSettings(),
+        teams_url: Optional[str] = None,
+        match_points_limit: int = 2,
+        match_info: Optional[str] = None,
+    ) -> None:
+        """Base settings shared by all TMWT game modes. - Declares the list of script settings to use in a round.
+
+        Args:
+            base_script_settings (BaseScriptSettings, optional): The base script settings to use. Defaults to BaseScriptSettings().
+            teams_url (Optional[str], optional): URL to a raw json-compatible file (example: https://pastebin.com/raw/n6sDFhPu). Defaults to None.
+            match_points_limit (int, optional): How many map wins are needed to win a match. Defaults to 2.
+            match_info (Optional[str], optional): Match info to display at the top bar of the game. Defaults to None.
+        """
+        self._base_script_settings = base_script_settings
+        self._teams_url = teams_url
+        self._match_points_limit = match_points_limit
+        self._match_info = match_info
+        
+
 class ScriptSettings(ABC):
     def __init__(self, base_script_settings: BaseScriptSettings = BaseScriptSettings()):
         """
@@ -67,6 +92,27 @@ class ScriptSettings(ABC):
 
         return script_settings
 
+class TMWTScriptSettings(ScriptSettings):
+    def __init__(self, tmwt_script_settings: BaseTMWTScriptSettings = BaseTMWTScriptSettings()) -> None:
+        """Declares TMWT script settings shared by all TMWT game modes. 
+
+        Args:
+            tmwt_script_settings (BaseTMWTScriptSettings, optional): The base TMWT script settings to use. Defaults to BaseTMWTScriptSettings().
+        """
+        super().__init__(tmwt_script_settings._base_script_settings)
+        self._tmwt_script_settings = tmwt_script_settings
+
+    def as_jsonable_dict(self) -> dict:
+        script_settings = super().as_jsonable_dict()
+
+        # NOTE: THIS WILL BREAK AND REJECT POSTING THE EVENT IF YOU PUT "" FOR THIS VALUE
+        if self._tmwt_script_settings._teams_url is not None:
+            script_settings["S_TeamsUrl"] = self._tmwt_script_settings._teams_url
+        
+        script_settings["S_MatchPointsLimit"] = self._tmwt_script_settings._match_points_limit
+        script_settings["S_MatchInfo"] = self._tmwt_script_settings._match_info
+
+        return script_settings
 
 class ChampionScriptSettings(ScriptSettings):
     def __init__(
@@ -500,49 +546,119 @@ class CupSpecialScriptSettings(ScriptSettings):
         return script_settings
 
 
-class TMWTScriptSettings(ScriptSettings):
+class TMWC2023ScriptSettings(TMWTScriptSettings):
     def __init__(
         self,
-        base_script_settings: BaseScriptSettings = BaseScriptSettings(),
-        teams_url: str | None = None,
+        base_tmwt_script_settings: BaseTMWTScriptSettings = BaseTMWTScriptSettings(),
         crash_detection_threshold: int = 1000,
-        match_points_limit: int = 2,
-        match_info: str | None = None,
-    ):
-        """
-        Declares the list of script settings to use in a round.
+    ) -> None:
+        """Creates TMWC 2023 script settings with default settings, allowing for overrides.
 
-        :param chat_time: Chat time at the end of a map or match. Default 10.
-        :param force_laps_number: Number of laps per round. -1: Use laps from map settings. 0: Independent laps (TimeAttack). 1+: Number of laps. Default is from laps map settings.
-        :param respawn_behavior: Respawn behavior. Default is standard respawn behavior for the chosen gamemode.
-        :param warmup_duration: Time in seconds of the warmup. 0: Time based on the AT (5 sec + AT on 1 lap + (AT on 1 lap / 6)). -1: Only one round attempt (give up ends WU for player). Default 0.
-        :param warmup_number: Number of warmup rounds. Default 0.
-        :param warmup_timeout: Time to finish in seconds after the winners, equivalent of finish_timeout but for warmup, only if warmup_duration is -1. -1: Time based on AT (5 sec + AT / 6). Default -1.
-        :param pick_ban_enable: Enable pick and ban. Defining a pick ban order in plugin settings without this enabled will not enable it.
-
-        :param teams_url: URL to the teams pastebin (example: https://pastebin.com/MYJAHQXN). Teams are randomized if this is None (bug from Nadeo's side).
-        :param crash_detection_threshold: Time in milliseconds for a round to count as a crash for a player from first place. Default 1000.
-        :param match_points_limit: How many map wins are needed to win a match. Default 2.
-        :param match_info: Match info to display at the top bar of the game. 
+        Args:
+            base_tmwt_script_settings (TMWTScriptSettings, optional): Shared TMWT mode script settings. Defaults to TMWTScriptSettings().
+            crash_detection_threshold (int, optional): Time in milliseconds for a round to count as a crash for a player from first place. Default 1000.
         """
 
-        super().__init__(base_script_settings)
+        super().__init__(base_tmwt_script_settings)
 
-        self._teams_url = teams_url
         self._crash_detection_threshold = crash_detection_threshold
-        self._match_points_limit = match_points_limit
-        self._match_info = match_info
 
     def as_jsonable_dict(self) -> dict:
         script_settings = super().as_jsonable_dict()
 
-        if self._teams_url is not None:
-            script_settings["S_TeamsUrl"] = self._teams_url
-
         script_settings["S_CrashDetectionThreshold"] = self._crash_detection_threshold
-        script_settings["S_MatchPointsLimit"] = self._match_points_limit
 
-        if self._match_info is not None:
-            script_settings["S_MatchInfo"] = self._match_info
+        return script_settings
+
+
+class TMWT2025ScriptSettings(TMWTScriptSettings):
+    def __init__(
+        self,
+        base_tmwt_script_settings: BaseTMWTScriptSettings = BaseTMWTScriptSettings(),
+        map_points_limit: int = 10,
+        finish_timeout: int = -1,
+        loading_screen_image_url: str = "",
+        sponsors_url: str = "",
+        header_logo_url: str = "",
+        intro_background_url: str = "",
+        intro_logo_url: str = "",
+        sign_2x3_default_url: str = "file://Media/Manialinks/Nadeo/Trackmania/Modes/TMWT/Sign2x3/Default.dds",
+        sign_16x9_default_url: str = "",
+        sign_64x10_default_url: str = "file://Media/Manialinks/Nadeo/Trackmania/Modes/TMWT/Sign64x10/Default.dds",
+        disable_match_intro: bool = False,
+        force_road_spectators_number: int = -1,
+        enable_dossard_color: bool = True,
+        is_matchmaking: bool = True,
+        pick_ban_style: PickBanStyle = PickBanStyle(),
+        api_url: str = "",
+        api_competition_uid: str = "",
+        api_authorization_header: str = "",
+    ) -> None:
+        """Creates TMWT 2025 script settings with default settings, allowing for overrides.
+
+        Args:
+            base_tmwt_script_settings (TMWTScriptSettings, optional): Shared TMWT mode script settings. Defaults to TMWTScriptSettings().
+            map_points_limit (int, optional): Number of points to win a map. Default 10.
+            finish_timeout (int, optional): Time to finish the round in seconds after the winner. Use -1 to base on AT (5 sec + AT / 6). Default -1.
+            loading_screen_image_url (str, optional): URL to an image to display during the loading screen between tracks. Default "".
+            sponsors_url (str, optional): A list of URLs, separated by spaces (` `), to images to display in the upper right corner of the viewer's screen. Default "".
+            header_logo_url (str, optional): URL to an image that will be displayed as a logo in the header at the top of the screen during the match. Default "".
+            intro_background_url (str, optional): URL to an image that will be displayed as a logo in the header at the top of the screen during the match. Default "".
+            intro_logo_url (str, optional): URL to an image that will be displayed as a logo during the intro sequence at the start of the match. Default "".
+            sign_2x3_default_url (str, optional): URL to an image that will be displayed in the 2x3 signs of the stadium if the targeted player team does not have a custom image. Default "file://Media/Manialinks/Nadeo/Trackmania/Modes/TMWT/Sign2x3/Default.dds".
+            sign_16x9_default_url (str, optional): URL to an image that will be displayed in the 16x9 signs of the stadium if the targeted player team does not have a custom image. Default "".
+            sign_64x10_default_url (str, optional): URL to an image that will be displayed in the checkpoint/start/finish signs if the targeted player team does not have a custom image. Default "file://Media/Manialinks/Nadeo/Trackmania/Modes/TMWT/Sign64x10/Default.dds".
+            disable_match_intro: (bool, optional): Disable the intro sequence at the beginning of the match that displays team information. Default False.
+            force_road_spectators_number (int, optional): Set the number of spectators displayed in the stand blocks. A negative value keeps the server default value. Default -1.
+            enable_dossard_color (bool, optional): Use the team color on the trigram and rank displayed on the back of the car. Default True.
+            is_matchmaking (bool, optional): Set to `True` if the server is managed by the official Trackmania competition tool. Set to `False` if you are using your own dedicated server. Default True.
+            pick_ban_style: (PickBanStyle, optional): A JSON string containing the URL to the images dispalyed in the pick and ban screen. Default  { "Background": "", "TopLeftLogo": "", "TopRightLogo": "", "BottomLogo": "" }.
+            api_url (str, optional): URL of the player statistics API (win rate, crash rate, etc). Default "".
+            api_competition_uid (str, optional): Custom identifier used to separate statistics for different events. Default "".
+            api_authorization_header (str, optional): Value of the authorization header added to the API requests. Default "".
+        """
+
+        super().__init__(base_tmwt_script_settings)
+
+        self._map_points_limit = map_points_limit
+        self._finish_timeout = finish_timeout
+        self._loading_screen_image_url = loading_screen_image_url
+        self._sponsors_url = sponsors_url
+        self._header_logo_url = header_logo_url
+        self._intro_background_url = intro_background_url
+        self._intro_logo_url = intro_logo_url
+        self._sign_2x3_default_url = sign_2x3_default_url
+        self._sign_16x9_default_url = sign_16x9_default_url
+        self._sign_64x10_default_url = sign_64x10_default_url
+        self._disable_match_intro = disable_match_intro
+        self._force_road_spectators_number = force_road_spectators_number
+        self._enable_dossard_color = enable_dossard_color
+        self._is_matchmaking = is_matchmaking
+        self._pick_ban_style = pick_ban_style
+        self._api_url = api_url
+        self._api_competition_uid = api_competition_uid
+        self._api_authorization_header = api_authorization_header
+
+    def as_jsonable_dict(self) -> dict:
+        script_settings = super().as_jsonable_dict()
+
+        script_settings["S_MapPointsLimit"] = self._map_points_limit
+        script_settings["S_FinishTimeout"] = self._finish_timeout
+        script_settings["S_LoadingScreenImageUrl"] = self._loading_screen_image_url
+        script_settings["S_SponsorsUrl"] = self._sponsors_url
+        script_settings["S_HeaderLogoUrl"] = self._header_logo_url
+        script_settings["S_IntroBackgroundUrl"] = self._intro_background_url
+        script_settings["S_IntroLogoUrl"] = self._intro_logo_url
+        script_settings["S_Sign2x3DefaultUrl"] = self._sign_2x3_default_url
+        script_settings["S_Sign16x9DefaultUrl"] = self._sign_16x9_default_url
+        script_settings["S_Sign64x10DefaultUrl"] = self._sign_64x10_default_url
+        script_settings["S_DisableMatchIntro"] = self._disable_match_intro
+        script_settings["S_ForceRoadSpectatorsNb"] = self._force_road_spectators_number
+        script_settings["S_EnableDossardColor"] = self._enable_dossard_color
+        script_settings["S_IsMatchmaking"] = self._is_matchmaking
+        script_settings["S_PickAndBanStyle"] = self._pick_ban_style.as_jsonable_string()
+        script_settings["S_ApiUrl"] = self._api_url
+        script_settings["S_ApiCompetitionUid"] = self._api_competition_uid
+        script_settings["S_ApiAuthorizationHeader"] = self._api_authorization_header
 
         return script_settings

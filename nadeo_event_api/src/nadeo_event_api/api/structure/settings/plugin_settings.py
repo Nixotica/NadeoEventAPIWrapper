@@ -30,6 +30,8 @@ class ClassicPluginSettings(PluginSettings):
         pick_ban_start_auto: bool = False,
         pick_ban_order: str = "",
         use_auto_ready: bool = True,
+        enable_ready_manager: bool = False,
+        pick_ban_use_gamepad_version: bool = False,
     ):
         super().__init__(ad_image_urls=ad_image_urls, message_timer=message_timer)
 
@@ -38,13 +40,10 @@ class ClassicPluginSettings(PluginSettings):
         self._pick_ban_start_auto = pick_ban_start_auto
         self._pick_ban_order = pick_ban_order
         self._use_auto_ready = use_auto_ready
+        self._enable_ready_manager = enable_ready_manager
+        self._pick_ban_use_gamepad_version = pick_ban_use_gamepad_version
 
-        # TODO make these configurable once I know what they mean
-        self._enable_ready_manager = True
         self._ready_start_ratio = 1
-
-        # This should ALWAYS be true according to Randomize else it breaks UNLESS its not teams
-        self._pick_ban_use_gamepad_version = False
 
     def as_jsonable_dict(self) -> dict:
         plugin_settings = super().as_jsonable_dict()
@@ -92,6 +91,8 @@ class TMWTPluginSettings(ClassicPluginSettings):
         pick_ban_order: str = "b:0,b:1,p:0,p:1,p:0,p:1,p:0,p:1,p:r",
         use_auto_ready: bool = True,
         ready_minimum_team_size: int = 2,
+        pick_ban_use_gamepad_version: bool = True,
+        enable_ready_manager: bool = True
     ):
         super().__init__(
             ad_image_urls=ad_image_urls,
@@ -101,6 +102,8 @@ class TMWTPluginSettings(ClassicPluginSettings):
             pick_ban_start_auto=pick_ban_start_auto,
             pick_ban_order=pick_ban_order,
             use_auto_ready=use_auto_ready,
+            pick_ban_use_gamepad_version=pick_ban_use_gamepad_version,
+            enable_ready_manager=enable_ready_manager,
         )
 
         self._ready_minimum_team_size = ready_minimum_team_size
@@ -108,4 +111,5 @@ class TMWTPluginSettings(ClassicPluginSettings):
     def as_jsonable_dict(self) -> dict:
         plugin_settings = super().as_jsonable_dict()
         plugin_settings["S_ReadyMinimumTeamSize"] = self._ready_minimum_team_size
+        
         return plugin_settings

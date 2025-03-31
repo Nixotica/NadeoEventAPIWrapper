@@ -38,8 +38,10 @@ class ScriptType(Enum):
     """ First player to win X maps wins the match. """
     CUP_SHORT = "TrackMania/Legacy/TM_CupShort_Online.Script.txt"
     """ First player to win the map wins the match. """
-    TMWT_TEAMS = "TrackMania/TM_TMWC2023_Online.Script.txt"
-    """ 2v2 teams, first team to 10 points wins the map, first to X maps wins the match. """
+    TMWT_2023 = "TrackMania/TM_TMWC2023_Online.Script.txt"
+    """ 2v2 teams, first team to 10 points wins the map, first to X maps wins the match. 2023 edition. """
+    TMWT_2025 = "TrackMania/TM_TMWT2025_Online.Script.txt"
+    """ 2v2 teams, first team to 10 points wins the map, first to X maps wins the match. 2025 edition. """
 
     # TODO support more script types
 

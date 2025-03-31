@@ -60,7 +60,7 @@
           "S_PickBanUseGamepadVersion": false,
           "S_PickBanStartAuto": false,
           "S_PickBanOrder": "",
-          "S_EnableReadyManager": true,
+          "S_EnableReadyManager": false,
           "S_UseAutoReady": true,
           "S_ReadyStartRatio": 1,
           "S_MessageTimer": ""

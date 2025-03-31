@@ -32,3 +32,6 @@ GET_EVENT_TEAMS_URL_FMT = (
 )
 
 PASTEBIN_POST_URL = "https://pastebin.com/api/api_post.php"
+
+PASTES_IO_LOGIN_URL = "http://pastes.io/api/login"
+PASTES_IO_CREATE_URL = "http://pastes.io/api/paste/create"

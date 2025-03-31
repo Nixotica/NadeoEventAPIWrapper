@@ -1,10 +1,10 @@
 import json
 import requests
 from nadeo_event_api.api.endpoints import PASTEBIN_POST_URL
-from nadeo_event_api.objects.outbound.pastebin.tmwt_2v2 import Tmwt2v2Pastebin
+from nadeo_event_api.objects.outbound.pastebin.tmwt_2v2 import Tmwt2v2Paste
 
 
-def post_tmwt_2v2(tmwt_2v2_pastebin: Tmwt2v2Pastebin, api_dev_key: str) -> str:
+def post_tmwt_2v2(tmwt_2v2_pastebin: Tmwt2v2Paste, api_dev_key: str) -> str:
     """Posts a TMWT 2v2 Pastebin and returns the URL of the pastebin.
 
     Args:

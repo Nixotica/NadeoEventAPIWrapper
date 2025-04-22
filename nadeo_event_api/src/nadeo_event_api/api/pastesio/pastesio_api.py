@@ -27,6 +27,8 @@ def login(username: str, password: str) -> str:
         data=data,
     )
 
+    print('response in token:', response.content)
+
     if response.status_code != 200:
         error = response.json()["error"]
         raise Exception(f"Failed to login to pastes.io API: {error}")

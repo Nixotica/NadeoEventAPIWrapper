@@ -25,7 +25,7 @@ from nadeo_event_api.api.structure.round.round import Round, RoundConfig
 from nadeo_event_api.api.structure.settings.plugin_settings import TMWTPluginSettings
 from nadeo_event_api.api.structure.settings.script_settings import TMWT2025ScriptSettings, TMWC2023ScriptSettings, BaseTMWTScriptSettings, BaseScriptSettings
 from nadeo_event_api.objects.outbound.pastebin.tmwt_2v2 import Tmwt2v2Paste, Tmwt2v2PasteTeam
-from nadeo_event_api.api.pastebin.pastebin_api import post_tmwt_2v2
+from nadeo_event_api.api.pastefy.pastefy_api import post_tmwt_2v2
 from nadeo_event_api.objects.outbound.settings.pick_ban_style import PickBanStyle
 
 # Event info
@@ -37,12 +37,14 @@ campaign_id = 81781  # "NAC #3 Campaign"
 # Create teams of two by UID
 blue_team = Tmwt2v2PasteTeam(
     team_name="Blue",
+    team_id="Blue",
     p1_tm_account_id="febeaf4d-f340-4954-9fe2-88390959ae53",  # Charles
     p2_tm_account_id="6e3bf3f9-7dcb-47d4-bdae-037ab66628f2",  # Randomize
 )
 
 red_team = Tmwt2v2PasteTeam(
     team_name="Red",
+    team_id="Red",
     p1_tm_account_id="2e34c3cb-9548-4815-aee3-c68518a1fd88",  # Nixotica
     p2_tm_account_id="da244fe1-a978-449e-8a06-1362bce8b203",  # Slorpie
 )
@@ -52,7 +54,7 @@ pastebin = Tmwt2v2Paste(
     team_b=red_team,
 )
 
-# pastebin_url = post_tmwt_2v2(pastebin, os.environ.get("PASTEBIN_API_DEV_KEY")) # type: ignore
+teams_url = post_tmwt_2v2(pastebin, "tmwt2025test")
 
 now = datetime.utcnow()
 match_start = now + timedelta(minutes=1)
@@ -96,7 +98,7 @@ event = Event(
                         ),
                         match_points_limit=2,
                         match_info="2025 THE YEAR",
-                        teams_url="https://pastebin.com/raw/hSLVPj1c",
+                        teams_url=teams_url, #"https://pastebin.com/raw/hSLVPj1c",
                     ),
                     map_points_limit=5,
                     loading_screen_image_url="https://download.dashmap.live/6e3bf3f9-7dcb-47d4-bdae-037ab66628f2/AM_Stream_BG_Nologo.png",

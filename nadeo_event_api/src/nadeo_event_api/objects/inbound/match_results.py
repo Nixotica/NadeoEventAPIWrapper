@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 """
 Example: 
@@ -73,3 +73,34 @@ class MatchResults:
         teams = [RankedTeam.from_dict(team) for team in data.get("teams", [])]  
 
         return cls(match_live_id, round_position, results, teams)  # type: ignore
+
+    def get_rank(self, participant_id: str) -> Optional[int]:
+        """Returns a player's rank for a match, defaulting to their team rank if it was a teams match.
+
+        Args:
+            participant_id (str): The player's tm account ID.
+
+        Returns:
+            Optional[int]: The player's rank, if they had results in the match. 
+        """
+        # If not teams match, get player's individual rank
+        if self.teams == []:        
+            for result in self.results:
+                if result.participant == participant_id:
+                    return result.rank
+                
+        # If teams match, get player's team's rank
+        else: 
+            player_team = None
+            for result in self.results:
+                if result.participant == participant_id:
+                    player_team = result.team
+
+            if player_team is None:
+                return None
+            
+            for team in self.teams:
+                if team.team == player_team:
+                    return team.rank
+
+        return None

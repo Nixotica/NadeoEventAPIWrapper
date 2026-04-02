@@ -30,6 +30,6 @@ jobs:
       run: |
         cd nadeo_event_api
         pip install -r requirements.txt
-        export UBI_AUTH="${{secrets.UBI_AUTH}}"
+        export NADEO_AUTH="${{secrets.NADEO_AUTH}}"
         export MY_CLUB="${{secrets.MY_CLUB}}"
         pytest -m integration

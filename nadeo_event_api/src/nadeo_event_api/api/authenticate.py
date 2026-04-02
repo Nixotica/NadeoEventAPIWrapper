@@ -1,15 +1,17 @@
 import os
 import requests
-from ..environment import UBI_AUTH
+from ..environment import NADEO_AUTH
 from .enums import NadeoService
 
-from ..constants import NADEO_AUTH_URL, UBI_SESSION_URL
+from ..constants import NADEO_AUTH_URL, NADEO_REFRESH_AUTH_URL
 
 
 class UbiTokenManager:
     _instance = None
     _nadeo_live_token = None
+    _nadeo_live_refresh_token = None
     _nadeo_club_token = None
+    _nadeo_club_refresh_token = None
 
     def __new__(cls):
         if cls._instance is None:
@@ -25,29 +27,50 @@ class UbiTokenManager:
         :param authorization: Override authorization (Basic <user:pass> base 64) if not defined in environment.
         :return: Access token
         """
-        auth = os.getenv(UBI_AUTH) if not authorization else authorization
+        refreshed_auth = self.__authenticate_with_refresh_token(service)
+        if refreshed_auth:
+            return refreshed_auth
+
+        auth = os.getenv(NADEO_AUTH) if not authorization else authorization
         headers = {
             "Content-Type": "application/json",
-            "Ubi-AppId": "86263886-327a-4328-ac69-527f0d20a237",
             "Authorization": auth,
             "User-Agent": "https://github.com/Nixotica/NadeoEventAPIWrapper",
         }
-        result = requests.post(UBI_SESSION_URL, headers=headers).json()
-
-        ticket = result["ticket"]
-        headers = {
-            "Content-Type": "application/json",
-            "Authorization": f"ubi_v1 t={ticket}",
-        }
         body = {"audience": service.value}
-        auth = requests.post(NADEO_AUTH_URL, headers=headers, json=body).json()[
-            "accessToken"
-        ]
+        result = requests.post(NADEO_AUTH_URL, headers=headers, json=body).json()
+        return self.__set_tokens(service, result)
+    
+    def __authenticate_with_refresh_token(self, service: NadeoService) -> str | None:
+        try:
+            token: str = None
+            if service == NadeoService.LIVE:
+                token = self._nadeo_live_refresh_token
+            elif service == NadeoService.CLUB:
+                token = self._nadeo_club_refresh_token
+            
+            if token:
+                headers = {
+                    "Content-Type": "application/json",
+                    "Authorization": f"nadeo_v1 t={token}",
+                    "User-Agent": "https://github.com/Nixotica/NadeoEventAPIWrapper",
+                }
+                body = {"audience": service.value}
+                result = requests.post(NADEO_REFRESH_AUTH_URL, headers=headers, json=body).json()
+                return self.__set_tokens(service, result)
+
+            return None
+        except:
+            return None
+        
+    def __set_tokens(self, service: NadeoService, tokens: dict) -> None:
         if service == NadeoService.LIVE:
-            self._nadeo_live_token = auth
+            self._nadeo_live_token = tokens["accessToken"]
+            self._nadeo_live_refresh_token = tokens["refreshToken"]
         elif service == NadeoService.CLUB:
-            self._nadeo_club_token = auth
-        return auth
+            self._nadeo_club_token = tokens["accessToken"]
+            self._nadeo_club_refresh_token = tokens["refreshToken"]
+        return tokens["accessToken"]
 
     @property
     def nadeo_live_token(self) -> str:

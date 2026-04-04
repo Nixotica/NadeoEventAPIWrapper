@@ -1,9 +1,11 @@
 CREATE_COMP_URL = "https://meet.trackmania.nadeo.club/api/competitions/web/create"
 
-UBI_SESSION_URL = "https://public-ubiservices.ubi.com/v3/profiles/sessions"
-
 NADEO_AUTH_URL = (
-    "https://prod.trackmania.core.nadeo.online/v2/authentication/token/ubiservices"
+    "https://prod.trackmania.core.nadeo.online/v2/authentication/token/basic"
+)
+
+NADEO_REFRESH_AUTH_URL = (
+    "https://prod.trackmania.core.nadeo.online/v2/authentication/token/refresh"
 )
 
 CLUB_CAMPAIGN_URL_FMT = (
@@ -26,6 +28,3 @@ GET_EVENT_URL_FMT = "https://meet.trackmania.nadeo.club/api/competitions/{0}"
 GET_PARTICIPANTS_URL_FMT = "https://meet.trackmania.nadeo.club/api/competitions/{0}/participants?offset={1}&length={2}"
 
 NADEO_DATE_FMT = "%Y-%m-%dT%H:%M:%S.000Z"
-
-SECRET_FILE = "secrets.json"
-SECRET_UBI_AUTH = "UBI_AUTH"

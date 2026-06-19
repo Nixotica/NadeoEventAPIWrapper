@@ -42,6 +42,8 @@ class ScriptType(Enum):
     """ 2v2 teams, first team to 10 points wins the map, first to X maps wins the match. 2023 edition. """
     TMWT_2025 = "TrackMania/TM_TMWT2025_Online.Script.txt"
     """ 2v2 teams, first team to 10 points wins the map, first to X maps wins the match. 2025 edition. """
+    CUPESPORT = "TrackMania/Community/TM_CupEsport_Online.Script.txt"
+    """ Cup mode, with a more modern interface """
 
     # TODO support more script types
 

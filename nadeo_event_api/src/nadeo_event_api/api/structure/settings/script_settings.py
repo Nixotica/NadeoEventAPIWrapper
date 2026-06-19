@@ -59,7 +59,7 @@ class BaseTMWTScriptSettings:
         self._teams_url = teams_url
         self._match_points_limit = match_points_limit
         self._match_info = match_info
-        
+
 
 class ScriptSettings(ABC):
     def __init__(self, base_script_settings: BaseScriptSettings = BaseScriptSettings()):
@@ -92,9 +92,12 @@ class ScriptSettings(ABC):
 
         return script_settings
 
+
 class TMWTScriptSettings(ScriptSettings):
-    def __init__(self, tmwt_script_settings: BaseTMWTScriptSettings = BaseTMWTScriptSettings()) -> None:
-        """Declares TMWT script settings shared by all TMWT game modes. 
+    def __init__(
+        self, tmwt_script_settings: BaseTMWTScriptSettings = BaseTMWTScriptSettings()
+    ) -> None:
+        """Declares TMWT script settings shared by all TMWT game modes.
 
         Args:
             tmwt_script_settings (BaseTMWTScriptSettings, optional): The base TMWT script settings to use. Defaults to BaseTMWTScriptSettings().
@@ -108,11 +111,14 @@ class TMWTScriptSettings(ScriptSettings):
         # NOTE: THIS WILL BREAK AND REJECT POSTING THE EVENT IF YOU PUT "" FOR THIS VALUE
         if self._tmwt_script_settings._teams_url is not None:
             script_settings["S_TeamsUrl"] = self._tmwt_script_settings._teams_url
-        
-        script_settings["S_MatchPointsLimit"] = self._tmwt_script_settings._match_points_limit
+
+        script_settings[
+            "S_MatchPointsLimit"
+        ] = self._tmwt_script_settings._match_points_limit
         script_settings["S_MatchInfo"] = self._tmwt_script_settings._match_info
 
         return script_settings
+
 
 class ChampionScriptSettings(ScriptSettings):
     def __init__(
@@ -660,5 +666,79 @@ class TMWT2025ScriptSettings(TMWTScriptSettings):
         script_settings["S_ApiUrl"] = self._api_url
         script_settings["S_ApiCompetitionUid"] = self._api_competition_uid
         script_settings["S_ApiAuthorizationHeader"] = self._api_authorization_header
+
+        return script_settings
+
+
+class CupEsportScriptSettings(ScriptSettings):
+    def __init__(
+        self,
+        cup_script_settings: CupScriptSettings = CupScriptSettings(),
+        crash_detection_threshold: int = 2000,
+        enable_join_leave_notifications: bool = False,
+        enable_prematch: bool = False,
+        disable_maniapub_screens: bool = False,
+        disable_score_header_interface: bool = False,
+        player_profiles_url: str = "",
+        sponsor_urls: str = "",
+        tournament_stats_url: str = "",
+        tournament_stats_comp_uid: str = "",
+        tournament_stats_auth_header: str = "",
+        use_public_records: bool = True,
+    ):
+        """Creates script settings for CupEsport mode
+
+        Args:
+            base_cup_script_settings (CupScriptSettings, optional): Cup mode settings
+            crash_detection_threshold (int, optional): Time delta in ms with the first player that will be considered as a crash
+            enable_join_leave_notifications (bool, optional): Show notification when players join/leave the room
+            enable_prematch (bool, optional): Enable pre match warm up on Club competition system
+            disable_maniapub_screens (bool, optional): Disable Maniapub on stadium screens
+            disable_score_header_interface (bool, optional): Disable Scores Header Interface
+            player_profiles_url (str, optional): Player Profiles URL in JSON format
+            sponsor_urls (str, optional): Sponsors URLs separated by spaces
+            tournament_stats_url (str, optional): URL exposing API for tournament stats
+            tournament_stats_comp_uid (str, optional): Unique identifier for competition
+            tournament_stats_auth_header (str, optional): Authentication header for stats API endpoints
+            use_public_records (bool, optional): Use Public Records instead of Match / Tournament records
+        """
+        super().__init__(cup_script_settings.base_script_settings)
+
+        self._cup_script_settings = cup_script_settings
+
+        self._crash_detection_threshold = crash_detection_threshold
+        self._enable_join_leave_notifications = enable_join_leave_notifications
+        self._enable_prematch = enable_prematch
+        self._disable_maniapub_screens = disable_maniapub_screens
+        self._disable_score_header_interface = disable_score_header_interface
+        self._player_profiles_url = player_profiles_url
+        self._sponsor_urls = sponsor_urls
+        self._tournament_stats_url = tournament_stats_url
+        self._tournament_stats_comp_uid = tournament_stats_comp_uid
+        self._tournament_stats_auth_header = tournament_stats_auth_header
+        self._use_public_records = use_public_records
+
+    def as_jsonable_dict(self) -> dict:
+        script_settings = self._cup_script_settings.as_jsonable_dict()
+
+        script_settings["S_CrashDetectionThreshold"] = self._crash_detection_threshold
+        script_settings[
+            "S_EnableJoinLeaveNotifications"
+        ] = self._enable_join_leave_notifications
+        script_settings["S_EnablePreMatch"] = self._enable_prematch
+        script_settings["S_DisableManiapubsOnScreens"] = self._disable_maniapub_screens
+        script_settings[
+            "S_DisableScoresHeaderInterface"
+        ] = self._disable_score_header_interface
+        script_settings["S_PlayerProfilesUrl"] = self._player_profiles_url
+        script_settings["S_SponsorsUrl"] = self._sponsor_urls
+        script_settings["S_TournamentStatsApiUrl"] = self._tournament_stats_url
+        script_settings[
+            "S_TournamentStatsApiCompetitionUid"
+        ] = self._tournament_stats_comp_uid
+        script_settings[
+            "S_TournamentStatsApiAuthorizationHeader"
+        ] = self._tournament_stats_auth_header
+        script_settings["S_UsePublicRecords"] = self._use_public_records
 
         return script_settings
